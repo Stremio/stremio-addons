@@ -1,0 +1,11 @@
+TODO
+
+Client
+> we are able to call a service
+> handshake / auth
+> service priorities
+> handles errors
+
+Server
+> exports methods
+> handshake/auth
