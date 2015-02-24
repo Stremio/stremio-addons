@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "description": "Stremio Service framework",
   "main": "index.js",
+  "dependencies": {
+    "jayson": "1.1.x",
+    "lodash": "3.3.x",
+    "async": "0.9.x"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
