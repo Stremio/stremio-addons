@@ -24,6 +24,12 @@ function Service(url, options, client)
 	this.url = url;
 	this.priority = options.priority || 0;
 
+	var methods = [], initialized = false;
+	var q = async.queue(function() {
+
+	}, 1);
+
+	//TODO: initialize 
 	this.call = function(method, cb)
 	{
 
@@ -32,7 +38,9 @@ function Service(url, options, client)
 
 function Stremio(options)
 {
-	var services = {} ;
+	options = options || {};
+
+	var services = {};
 
 	// Adding services
 	this.addService = function(url, opts) {
@@ -42,7 +50,7 @@ function Stremio(options)
 
 	// Bind methods
 	function call(method, cb) {
-		var keys = Object.keys(services).sort(function(a,b) { return services[b].priority - services[a].priority });
+		var keys = Object.keys(services).sort(function(a,b) { return services[a].priority - services[b].priority });
 		async.each(keys, function(key, next) {
 			var service = services[key];
 			service.call(method, function(skip, err, res) {
