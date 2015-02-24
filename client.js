@@ -1,5 +1,6 @@
 var _ = require("lodash");
 var async = require("async");
+var jayson = require("jayson");
 
 function bindDefaults(call) {
 	meta: {
@@ -16,13 +17,22 @@ function bindDefaults(call) {
 };
 
 
-function Stremio()
+function Stremio(options)
 {
-	function call(method, cb) {
+	var services = {} ;
 
+	// Adding services
+	this.addService = function(url) {
+		if (services[url]) return;
+		services[url] = {
+			client: (options.client || jayson.client.http)({ url: url+module.parent.STREMIO_PATH })
+		};
 	};
 
 	// Bind methods
+	function call(method, cb) { /*q.push({ method: method, cb: cb })*/ };
 	_.extend(this, bindDefaults(call))
 	this.call = call;
 };
+
+module.exports = Stremio;
