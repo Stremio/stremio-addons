@@ -3,7 +3,7 @@ var services = require("./");
 // SERVER
 var server = new services.Server({
 	"meta.get": function(args, cb) {
-		console.log("received args -> "+args);
+		console.log("received args -> ",args);
 		return cb(null, { now: Date.now() });
 	}
 });

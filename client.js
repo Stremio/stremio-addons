@@ -42,8 +42,8 @@ function Service(url, options, client)
 	this.call = function(method, args, cb)
 	{
 		q.push({ }, function() {
-			if (methods.indexOf(method) == -1) cb(true);
-			self.client.request(method, args, function(err, res) { cb(false, err, res) });
+			if (methods.indexOf(method) == -1) return cb(true);
+			self.client.request(method, args, function(err, error, res) { cb(false, err, error, res) });
 		});
 	};
 };
@@ -65,14 +65,14 @@ function Stremio(options)
 		var keys = Object.keys(services).sort(function(a,b) { return services[a].priority - services[b].priority });
 		async.each(keys, function(key, next) {
 			var service = services[key];
-			service.call(method, args, function(skip, err, res) {
+			service.call(method, [args], function(skip, err, error, res) {
+				// err, error are respectively HTTP error / Jayson error; we need to implement fallback based on that (do a skip)
 				if (skip) return next(); // Go to the next service
 
 				cb(err, res);
 				next(1); // Stop
 			});
 		}, function(err) {
-			console.log(err);
 			if (err !== 1) cb(new Error("no service that supplies this method"));
 		});
 	};

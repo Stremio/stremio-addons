@@ -7,7 +7,7 @@ function Server(methods)
 {	
 	function handshake(args, cb) {
 		cb(null, {
-			
+			methods: Object.keys(methods)
 		});
 	};
 
