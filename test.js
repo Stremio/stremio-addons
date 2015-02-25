@@ -7,13 +7,22 @@ var server = new services.Server({
 		return cb(null, { now: Date.now() });
 	}
 });
-server.listen(3009);;
 
-// CLIENT
-var s new services.Client();
-s.addService("http://localhost:3009");
-s.call("meta.get", { id: 1 }, function(err, res)
+var http = require("http");
+http.createServer(function (req, res) {
+  server.middleware(req,res,function(){ res.end() });
+}).listen(3009).on("listening", function()
 {
-	console.log(err,res);
+	console.log("server listening...");
+
+	// CLIENT
+	var s = new services.Client();
+	s.addService("http://localhost:3009");
+	s.call("meta.get", { id: 1 }, function(err, res)
+	{
+		console.log(err,res);
+	});
+
 });
+
 

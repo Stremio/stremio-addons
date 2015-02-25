@@ -22,17 +22,20 @@ function Service(url, options, client)
 {
 	var self = this;
 
-	this.client = client({ url: url });
+	this.client = client(url+module.parent.STREMIO_PATH);
 	this.url = url;
 	this.priority = options.priority || 0;
 
 	var methods = [], initialized = false;
 	var q = async.queue(function(task, done) {
 		if (initialized) return done();
-		self.client.request("handshake", { }, function(err, res) {
+
+		self.client.request("handshake", [{ user: null }], function(err, error, res) {
+			if (err || error) console.error(err, error);
 			initialized = true;
-			if (res.methods) methods = methods.concat(res.methods);
+			if (res && res.methods) methods = methods.concat(res.methods);
 			// TODO: error handling, retry, auth, etc.
+			done();
 		});
 	}, 1);
 
@@ -54,7 +57,7 @@ function Stremio(options)
 	// Adding services
 	this.addService = function(url, opts) {
 		if (services[url]) return;
-		services[url] = new Service(url, opts, options.client || jayson.client.http);
+		services[url] = new Service(url, opts || {}, options.client || jayson.client.http);
 	};
 
 	// Bind methods
@@ -68,9 +71,12 @@ function Stremio(options)
 				cb(err, res);
 				next(1); // Stop
 			});
+		}, function(err) {
+			console.log(err);
+			if (err !== 1) cb(new Error("no service that supplies this method"));
 		});
 	};
-	_.extfend(this, bindDefaults(call))
+	_.extend(this, bindDefaults(call))
 	this.call = call;
 };
 
