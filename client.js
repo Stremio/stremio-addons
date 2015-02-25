@@ -67,9 +67,9 @@ function Stremio(options)
 			var service = services[key];
 			service.call(method, [args], function(skip, err, error, res) {
 				// err, error are respectively HTTP error / Jayson error; we need to implement fallback based on that (do a skip)
-				if (skip) return next(); // Go to the next service
+				if (skip || err) return next(); // Go to the next service
 
-				cb(err, res);
+				cb(error, res);
 				next(1); // Stop
 			});
 		}, function(err) {
