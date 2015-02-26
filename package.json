@@ -6,7 +6,8 @@
   "dependencies": {
     "jayson": "1.1.x",
     "lodash": "3.3.x",
-    "async": "0.9.x"
+    "async": "0.9.x",
+    "request": "2.21.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

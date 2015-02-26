@@ -30,7 +30,7 @@ function Service(url, options, client)
 	var q = async.queue(function(task, done) {
 		if (initialized) return done();
 
-		self.client.request("handshake", [{ user: null }], function(err, error, res) {
+		self.client.request("meta", [], function(err, error, res) {
 			if (err || error) console.error(err, error);
 			initialized = true;
 			if (res && res.methods) methods = methods.concat(res.methods);
@@ -52,11 +52,12 @@ function Stremio(options)
 {
 	options = options || {};
 
+	var auth;
 	var services = {};
 
 	// Set the authentication
-	this.setAuth = function() {
-		
+	this.setAuth = function(url, token) {
+		auth = [url, token];
 	};
 
 	// Adding services
@@ -70,7 +71,7 @@ function Stremio(options)
 		var s = _.values(services).sort(function(a,b) { return a.priority - b.priority });
 		if (options.picker) s = options.picker(s);
 		async.each(s, function(service, next) {
-			service.call(method, [args], function(skip, err, error, res) {
+			service.call(method, [auth, args], function(skip, err, error, res) {
 				// err, error are respectively HTTP error / Jayson error; we need to implement fallback based on that (do a skip)
 				if (skip || err) return next(); // Go to the next service
 
