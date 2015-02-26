@@ -39,6 +39,8 @@ function Service(url, options, client)
 		});
 	}, 1);
 
+	q.push({ }, function() { }); // Start initialization now
+
 	this.call = function(method, args, cb)
 	{
 		q.push({ }, function() {
