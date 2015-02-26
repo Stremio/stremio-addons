@@ -54,6 +54,11 @@ function Stremio(options)
 
 	var services = {};
 
+	// Set the authentication
+	this.setAuth = function() {
+		
+	};
+
 	// Adding services
 	this.addService = function(url, opts) {
 		if (services[url]) return;

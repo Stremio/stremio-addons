@@ -16,7 +16,7 @@ http.createServer(function (req, res) {
 	console.log("server listening...");
 
 	// CLIENT
-	var s = new services.Client();
+	var s = new services.Client({ picker: function(services) { return services } });
 	s.addService("http://localhost:3009");
 	s.call("meta.get", { id: 1 }, function(err, res)
 	{
