@@ -62,9 +62,9 @@ function Stremio(options)
 
 	// Bind methods
 	function call(method, args, cb) {
-		var keys = Object.keys(services).sort(function(a,b) { return services[a].priority - services[b].priority });
-		async.each(keys, function(key, next) {
-			var service = services[key];
+		var s = _.values(services).sort(function(a,b) { return a.priority - b.priority });
+		if (options.picker) s = options.picker(s);
+		async.each(s, function(service, next) {
 			service.call(method, [args], function(skip, err, error, res) {
 				// err, error are respectively HTTP error / Jayson error; we need to implement fallback based on that (do a skip)
 				if (skip || err) return next(); // Go to the next service
