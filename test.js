@@ -1,12 +1,15 @@
 var services = require("./");
 
+var central = "http://localhost:3008";
+//var central = "http://api8.herokuapp.com";
+
 // SERVER
 var server = new services.Server({
-	"meta.get": function(args, cb) {
-		console.log("received args -> ",args);
+	"meta.get": function(args, cb, sess) {
+		console.log("received args -> ",args," from ", sess);
 		return cb(null, { now: Date.now() });
 	}
-}, { allow: "http://api.linvo.me", secret: "51af8b26c364cb44d6e8b7b517ce06e39caf036a" });
+}, { allow: central, secret: "51af8b26c364cb44d6e8b7b517ce06e39caf036a" });
 
 var http = require("http");
 http.createServer(function (req, res) {
@@ -18,7 +21,7 @@ http.createServer(function (req, res) {
 	// CLIENT
 	var s = new services.Client({ picker: function(services) { return services } });
 	s.addService("http://localhost:3009");
-	s.setAuth("http://api.linvo.me", "51af8b26c364cb44d6e8b7b517ce06e39caf036a");
+	s.setAuth(central, "51af8b26c364cb44d6e8b7b517ce06e39caf036a");
 	s.call("meta.get", { id: 1 }, function(err, res)
 	{
 		console.log(err,res);

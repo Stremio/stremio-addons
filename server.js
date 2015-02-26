@@ -16,7 +16,12 @@ function Server(methods, options)
 	function checkSession(auth, cb) {
 		var id = auth[1];
 		if (options.allow && options.allow.indexOf(auth[0])==-1) return cb({ message: "not allowed to auth via that server", code: 2 });
-		return cb(null, 1);
+
+		request({ json: true, url: auth[0]+"/stremio/service/"+options.secret+"/"+auth[1] }, function(err, resp, body) {
+			if (err) return cb({ message: "failed to connect to center", code: 5 });
+			if (resp.statusCode==200) return cb(null, body);
+			return cb(body); // error
+		})
 	};
 
 
