@@ -4,6 +4,8 @@ var _ = require("lodash");
 var url = require("url");
 var request = require("request");
 
+var SESSION_LIVE = 2*60*60*1000; // 2 hrs
+
 function Server(methods, options)
 {	
 	function meta(cb) {
@@ -17,9 +19,15 @@ function Server(methods, options)
 		var id = auth[1];
 		if (options.allow && options.allow.indexOf(auth[0])==-1) return cb({ message: "not allowed to auth via that server", code: 2 });
 
+		if (sessions[auth[1]]) return cb(null, sessions[auth[1]]);
+
 		request({ json: true, url: auth[0]+"/stremio/service/"+options.secret+"/"+auth[1] }, function(err, resp, body) {
 			if (err) return cb({ message: "failed to connect to center", code: 5 });
-			if (resp.statusCode==200) return cb(null, body);
+			if (resp.statusCode==200) {
+				sessions[auth[1]] = body;
+				setTimeout(function() { delete sessions[auth[1]] }, SESSION_LIVE);
+				return cb(null, body);
+			};
 			return cb(body); // error
 		})
 	};

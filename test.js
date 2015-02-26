@@ -1,7 +1,7 @@
 var services = require("./");
 
-var central = "http://localhost:3008";
-//var central = "http://api8.herokuapp.com";
+//var central = "http://localhost:3008";
+var central = "http://api8.herokuapp.com";
 
 // SERVER
 var server = new services.Server({
@@ -25,6 +25,10 @@ http.createServer(function (req, res) {
 	s.call("meta.get", { id: 1 }, function(err, res)
 	{
 		console.log(err,res);
+		s.call("meta.get", { id: 1 }, function(err, res)
+		{
+			console.log(err,res);
+		});
 	});
 });
 
