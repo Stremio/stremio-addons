@@ -23,5 +23,12 @@ new services.Server({
 	"meta.get": function(args, cb) {
 		// this.user -> get info about the user
 	},
-});
+}, { allow: ["api.linvo.me"], secret: "SOME SECRET" });
+
 ```
+
+Secret & authToken
+==============
+The authToken is a session ID we use for service clients to identify the user. It's the service' job (implemented in server.js) to evaluate if we're getting requests from a logged-in users. That happens by asking the central server if that authToken is valid.
+
+The secret is a token that is used to get the central server (regulating) to authorize on the user's session. We can also use the secret as an auth token for clients with .setAuth() in order to get a special session to get services to use each other.
