@@ -21,7 +21,7 @@ function Server(methods, options)
 
 		if (sessions[auth[1]]) return cb(null, sessions[auth[1]]);
 
-		request({ json: true, url: auth[0]+"/stremio/service/"+options.secret+"/"+auth[1] }, function(err, resp, body) {
+		request({ json: true, url: auth[0]+"/stremio/service/"+options.secret+"/"+encodeURIComponent(auth[1]) }, function(err, resp, body) {
 			if (err) return cb({ message: "failed to connect to center", code: 5 });
 			if (resp.statusCode==200) {
 				sessions[auth[1]] = body;
