@@ -28,7 +28,9 @@ function Server(methods, options)
 				setTimeout(function() { delete sessions[auth[1]] }, SESSION_LIVE);
 				return cb(null, body);
 			};
-			return cb(body); // error
+
+			if (!body.message) console.error("auth server returned",body);
+			return cb(body.message ? body : { message: "unknown error reaching auth server", code: 8 }); // error
 		})
 	};
 
