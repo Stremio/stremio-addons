@@ -25,16 +25,17 @@ function Service(url, options, client)
 	this.client = client(url+module.parent.STREMIO_PATH);
 	this.url = url;
 	this.priority = options.priority || 0;
+	this.initialized = false
 
-	var methods = [], initialized = false;
+	var methods = [];
 	var q = async.queue(function(task, done) {
-		if (initialized) return done();
+		if (self.initialized) return done();
 
 		self.client.request("meta", [], function(err, error, res) {
 			if (err) { console.error(err); return done(); }
 			
 			if (error) console.error(error);
-			initialized = true;
+			self.initialized = true;
 			if (res && res.methods) methods = methods.concat(res.methods);
 			// TODO: error handling, retry, auth, etc.
 			done();
@@ -72,7 +73,7 @@ function Stremio(options)
 
 	// Bind methods
 	function call(method, args, cb) {
-		var s = _.values(services).sort(function(a,b) { return a.priority - b.priority });
+		var s = _.values(services).sort(function(a,b) { return (b.initialized - a.initialized) || (a.priority - b.priority) });
 		if (options.picker) s = options.picker(s);
 		async.each(s, function(service, next) {
 			service.call(method, [auth, args], function(skip, err, error, res) {
