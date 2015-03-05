@@ -46,6 +46,7 @@ function Service(url, options, client)
 
 	this.call = function(method, args, cb)
 	{
+		if (cb) cb = _.once(cb);
 		q.push({ }, function() {
 			if (methods.indexOf(method) == -1) return cb(true);
 			self.client.request(method, args, function(err, error, res) { cb(false, err, error, res) });
