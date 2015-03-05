@@ -31,7 +31,9 @@ function Service(url, options, client)
 		if (initialized) return done();
 
 		self.client.request("meta", [], function(err, error, res) {
-			if (err || error) console.error(err, error);
+			if (err) { console.error(err); return done(); }
+			
+			if (error) console.error(error);
 			initialized = true;
 			if (res && res.methods) methods = methods.concat(res.methods);
 			// TODO: error handling, retry, auth, etc.
