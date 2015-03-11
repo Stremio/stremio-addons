@@ -81,7 +81,7 @@ function Stremio(options)
 				// err, error are respectively HTTP error / Jayson error; we need to implement fallback based on that (do a skip)
 				if (skip || err) return next(); // Go to the next service
 
-				cb(error, res);
+				cb(error, res, service);
 				next(1); // Stop
 			});
 		}, function(err) {
