@@ -13,7 +13,8 @@ function bindDefaults(call) {
 			get: call.bind(null, "index.get")
 		},
 		stream: {
-			get: call.bind(null, "stream.get")
+			get: call.bind(null, "stream.get"),
+			find: call.bind(null, "stream.find")
 		}		
 	}
 };
