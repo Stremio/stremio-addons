@@ -26,7 +26,8 @@ function Service(url, options, client)
 	this.client = client(url+module.parent.STREMIO_PATH);
 	this.url = url;
 	this.priority = options.priority || 0;
-	this.initialized = false
+	this.initialized = false;
+	this.manifest = { };
 
 	var methods = [];
 	var q = async.queue(function(task, done) {
@@ -38,6 +39,7 @@ function Service(url, options, client)
 			if (error) console.error(error);
 			self.initialized = true;
 			if (res && res.methods) methods = methods.concat(res.methods);
+			if (res && res.manifest) self.manifest = res.manifest;
 			// TODO: error handling, retry, auth, etc.
 			done();
 		});
