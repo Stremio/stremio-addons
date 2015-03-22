@@ -82,7 +82,12 @@ function Stremio(options)
 	this.removeAllServices = function() {
 		services = { };
 	};
-
+	
+	// Listing
+	this.getServices = function() {
+		return _.values(services)	
+	};
+	
 	// Bind methods
 	function call(method, args, cb) {
 		var s = _.values(services).sort(function(a,b) { return (b.initialized - a.initialized) || (a.priority - b.priority) });
