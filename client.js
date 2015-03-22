@@ -72,6 +72,14 @@ function Stremio(options)
 		if (services[url]) return;
 		services[url] = new Service(url, opts || {}, options.client || jayson.client.http);
 	};
+	
+	// Removing
+	this.removeService = function(url) {
+		delete services[url];	
+	};
+	this.removeAllServices = function() {
+		services = { };
+	};
 
 	// Bind methods
 	function call(method, args, cb) {
