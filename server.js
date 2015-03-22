@@ -11,7 +11,7 @@ function Server(methods, options, manifest)
 	function meta(cb) {
 		cb(null, {
 			methods: Object.keys(methods),
-			manifest: _.extend({ methods: Object.keys(methods) }, manifest || {});
+			manifest: _.extend({ methods: Object.keys(methods) }, manifest || {})
 		});
 	};
 
