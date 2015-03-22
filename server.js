@@ -6,11 +6,12 @@ var request = require("request");
 
 var SESSION_LIVE = 2*60*60*1000; // 2 hrs
 
-function Server(methods, options)
+function Server(methods, options, manifest)
 {	
 	function meta(cb) {
 		cb(null, {
-			methods: Object.keys(methods)
+			methods: Object.keys(methods),
+			manifest: _.extend({ methods: Object.keys(methods) }, manifest || {});
 		});
 	};
 
