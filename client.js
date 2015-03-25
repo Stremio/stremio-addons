@@ -120,7 +120,7 @@ function getTypes(services) {
 	services
 	.filter(function(x){ return (x.manifest.methods || []).indexOf("meta.find") != -1 })
 	.forEach(function(service) { 
-		if (service.manifest.types) service.manifest.types.forEach(function(t) { types[t] = 1 });
+		if (service.manifest.types) service.manifest.types.forEach(function(t) { types[t] = true });
 	});
 	
 	return types;
