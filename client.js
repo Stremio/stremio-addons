@@ -87,6 +87,16 @@ function Stremio(options)
 	this.getServices = function() {
 		return _.values(services)	
 	};
+	this.getTypes = function() {
+		var types = {};
+		this.getServices()
+		.filter(function(x){ return (x.manifest.methods || []).indexOf("meta.find") != -1 })
+		.forEach(function(service) { 
+			if (service.manifest.types) service.manifest.types.forEach(function(t) { types[t] = 1 });
+		});
+		
+		return types;
+	};
 	
 	// Bind methods
 	function call(method, args, cb) {
