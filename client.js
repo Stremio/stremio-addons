@@ -91,12 +91,12 @@ function Stremio(options)
 	
 	// Listing
 	this.getServices = function() {
-		return _.values(services)	
+		return _.values(services).sort(function(a,b) { return (b.initialized - a.initialized) || (a.priority - b.priority) });
 	};
 
 	// Bind methods
 	function call(method, args, cb) {
-		var s = _.values(services).sort(function(a,b) { return (b.initialized - a.initialized) || (a.priority - b.priority) });
+		var s = self.getServices();
 		if (options.picker) s = options.picker(s);
 		async.eachSeries(s, function(service, next) {
 			service.call(method, [auth, args], function(skip, err, error, res) {
