@@ -19,7 +19,7 @@ function bindDefaults(call) {
 	}
 };
 
-function Service(url, options, client)
+function Service(url, options, client, ready)
 {
 	var self = this;
 
@@ -41,6 +41,7 @@ function Service(url, options, client)
 			if (res && res.methods) methods = methods.concat(res.methods);
 			if (res && res.manifest) self.manifest = res.manifest;
 			// TODO: error handling, retry, auth, etc.
+			if (ready) ready();
 			done();
 		});
 	}, 1);
@@ -59,6 +60,9 @@ function Service(url, options, client)
 
 function Stremio(options)
 {
+	var self = this;
+	this.supportedTypes = {};
+	
 	options = options || {};
 
 	var auth;
@@ -72,7 +76,9 @@ function Stremio(options)
 	// Adding services
 	this.addService = function(url, opts) {
 		if (services[url]) return;
-		services[url] = new Service(url, opts || {}, options.client || jayson.client.http);
+		services[url] = new Service(url, opts || {}, options.client || jayson.client.http, function() { 
+			self.supportedTypes = getTypes(self.getServices());
+		});
 	};
 	
 	// Removing
@@ -87,17 +93,7 @@ function Stremio(options)
 	this.getServices = function() {
 		return _.values(services)	
 	};
-	this.getTypes = function() {
-		var types = {};
-		this.getServices()
-		.filter(function(x){ return (x.manifest.methods || []).indexOf("meta.find") != -1 })
-		.forEach(function(service) { 
-			if (service.manifest.types) service.manifest.types.forEach(function(t) { types[t] = 1 });
-		});
-		
-		return types;
-	};
-	
+
 	// Bind methods
 	function call(method, args, cb) {
 		var s = _.values(services).sort(function(a,b) { return (b.initialized - a.initialized) || (a.priority - b.priority) });
@@ -118,4 +114,16 @@ function Stremio(options)
 	this.call = call;
 };
 
+// Utility to get supported types for this client
+function getTypes(services) {
+	var types = {};
+	services
+	.filter(function(x){ return (x.manifest.methods || []).indexOf("meta.find") != -1 })
+	.forEach(function(service) { 
+		if (service.manifest.types) service.manifest.types.forEach(function(t) { types[t] = 1 });
+	});
+	
+	return types;
+};
+	
 module.exports = Stremio;
