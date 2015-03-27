@@ -28,8 +28,8 @@ function Service(url, options, client, ready)
 	this.priority = options.priority || 0;
 	this.initialized = false;
 	this.manifest = { };
+	this.methods = [];
 
-	var methods = [];
 	var q = async.queue(function(task, done) {
 		if (self.initialized) return done();
 
@@ -38,7 +38,7 @@ function Service(url, options, client, ready)
 			
 			if (error) console.error(error);
 			self.initialized = true;
-			if (res && res.methods) methods = methods.concat(res.methods);
+			if (res && res.methods) self.methods = self.methods.concat(res.methods);
 			if (res && res.manifest) self.manifest = res.manifest;
 			// TODO: error handling, retry, auth, etc.
 			if (ready) ready();
@@ -52,7 +52,6 @@ function Service(url, options, client, ready)
 	{
 		if (cb) cb = _.once(cb);
 		q.push({ }, function() {
-			if (methods.indexOf(method) == -1) return cb(true);
 			self.client.request(method, args, function(err, error, res) { cb(false, err, error, res) });
 		});
 	};
@@ -107,7 +106,7 @@ function Stremio(options)
 				next(1); // Stop
 			});
 		}, function(err) {
-			if (err !== 1) cb(new Error("no service that supplies this method"));
+			if (err !== 1) cb(new Error("no service supplies this method"));
 		});
 	};
 	_.extend(this, bindDefaults(call))
@@ -118,7 +117,7 @@ function Stremio(options)
 function getTypes(services) {
 	var types = {};
 	services
-	.filter(function(x){ return (x.manifest.methods || []).indexOf("meta.find") != -1 })
+	.filter(function(x){ return (x.methods || []).indexOf("meta.find") != -1 })
 	.forEach(function(service) { 
 		if (service.manifest.types) service.manifest.types.forEach(function(t) { types[t] = true });
 	});

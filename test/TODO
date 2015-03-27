@@ -4,6 +4,8 @@ Client
 > we are able to call a service
 > handshake / auth
 > service priorities
+> "no service supplies this method" error
+> "no service accepts these parameters" error
 > handles errors
 
 Server
