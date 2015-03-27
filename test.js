@@ -24,10 +24,10 @@ http.createServer(function (req, res) {
 	var s = new services.Client({ picker: function(services) { return services } });
 	s.addService("http://localhost:3009");
 	s.setAuth(central, "51af8b26c364cb44d6e8b7b517ce06e39caf036a");
-	s.call("meta.get", { id: 1 }, function(err, res)
+	s.call("meta.get", { query: { id: 1 } }, function(err, res)
 	{
 		console.log(err,res);
-		s.call("meta.get", { id: 1 }, function(err, res)
+		s.call("meta.get", { query: { id: 1 } }, function(err, res)
 		{
 			console.log(err,res);
 		});

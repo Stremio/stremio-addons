@@ -76,7 +76,7 @@ function Service(url, options, client, ready)
 		if (cb) cb = _.once(cb);
 		q.push({ }, function() {
 			if (self.methods.indexOf(method) == -1) return cb(true);
-			if (self.manifest.filter && !checkArgs(args[1], self.manifest.filter)) return cb(true);  		
+			if (self.manifest.filter && args[1].query && !checkArgs(args[1].query, self.manifest.filter)) return cb(true);  		
 			self.client.request(method, args, function(err, error, res) { cb(false, err, error, res) });
 		});
 	};
