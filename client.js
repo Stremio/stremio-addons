@@ -19,6 +19,29 @@ function bindDefaults(call) {
 	}
 };
 
+// Check arguments against the service's filter
+// TODO: unit test this
+function checkArgs(args, filter)
+{
+	if (_.isEmpty(filter)) return true;
+
+	return _.some(filter, function(val, key) {
+		if (val.$exists) return args.hasOwnProperty(key) == val.$exists;
+		if (val.$in) return _.intersection(Array.isArray(args[key]) ? args[key] : [args[key]], val.$in).length;
+	});
+};
+// TODO: unit test this properly
+/*
+var f = { id: { $exists: true }, type: { $in: ["foo", "bar"] } };
+console.log(checkArgs({ id: 2 }, f) === true);
+console.log(checkArgs({ type: "foo" }, f) === true);
+console.log(checkArgs({ type: "bar" }, f) === true);
+console.log(checkArgs({ type: ["bar"] }, f) === true);
+console.log(checkArgs({ type: "somethingelse" }, f) === false);
+console.log(checkArgs({ }, f) === false);
+console.log(checkArgs({ idx: 5 }, f) === false);
+*/
+
 function Service(url, options, client, ready)
 {
 	var self = this;
@@ -52,7 +75,8 @@ function Service(url, options, client, ready)
 	{
 		if (cb) cb = _.once(cb);
 		q.push({ }, function() {
-			if (self.methods.indexOf(method) == -1) return cb(true);			
+			if (self.methods.indexOf(method) == -1) return cb(true);
+			if (self.manifest.filter && !checkArgs(args[1], self.manifest.filter)) return cb(true);  		
 			self.client.request(method, args, function(err, error, res) { cb(false, err, error, res) });
 		});
 	};
@@ -126,5 +150,5 @@ function getTypes(services) {
 	
 	return types;
 };
-	
+
 module.exports = Stremio;
