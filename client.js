@@ -52,6 +52,7 @@ function Service(url, options, client, ready)
 	{
 		if (cb) cb = _.once(cb);
 		q.push({ }, function() {
+			if (self.methods.indexOf(method) == -1) return cb(true);			
 			self.client.request(method, args, function(err, error, res) { cb(false, err, error, res) });
 		});
 	};
@@ -76,7 +77,7 @@ function Stremio(options)
 	this.addService = function(url, opts) {
 		if (services[url]) return;
 		services[url] = new Service(url, opts || {}, options.client || jayson.client.http, function() { 
-			self.supportedTypes = getTypes(self.getServices());
+			self.supportedTypes = getTypes(self.getServices("meta.find"));
 		});
 	};
 	
@@ -89,8 +90,10 @@ function Stremio(options)
 	};
 	
 	// Listing
-	this.getServices = function() {
-		return _.values(services).sort(function(a,b) { return (b.initialized - a.initialized) || (a.priority - b.priority) });
+	this.getServices = function(forMethod) {
+		var res = _.values(services).sort(function(a,b) { return (b.initialized - a.initialized) || (a.priority - b.priority) });
+		if (forMethod) res = res.filter(function(x){ return (x.methods || []).indexOf(forMethod) != -1 });
+		return res;
 	};
 
 	// Bind methods
@@ -106,7 +109,7 @@ function Stremio(options)
 				next(1); // Stop
 			});
 		}, function(err) {
-			if (err !== 1) cb(new Error("no service supplies this method"));
+			if (err !== 1) cb(new Error(self.getServices(method).length ? "no service supports these arguments" : "no service supplies this method"));
 		});
 	};
 	_.extend(this, bindDefaults(call))
@@ -117,7 +120,6 @@ function Stremio(options)
 function getTypes(services) {
 	var types = {};
 	services
-	.filter(function(x){ return (x.methods || []).indexOf("meta.find") != -1 })
 	.forEach(function(service) { 
 		if (service.manifest.types) service.manifest.types.forEach(function(t) { types[t] = true });
 	});
