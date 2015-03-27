@@ -26,6 +26,7 @@ function checkArgs(args, filter)
 {
 	if (_.isEmpty(filter)) return true;
 
+	var args = (args.items && args.items[0]) || args; // if many requests are batched
 	return _.some(filter, function(val, key) {
 		var v = mpath.get(key, args);
 		if (val.$exists) return (v !== undefined) == val.$exists;
