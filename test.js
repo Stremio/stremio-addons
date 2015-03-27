@@ -10,7 +10,7 @@ var server = new services.Server({
 		return cb(null, { now: Date.now() });
 	}
 }, { allow: central, secret: "51af8b26c364cb44d6e8b7b517ce06e39caf036a" }, { 
- filter: { id: { $exists: true }, types: { $in: [ "foo", "bar" ] } }
+ filter: { "query.id": { $exists: true }, "query.types": { $in: [ "foo", "bar" ] } }
 });
 
 var http = require("http");

@@ -1,6 +1,7 @@
 var _ = require("lodash");
 var async = require("async");
 var jayson = require("jayson");
+var mpath = require("mpath");
 
 function bindDefaults(call) {
 	return {
@@ -26,20 +27,22 @@ function checkArgs(args, filter)
 	if (_.isEmpty(filter)) return true;
 
 	return _.some(filter, function(val, key) {
-		if (val.$exists) return args.hasOwnProperty(key) == val.$exists;
-		if (val.$in) return _.intersection(Array.isArray(args[key]) ? args[key] : [args[key]], val.$in).length;
+		var v = mpath.get(key, args);
+		if (val.$exists) return (v !== undefined) == val.$exists;
+		if (val.$in) return _.intersection(Array.isArray(v) ? v : [v], val.$in).length;
 	});
 };
 // TODO: unit test this properly
 /*
-var f = { id: { $exists: true }, type: { $in: ["foo", "bar"] } };
-console.log(checkArgs({ id: 2 }, f) === true);
-console.log(checkArgs({ type: "foo" }, f) === true);
-console.log(checkArgs({ type: "bar" }, f) === true);
-console.log(checkArgs({ type: ["bar"] }, f) === true);
-console.log(checkArgs({ type: "somethingelse" }, f) === false);
-console.log(checkArgs({ }, f) === false);
-console.log(checkArgs({ idx: 5 }, f) === false);
+var f = { "query.id": { $exists: true }, "query.type": { $in: ["foo", "bar"] }, toplevel: { $exists: true } };
+console.log(checkArgs({ toplevel: 5 }, f) === true);
+console.log(checkArgs({ query: { id: 2 } }, f) === true);
+console.log(checkArgs({ query: { type: "foo" } }, f) === true);
+console.log(checkArgs({ query: { type: "bar" } }, f) === true);
+console.log(checkArgs({ query: { type: ["bar"] } }, f) === true);
+console.log(checkArgs({query: { type: "somethingelse" } }, f) === false);
+console.log(checkArgs({ query: {} }, f) === false);
+console.log(checkArgs({ query: { idx: 5 } } , f) === false);
 */
 
 function Service(url, options, client, ready)
@@ -76,7 +79,7 @@ function Service(url, options, client, ready)
 		if (cb) cb = _.once(cb);
 		q.push({ }, function() {
 			if (self.methods.indexOf(method) == -1) return cb(true);
-			if (self.manifest.filter && args[1].query && !checkArgs(args[1].query, self.manifest.filter)) return cb(true);  		
+			if (self.manifest.filter && !checkArgs(args[1], self.manifest.filter)) return cb(true);  		
 			self.client.request(method, args, function(err, error, res) { cb(false, err, error, res) });
 		});
 	};
