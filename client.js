@@ -100,6 +100,7 @@ function Stremio(options)
 	this.setAuth = function(url, token) {
 		auth = [url, token];
 	};
+	this.getAuth = function() { return auth };
 
 	// Adding services
 	this.addService = function(url, opts) {
