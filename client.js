@@ -75,13 +75,13 @@ function Service(url, options, client, ready)
 
 	q.push({ }, function() { }); // Start initialization now
 
-	this.call = function(method, args, cb)
+	this.call = function(method, args, cb, noFilter)
 	{
 		if (cb) cb = _.once(cb);
 		q.push({ }, function() {
-			if (self.methods.indexOf(method) == -1) return cb(true);
-			if (self.manifest.filter && !checkArgs(args[1], self.manifest.filter)) return cb(true);  		
-			self.client.request(method, args, function(err, error, res) { cb(false, err, error, res) });
+			if (self.methods.indexOf(method) == -1) return cb(1);
+			if (!noFilter && self.manifest.filter && !checkArgs(args[1], self.manifest.filter)) return cb(2);  		
+			self.client.request(method, args, function(err, error, res) { cb(0, err, error, res) });
 		});
 	};
 };
@@ -128,14 +128,21 @@ function Stremio(options)
 	function call(method, args, cb) {
 		var s = self.getServices();
 		if (options.picker) s = options.picker(s);
-		async.eachSeries(s, function(service, next) {
+
+		var tried = { }; // Services for which we won't use args filter because we're retrying them
+
+		async.forever(function(next) {
+			var service = s.shift();
+			if (! service) next(true); // end the loop
+
 			service.call(method, [auth, args], function(skip, err, error, res) {
 				// err, error are respectively HTTP error / Jayson error; we need to implement fallback based on that (do a skip)
+				if (skip == 2) { tried[service.url] = true; s.push(service); } // re-try the service if skip===2 (skipped due to args filter)
 				if (skip || err) return next(); // Go to the next service
 
 				cb(error, res, service);
 				next(1); // Stop
-			});
+			}, tried[service.url]); // If we try it a second time, don't care about the args filter
 		}, function(err) {
 			if (err !== 1) cb(new Error(self.getServices(method).length ? "no service supports these arguments" : "no service supplies this method"));
 		});
