@@ -134,7 +134,7 @@ function Stremio(options)
 
 		async.forever(function(next) {
 			var service = s.shift();
-			if (! service) next(true); // end the loop
+			if (! service) return next(true); // end the loop
 
 			service.call(method, [auth, args], function(skip, err, error, res) {
 				// err, error are respectively HTTP error / Jayson error; we need to implement fallback based on that (do a skip)
