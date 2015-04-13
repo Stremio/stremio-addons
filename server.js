@@ -65,6 +65,7 @@ function Server(methods, options, manifest)
 			headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept";
 			res.writeHead(200, headers);
 			res.end();
+			return;
 		};
 		res.setHeader("Access-Control-Allow-Origin", "*");
 		listener(req, res);
