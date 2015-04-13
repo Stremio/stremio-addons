@@ -49,7 +49,7 @@ function Service(url, options, client, ready)
 {
 	var self = this;
 
-	this.client = client(url+module.parent.STREMIO_PATH);
+	this.client = client(url+(module.parent ? module.parent.STREMIO_PATH : "/stremio/v1") );
 	this.url = url;
 	this.priority = options.priority || 0;
 	this.initialized = false;
