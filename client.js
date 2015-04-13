@@ -1,6 +1,5 @@
 var _ = require("lodash");
 var async = require("async");
-var jayson = require("jayson");
 var mpath = require("mpath");
 
 function bindDefaults(call) {
@@ -105,7 +104,7 @@ function Stremio(options)
 	// Adding services
 	this.addService = function(url, opts) {
 		if (services[url]) return;
-		services[url] = new Service(url, opts || {}, options.client || jayson.client.http, function() { 
+		services[url] = new Service(url, opts || {}, options.client || require("jayson").client.http, function() { 
 			self.supportedTypes = getTypes(self.getServices("meta.find"));
 		});
 	};
