@@ -66,7 +66,7 @@ function Server(methods, options, manifest)
 			res.writeHead(200, headers);
 			res.end();
 		};
-		res.header("Access-Control-Allow-Origin", "*");
+		res.setHeader("Access-Control-Allow-Origin", "*");
 		listener(req, res);
 	};
 };
