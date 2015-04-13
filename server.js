@@ -1,5 +1,3 @@
-var jayson = require("jayson");
-var jaysonUtils = require("jayson/lib/utils");
 var _ = require("lodash");
 var url = require("url");
 var request = require("request");
@@ -8,6 +6,9 @@ var SESSION_LIVE = 2*60*60*1000; // 2 hrs
 
 function Server(methods, options, manifest)
 {	
+	var jayson = require("jayson");
+	var jaysonUtils = require("jayson/lib/utils");
+
 	function meta(cb) {
 		cb(null, {
 			methods: Object.keys(methods),
