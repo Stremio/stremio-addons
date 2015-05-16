@@ -121,7 +121,7 @@ function Stremio(options)
 	this.getServices = function(forMethod, all) {
 		var res = _.values(services).sort(function(a,b) { return (b.initialized - a.initialized) || (a.priority - b.priority) });
 		if (forMethod) res = res.filter(function(x){ return (x.methods || []).indexOf(forMethod) != -1 });
-		if (forMethod && options.picker) s = options.picker(s, forMethod); // apply the picker for a method
+		if (forMethod && options.picker) res = options.picker(res, forMethod); // apply the picker for a method
 		return res;
 	};
 
