@@ -88,8 +88,11 @@ function Service(url, options, client, ready)
 function Stremio(options)
 {
 	var self = this;
-	this.supportedTypes = {};
 	
+	Object.defineProperty(self, "supportedTypes", { enumerable: true, get: function() { 
+		return getTypes(self.getServices("meta.find"));
+	} });
+
 	options = options || {};
 
 	var auth;
@@ -105,7 +108,7 @@ function Stremio(options)
 	this.addService = function(url, opts) {
 		if (services[url]) return;
 		services[url] = new Service(url, opts || {}, options.client || require("jayson").client.http, function() { 
-			self.supportedTypes = getTypes(self.getServices("meta.find"));
+			// callback for ready service
 		});
 	};
 	
