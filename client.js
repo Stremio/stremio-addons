@@ -8,6 +8,7 @@ function bindDefaults(call) {
 			get: call.bind(null, "meta.get"),
 			find: call.bind(null, "meta.find"),
 			search: call.bind(null, "meta.search")
+			// we also have meta.submit
 		},
 		index: { 
 			get: call.bind(null, "index.get")
@@ -15,7 +16,10 @@ function bindDefaults(call) {
 		stream: {
 			get: call.bind(null, "stream.get"),
 			find: call.bind(null, "stream.find")
-		}		
+		},
+		subtitles: {
+			get: call.bind(null, "subtitles.get")
+		}
 	}
 };
 
