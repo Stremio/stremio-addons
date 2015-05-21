@@ -1,6 +1,8 @@
 var _ = require("lodash");
 var async = require("async");
 var mpath = require("mpath");
+var util = require("util");
+var EventEmitter = require("events").EventEmitter;
 
 function bindDefaults(call) {
 	return {
@@ -128,14 +130,14 @@ function Stremio(options)
 	this.getServices = function(forMethod, all) {
 		var res = _.values(services).sort(function(a,b) { return (b.initialized - a.initialized) || (a.priority - b.priority) });
 		if (forMethod) res = res.filter(function(x){ return (x.methods || []).indexOf(forMethod) != -1 });
-		if (forMethod && options.picker) res = options.picker(res, forMethod); // apply the picker for a method
+		if (forMethod) res = picker(res, forMethod); // apply the picker for a method
 		return res;
 	};
 
 	// Bind methods
 	function call(method, args, cb) {
 		var s = self.getServices();
-		if (options.picker) s = options.picker(s, method);
+		s = picker(s, method);
 
 		var tried = { }; // Services for which we won't use args filter because we're retrying them
 
@@ -157,7 +159,15 @@ function Stremio(options)
 	};
 	_.extend(this, bindDefaults(call))
 	this.call = call;
+
+	function picker(s,method) {
+		var params = { services: s, method: method };
+		if (options.picker) params.services = options.picker(params.services, params.method);
+		self.emit("pick", params);
+		return params.services;
+	}
 };
+util.inherits(Stremio, EventEmitter);
 
 // Utility to get supported types for this client
 function getTypes(services) {

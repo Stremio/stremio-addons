@@ -7,6 +7,8 @@ Client
 > "no service supplies this method" error
 > "no service accepts these parameters" error
 > handles errors
+> getServices
+> events
 
 Server
 > exports methods
