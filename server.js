@@ -8,6 +8,10 @@ function Server(methods, options, manifest)
 {	
 	var jayson = require("jayson");
 	var jaysonUtils = require("jayson/lib/utils");
+	
+	Object.keys(methods).forEach(function(key) {
+		if (typeof(methods[key]) != "function") throw Error(key+" should be a function");
+	});
 
 	function meta(cb) {
 		cb(null, {
