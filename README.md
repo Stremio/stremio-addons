@@ -12,6 +12,15 @@ stremio.setAuth(url, authKey); // Set the authentication for services that requi
 stremio.addService(URL, { priority: 0 }); // Priority is an integer, zero is the highest priority
 
 stremio.meta.get(args,cb); /* OR */ stremio.call("meta.get", args, cb);
+
+// Events / hooks
+stremio.on("pick", function(params) { 
+	// called when picking services
+	// params.services - all services; you can modify this. e.g. params.services = params.services.filter(...)
+	// params.method - the method we're picking for
+	
+	// this can be used instead of picker
+});
 ```
 
 
