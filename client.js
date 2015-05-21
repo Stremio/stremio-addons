@@ -89,6 +89,10 @@ function Service(url, options, client, ready)
 			self.client.request(method, args, function(err, error, res) { cb(0, err, error, res) });
 		});
 	};
+
+	this.identifier = function() {
+		return (self.manifest && self.manifest.id) || self.url
+	};
 };
 
 function Stremio(options)
