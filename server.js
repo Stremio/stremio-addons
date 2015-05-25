@@ -49,6 +49,7 @@ function Server(methods, options, manifest)
 			if (! auth) return callback({ message: "auth not specified", code: 1 });
 
 			checkSession(auth, function(err, session) {
+				if (err && methods[method].noauth) return methods[method](args,callback,{ noauth: true }); // the function is allowed without auth
 				if (err) return callback(err);
 				methods[method](args, callback, session);
 			});
