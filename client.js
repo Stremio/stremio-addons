@@ -119,6 +119,7 @@ function Stremio(options)
 		if (services[url]) return;
 		services[url] = new Service(url, opts || {}, options.client || require("jayson").client.http, function() { 
 			// callback for ready service
+			self.emit("service-ready", services[url]);
 		});
 	};
 	
