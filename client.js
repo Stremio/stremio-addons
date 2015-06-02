@@ -4,6 +4,9 @@ var mpath = require("mpath");
 var util = require("util");
 var EventEmitter = require("events").EventEmitter;
 
+var MAX_RETRIES = 3;
+var SERVICE_RETRY_TIMEOUT = 30*1000;
+
 function bindDefaults(call) {
 	return {
 		meta: {
@@ -61,14 +64,18 @@ function Service(url, options, client, ready)
 	this.initialized = false;
 	this.manifest = { };
 	this.methods = [];
+	this.retries = 0;
 
 	var q = async.queue(function(task, done) {
 		if (self.initialized) return done();
 
 		self.client.request("meta", [], function(err, error, res) {
-			if (err) { console.error(err); return done(); }
+			if (err) { console.error(err); return done(); } // network error. just ignore
 			
-			if (error) console.error(error);
+			if (error) { 
+				console.error(error); 
+				if (self.retries++ < MAX_RETRIES) setTimeout(function() { self.initialized = false }, SERVICE_RETRY_TIMEOUT); 
+			} // service error. mark initialized, can re-try after 30 sec
 			self.initialized = true;
 			if (res && res.methods) self.methods = self.methods.concat(res.methods);
 			if (res && res.manifest) self.manifest = res.manifest;
