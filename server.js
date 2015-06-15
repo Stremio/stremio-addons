@@ -1,6 +1,6 @@
 var _ = require("lodash");
 var url = require("url");
-var request = require("request");
+var needle = require("needle");
 
 var SESSION_LIVE = 2*60*60*1000; // 2 hrs
 
@@ -27,16 +27,16 @@ function Server(methods, options, manifest)
 
 		if (sessions[auth[1]]) return cb(null, sessions[auth[1]]);
 
-		request({ json: true, url: auth[0]+"/stremio/service/"+options.secret+"/"+encodeURIComponent(auth[1]) }, function(err, resp, body) {
+		needle.get(auth[0]+"/stremio/service/"+options.secret+"/"+encodeURIComponent(auth[1]), function(err, resp) {
 			if (err) return cb({ message: "failed to connect to center", code: 5 });
 			if (resp.statusCode==200) {
-				sessions[auth[1]] = body;
+				sessions[auth[1]] = resp.body;
 				setTimeout(function() { delete sessions[auth[1]] }, SESSION_LIVE);
-				return cb(null, body);
+				return cb(null, resp.body);
 			};
 
-			if (!body.message) console.error("auth server returned",body);
-			return cb(body.message ? body : { message: "unknown error reaching auth server", code: 8 }); // error
+			if (!resp.body.message) console.error("auth server returned",resp.body);
+			return cb(resp.body.message ? resp.body : { message: "unknown error reaching auth server", code: 8 }); // error
 		})
 	};
 

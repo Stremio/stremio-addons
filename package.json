@@ -7,7 +7,7 @@
     "jayson": "1.1.x",
     "lodash": "3.3.x",
     "async": "0.9.x",
-    "request": "2.21.0",
+    "needle": "0.9.x",
     "mpath": "0.2.x"
   },
   "scripts": {
