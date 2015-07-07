@@ -1,3 +1,9 @@
+stremio-service
+================
+An Add-ons system that works like an RPC system, however it allows to chain multiple Addons for an end-point and it automatically selects which addon to handle the call, depending on the arguments and the priority of addons.
+
+**NOTICE** addon and service are synonymous terms for this module - Stremio add-ons were originally called "services".
+
 Client
 ========
 ```javascript
