@@ -1,0 +1,5 @@
+This will create a LinvoDB3 model (using a linvodb-models module, which should split the model system out of LinvoDB) for all content types that should be returned by addon methods.
+
+meta.get / meta.find / meta.search - Metadata
+stream.get / stream.find / stream.candidates - Stream
+stats.get - Stats
