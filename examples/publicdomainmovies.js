@@ -1,6 +1,10 @@
 // this should be an add-on to http://www.publicdomaintorrents.info/nshowcat.html
 // only stream.* methods, since each one is in IMDB and will be provided by Cinemeta
 
+// this add-on does crawling of publicdomaintorrents.info and ranker.com and returns the data to Stremio
+
+// use http://www.ranker.com/crowdranked-list/free-movies-the-best-films-in-the-public-domain for ranking
+
 var services = require("../");
 
 var central = "http://api8.herokuapp.com";
