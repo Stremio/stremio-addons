@@ -2,7 +2,6 @@ var _ = require("lodash");
 var async = require("async");
 var mpath = require("mpath");
 var util = require("util");
-var EventEmitter = require("events").EventEmitter;
 
 var MAX_RETRIES = 3;
 var SERVICE_RETRY_TIMEOUT = 30*1000;
@@ -105,7 +104,7 @@ function Service(url, options, client, ready)
 function Stremio(options)
 {
 	var self = this;
-	EventEmitter.call(this);
+	require("events").EventEmitter.call(this);
 	
 	Object.defineProperty(self, "supportedTypes", { enumerable: true, get: function() { 
 		return getTypes(self.getServices("meta.find"));
@@ -180,7 +179,7 @@ function Stremio(options)
 		return params.services;
 	}
 };
-util.inherits(Stremio, EventEmitter);
+util.inherits(Stremio, require("events").EventEmitter);
 
 // Utility to get supported types for this client
 function getTypes(services) {
