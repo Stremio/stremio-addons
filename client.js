@@ -105,6 +105,7 @@ function Service(url, options, client, ready)
 function Stremio(options)
 {
 	var self = this;
+	EventEmitter.call(this);
 	
 	Object.defineProperty(self, "supportedTypes", { enumerable: true, get: function() { 
 		return getTypes(self.getServices("meta.find"));
