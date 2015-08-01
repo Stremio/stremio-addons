@@ -22,7 +22,6 @@ function Server(methods, options, manifest)
 
 	var sessions = { };
 	function checkSession(auth, cb) {
-		var id = auth[1];
 		if (options.allow && options.allow.indexOf(auth[0])==-1) return cb({ message: "not allowed to auth via that server", code: 2 });
 
 		if (sessions[auth[1]]) return cb(null, sessions[auth[1]]);
