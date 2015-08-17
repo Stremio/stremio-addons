@@ -53,7 +53,7 @@ console.log(checkArgs({ query: {} }, f) === false);
 console.log(checkArgs({ query: { idx: 5 } } , f) === false);
 */
 
-function Service(url, options, client, ready)
+function Addon(url, options, client, ready)
 {
 	var self = this;
 
@@ -107,7 +107,7 @@ function Stremio(options)
 	require("events").EventEmitter.call(this);
 	
 	Object.defineProperty(self, "supportedTypes", { enumerable: true, get: function() { 
-		return getTypes(self.getServices("meta.find"));
+		return getTypes(self.get("meta.find"));
 	} });
 
 	options = options || {};
@@ -122,24 +122,24 @@ function Stremio(options)
 	this.getAuth = function() { return auth };
 
 	// Adding services
-	this.addService = function(url, opts) {
+	this.add = function(url, opts) {
 		if (services[url]) return;
-		services[url] = new Service(url, opts || {}, options.client || require("jayson").client.http, function() { 
+		services[url] = new Addon(url, opts || {}, options.client || require("jayson").client.http, function() { 
 			// callback for ready service
-			self.emit("service-ready", services[url], url);
+			self.emit("addon-ready", services[url], url);
 		});
 	};
 	
 	// Removing
-	this.removeService = function(url) {
+	this.remove = function(url) {
 		delete services[url];	
 	};
-	this.removeAllServices = function() {
+	this.removeAll = function() {
 		services = { };
 	};
 	
 	// Listing
-	this.getServices = function(forMethod, all) {
+	this.get = function(forMethod, all) {
 		var res = _.values(services).sort(function(a,b) { return (b.initialized - a.initialized) || (a.priority - b.priority) });
 		if (forMethod) res = res.filter(function(x){ return (x.methods || []).indexOf(forMethod) != -1 });
 		if (forMethod) res = picker(res, forMethod); // apply the picker for a method
@@ -148,7 +148,7 @@ function Stremio(options)
 
 	// Bind methods
 	function call(method, args, cb) {
-		var s = self.getServices();
+		var s = self.get();
 		s = picker(s, method);
 
 		var tried = { }; // Services for which we won't use args filter because we're retrying them
@@ -166,17 +166,17 @@ function Stremio(options)
 				next(1); // Stop
 			}, tried[service.url]); // If we try it a second time, don't care about the args filter
 		}, function(err) {
-			if (err !== 1) cb(new Error(self.getServices(method).length ? "no service supports these arguments" : "no service supplies this method"));
+			if (err !== 1) cb(new Error(self.get(method).length ? "no addon supports these arguments" : "no addon supplies this method"));
 		});
 	};
 	_.extend(this, bindDefaults(call))
 	this.call = call;
 
 	function picker(s,method) {
-		var params = { services: s, method: method };
-		if (options.picker) params.services = options.picker(params.services, params.method);
+		var params = { addons: s, method: method };
+		if (options.picker) params.addons = options.picker(params.addons, params.method);
 		self.emit("pick", params);
-		return params.services;
+		return params.addons;
 	}
 };
 util.inherits(Stremio, require("events").EventEmitter);

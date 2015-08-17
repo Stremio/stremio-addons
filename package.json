@@ -1,7 +1,7 @@
 {
-  "name": "stremio-service",
+  "name": "stremio-addons",
   "version": "1.8.1",
-  "description": "Stremio Service framework",
+  "description": "Stremio Add-on Server / Client",
   "main": "index.js",
   "dependencies": {
     "jayson": "1.1.x",
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "http://github.com/Ivshti/stremio-service"
+    "url": "http://github.com/Stremio/stremio-addons"
   },
   "keywords": [
     "stremio"
@@ -23,7 +23,7 @@
   "author": "Ivo Georgiev",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Ivshti/stremio-service/issues"
+    "url": "https://github.com/Stremio/stremio-addons/issues"
   },
-  "homepage": "https://github.com/Ivshti/stremio-service"
+  "homepage": "https://github.com/Stremio/stremio-addons"
 }

@@ -1,10 +1,10 @@
-var services = require("./");
+var addons = require("./");
 
 //var central = "http://localhost:3008";
 var central = "http://api8.herokuapp.com";
 
 // SERVER
-var server = new services.Server({
+var server = new addons.Server({
 	"meta.get": function(args, cb, sess) {
 		console.log("received args -> ",args," from ", sess);
 		return cb(null, { now: Date.now() });
@@ -21,8 +21,8 @@ http.createServer(function (req, res) {
 	console.log("server listening...");
 
 	// CLIENT
-	var s = new services.Client({ picker: function(services) { console.log(services.length+" services"); return services } });
-	s.addService("http://localhost:3009");
+	var s = new addons.Client({ picker: function(addons) { console.log(addons.length+" addons"); return addons } });
+	s.add("http://localhost:3009");
 	s.setAuth(central, "51af8b26c364cb44d6e8b7b517ce06e39caf036a");
 	s.call("meta.get", { query: { id: 1 } }, function(err, res)
 	{
@@ -34,7 +34,7 @@ http.createServer(function (req, res) {
 	});
 
 	s.on("pick", function(params) {
-		console.log("pick emitted event with "+params.services.length+" services");
+		console.log("pick emitted event with "+params.addons.length+" addons");
 	})
 });
 
