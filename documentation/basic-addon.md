@@ -23,3 +23,4 @@ Here's a sample Add-on that will provide HTTP streams for Big Buck Bunny:
 
 ```
 
+You can see a real-world example of a Stremio Add-on here: https://github.com/Ivshti/multipass-torrent/blob/master/stremio-addon/addon.js
