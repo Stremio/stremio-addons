@@ -1,14 +1,12 @@
-stremio-addons
-================
+# stremio-addons
 An Add-ons system that works like an RPC system, however it allows to chain multiple Add-ons for an end-point and it automatically selects which addon to handle the call, depending on the arguments and the priority of add-ons.
 
-Provides
-------
+#### Provides
+
 * **Add-on server library**: what we use to initialize an HTTP server that provides a Stremio add-on.
 * **Add-on client library**: a client library to use one or more Stremio add-ons
 
-Client
-========
+## Client
 ```javascript
 var addons = require("stremio-addons");
 var stremio = new addons.Client({ /* options; picker: function(addons) { return addons } */ });
@@ -33,8 +31,7 @@ stremio.on("pick", function(params) {
 ```
 
 
-Server
-=======
+## Server
 ```javascript
 var addons = require("stremio-addons");
 new addons.Server({
@@ -45,8 +42,7 @@ new addons.Server({
 
 ```
 
-Authentication
-==============
+## Authentication
 To authenticate when using Stremio Addons as a client, one must call
 ```javascript
 client.setAuth(/* CENTRAL SERVER */, /* USER SESSION TOKEN (authToken) OR ADDON SECRET */);
