@@ -8,11 +8,17 @@ function Server(methods, options, manifest)
 {	
 	var jayson = require("jayson");
 	var jaysonUtils = require("jayson/lib/utils");
+
+	_.extend({ 
+		allow: [ "http://api8.herokuapp.com" ], // default stremio central
+		secret: "8417fe936f0374fbd16a699668e8f3c4aa405d9f" // default secret for testing add-ons
+	}, options);
 	
 	Object.keys(methods).forEach(function(key) {
 		if (typeof(methods[key]) != "function") throw Error(key+" should be a function");
 	});
 
+	// Introspect the addon
 	function meta(cb) {
 		cb(null, {
 			methods: Object.keys(methods),

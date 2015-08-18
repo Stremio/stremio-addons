@@ -1,5 +1,5 @@
 # stremio-addons
-An Add-ons system that works like an RPC system, however it allows to chain multiple Add-ons for an end-point and it automatically selects which addon to handle the call, depending on the arguments and the priority of add-ons.
+An Add-ons system that works like an RPC system, however it allows to **chain multiple Add-ons** and it automatically selects which addon to handle the call, depending on the arguments and the priority of add-ons (e.g. get a stream). You can also issue calls to all Add-ons and aggregate results (e.g. search metadata).
 
 #### Provides
 
@@ -38,7 +38,7 @@ new addons.Server({
 	"meta.get": function(args, cb) {
 		// this.user -> get info about the user
 	},
-}, { allow: ["api.linvo.me"], secret: "SOME SECRET" });
+}, { secret: "SOME SECRET - or leave undefined for test secret" });
 
 ```
 
