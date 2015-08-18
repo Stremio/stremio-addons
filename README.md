@@ -2,6 +2,10 @@ stremio-addons
 ================
 An Add-ons system that works like an RPC system, however it allows to chain multiple Add-ons for an end-point and it automatically selects which addon to handle the call, depending on the arguments and the priority of add-ons.
 
+Provides
+------
+* **Add-on server library**: what we use to initialize an HTTP server that provides a Stremio add-on.
+* **Add-on client library**: a client library to use one or more Stremio add-ons
 
 Client
 ========
@@ -41,8 +45,13 @@ new addons.Server({
 
 ```
 
-Secret & authToken
+Authentication
 ==============
-The authToken is a session ID we use for addon clients to identify the user. It's the addon' job (implemented in server.js) to evaluate if we're getting requests from a logged-in users. That happens by asking the central server if that authToken is valid.
+To authenticate when using Stremio Addons as a client, one must call
+```javascript
+client.setAuth(/* CENTRAL SERVER */, /* USER SESSION TOKEN (authToken) OR ADDON SECRET */);
+```
 
-The secret is a token that is used to get the central server (regulating) to authorize on the user's session. We can also use the secret as an auth token for clients with .setAuth() in order to get a special session to get addons to use each other.
+**The authToken** is a session ID we use for addon clients to identify the user. The Addon Server (implemented in server.js) is responsible for evaluating if we're getting requests from a logged-in users. That happens by asking the **central server** if that authToken is valid and belongs to a user. 
+
+**The secret** is a token, issued by a central server that we use to identify our Add-on server to the central server. We can also use our secret to identify ourselves to other Add-ons, if using them as a client - if our Add-on uses other Stremio add-ons under the hood (through the client library).
