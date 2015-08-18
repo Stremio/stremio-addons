@@ -19,7 +19,9 @@ function initServer(methods, callback) {
 	return server;
 }
 
-tape("initialize server, basic call, test events", function(t) {
+tape("initialize server, basic call", function(t) {
+	t.timeoutAfter(2000);
+
 	var received = false;
 
 	initServer({ 
@@ -53,6 +55,37 @@ tape("initialize server, basic call, test events", function(t) {
 	});
 
 });
+
+
+tape("test events", function(t) {
+	t.timeoutAfter(2000);
+
+	initServer({ 
+		"meta.get": function(args, cb, sess) {
+			return cb(null, { now: Date.now() });
+		}
+	},
+	function(url) {
+		var s = new addons.Client({ picker: function(addons) { t.ok("picker called with 1 addon", addons.length==1); return addons } });
+		
+		var ready, picker;
+		s.on("addon-ready", function(addon) { ready = addon });
+		s.on("pick", function(params) { picker = params });
+
+		s.add(url);
+		s.setAuth(null, TEST_SECRET);
+		s.call("meta.get", { query: { id: 1 } }, function(err, res)
+		{
+			t.ok(!err, "no err on call");
+			t.ok(ready && ready.url && ready.url == url, "addon-ready was called with proper url");
+			t.ok(picker && picker.addons && picker.addons.length == 1 && picker.method == "meta.get", "pick was called with 1 addon");
+			t.ok(!isNaN(res.now), "we have returned timestamp");
+			t.end();
+		});
+	});
+
+});
+
 
 /* 
 tape("picking an add-on depending on filter")

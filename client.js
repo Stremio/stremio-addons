@@ -172,11 +172,11 @@ function Stremio(options)
 	_.extend(this, bindDefaults(call))
 	this.call = call;
 
-	function picker(s,method) {
+	function picker(s, method) {
 		var params = { addons: s, method: method };
 		if (options.picker) params.addons = options.picker(params.addons, params.method);
 		self.emit("pick", params);
-		return params.addons;
+		return [].concat(params.addons);
 	}
 };
 util.inherits(Stremio, require("events").EventEmitter);
