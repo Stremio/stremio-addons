@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Stremio Add-ons by Stremio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Stremio Add-ons</h1>
+      <h2 class="project-tagline">Add-ons system for Stremio - server + client</h2>
+      <a href="https://github.com/Stremio/stremio-addons" class="btn">View on GitHub</a>
+      <a href="https://github.com/Stremio/stremio-addons/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/Stremio/stremio-addons/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="stremio-addons" class="anchor" href="#stremio-addons" aria-hidden="true"><span class="octicon octicon-link"></span></a>stremio-addons</h1>
+
+<p>An Add-ons system that works like an RPC system, however it allows to <strong>chain multiple Add-ons</strong> and it automatically selects which addon to handle the call, depending on the arguments and the priority of add-ons (e.g. get a stream). You can also issue calls to all Add-ons and aggregate results (e.g. search metadata).</p>
+
+<h4>
+<a id="provides" class="anchor" href="#provides" aria-hidden="true"><span class="octicon octicon-link"></span></a>Provides</h4>
+
+<ul>
+<li>
+<strong>Add-on server library</strong>: what we use to initialize an HTTP server that provides a Stremio add-on.</li>
+<li>
+<strong>Add-on client library</strong>: a client library to use one or more Stremio add-ons</li>
+</ul>
+
+<h2>
+<a id="client" class="anchor" href="#client" aria-hidden="true"><span class="octicon octicon-link"></span></a>Client</h2>
+
+<div class="highlight highlight-javascript"><pre><span class="pl-k">var</span> addons <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">"</span>stremio-addons<span class="pl-pds">"</span></span>);
+<span class="pl-k">var</span> stremio <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">addons.Client</span>({ <span class="pl-c">/* options; picker: function(addons) { return addons } */</span> });
+<span class="pl-c">// specify a picker function to filter / sort the addons we'll use</span>
+
+stremio.<span class="pl-c1">setAuth</span>(url, authKey); <span class="pl-c">// Set the authentication for addons that require auth</span>
+<span class="pl-c">// URL is the URL to the central authentication server - some addons only permit certain servers</span>
+<span class="pl-c">// authKey is the authentication token (user session key) or an Add-on secret if we're authenticating from an Add-on Server</span>
+
+stremio.<span class="pl-c1">add</span>(<span class="pl-c1">URL</span>, { priority<span class="pl-k">:</span> <span class="pl-c1">0</span> }); <span class="pl-c">// Priority is an integer, zero is the highest priority</span>
+<span class="pl-c">// OR</span>
+stremio.<span class="pl-c1">add</span>(<span class="pl-c1">URL</span>);
+
+stremio.<span class="pl-c1">meta</span>.<span class="pl-c1">get</span>(args,cb); <span class="pl-c">/* OR */</span> stremio.<span class="pl-c1">call</span>(<span class="pl-s"><span class="pl-pds">"</span>meta.get<span class="pl-pds">"</span></span>, args, cb);
+
+<span class="pl-c">// Events / hooks</span>
+stremio.<span class="pl-c1">on</span>(<span class="pl-s"><span class="pl-pds">"</span>pick<span class="pl-pds">"</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">params</span>) { 
+    <span class="pl-c">// called when picking addons</span>
+    <span class="pl-c">// params.addons - all addons; you can modify this. e.g. params.addons = params.addons.filter(...)</span>
+    <span class="pl-c">// params.method - the method we're picking for</span>
+
+    <span class="pl-c">// this can be used instead of picker</span>
+});
+
+stremio.<span class="pl-c1">on</span>(<span class="pl-s"><span class="pl-pds">"</span>addon-ready<span class="pl-pds">"</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">addon</span>, <span class="pl-smi">url</span>) {
+    <span class="pl-c">// addon is an internal object - single Addon</span>
+    <span class="pl-c">// url is the URL to it</span>
+});</pre></div>
+
+<h2>
+<a id="server" class="anchor" href="#server" aria-hidden="true"><span class="octicon octicon-link"></span></a>Server</h2>
+
+<div class="highlight highlight-javascript"><pre><span class="pl-k">var</span> addons <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">"</span>stremio-addons<span class="pl-pds">"</span></span>);
+<span class="pl-k">new</span> <span class="pl-en">addons.Server</span>({
+    <span class="pl-s"><span class="pl-pds">"</span><span class="pl-en">meta.get</span><span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">args</span>, <span class="pl-smi">cb</span>) {
+        <span class="pl-c">// this.user -&gt; get info about the user</span>
+    },
+}, { secret<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>SOME SECRET - or leave undefined for test secret<span class="pl-pds">"</span></span> });</pre></div>
+
+<h5>
+<a id="for-the-methods-you-can-implement-and-their-expected-input-and-output-see-methods" class="anchor" href="#for-the-methods-you-can-implement-and-their-expected-input-and-output-see-methods" aria-hidden="true"><span class="octicon octicon-link"></span></a>For the methods you can implement, and their expected input and output, see <a href="documentation/methods.md">methods</a>.</h5>
+
+<h2>
+<a id="authentication" class="anchor" href="#authentication" aria-hidden="true"><span class="octicon octicon-link"></span></a>Authentication</h2>
+
+<p>To authenticate when using Stremio Addons as a client, one must call</p>
+
+<div class="highlight highlight-javascript"><pre>client.<span class="pl-c1">setAuth</span>(<span class="pl-c">/* CENTRAL SERVER */</span>, <span class="pl-c">/* USER SESSION TOKEN (authToken) OR ADDON SECRET */</span>);</pre></div>
+
+<p><strong>The authToken</strong> is a session ID we use for addon clients to identify the user. The Addon Server (implemented in server.js) is responsible for evaluating if we're getting requests from a logged-in users. That happens by asking the <strong>central server</strong> if that authToken is valid and belongs to a user. </p>
+
+<p><strong>The secret</strong> is a token, issued by a central server that we use to identify our Add-on server to the central server. We can also use our secret to identify ourselves to other Add-ons, if using them as a client - if our Add-on uses other Stremio add-ons under the hood (through the client library).</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/Stremio/stremio-addons">Stremio Add-ons</a> is maintained by <a href="https://github.com/Stremio">Stremio</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
