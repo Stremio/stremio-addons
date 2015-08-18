@@ -52,7 +52,7 @@ new addons.Server({
 ## Authentication
 To authenticate when using Stremio Addons as a client, one must call
 ```javascript
-client.setAuth(/* CENTRAL SERVER */, /* USER SESSION TOKEN (authToken) OR ADDON SECRET */);
+client.setAuth(/* CENTRAL SERVER or null for default */, /* USER SESSION TOKEN (authToken) OR ADDON SECRET */);
 ```
 
 **The authToken** is a session ID we use for addon clients to identify the user. The Addon Server (implemented in server.js) is responsible for evaluating if we're getting requests from a logged-in users. That happens by asking the **central server** if that authToken is valid and belongs to a user. 

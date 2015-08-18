@@ -10,8 +10,11 @@
     "needle": "0.9.x",
     "mpath": "0.2.x"
   },
+  "devDependencies": {
+    "tape": "4.x.x"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "tape test/*.js"
   },
   "repository": {
     "type": "git",

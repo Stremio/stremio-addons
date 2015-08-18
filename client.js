@@ -117,7 +117,7 @@ function Stremio(options)
 
 	// Set the authentication
 	this.setAuth = function(url, token) {
-		auth = [url, token];
+		auth = [url || module.parent.CENTRAL, token];
 	};
 	this.getAuth = function() { return auth };
 
