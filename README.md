@@ -14,9 +14,11 @@ var stremio = new addons.Client({ /* options; picker: function(addons) { return 
 
 stremio.setAuth(url, authKey); // Set the authentication for addons that require auth
 // URL is the URL to the central authentication server - some addons only permit certain servers
-// authKey is the authentication token
+// authKey is the authentication token (user session key) or an Add-on secret if we're authenticating from an Add-on Server
 
 stremio.add(URL, { priority: 0 }); // Priority is an integer, zero is the highest priority
+// OR
+stremio.add(URL);
 
 stremio.meta.get(args,cb); /* OR */ stremio.call("meta.get", args, cb);
 
@@ -27,6 +29,11 @@ stremio.on("pick", function(params) {
 	// params.method - the method we're picking for
 	
 	// this can be used instead of picker
+});
+
+stremio.on("addon-ready", function(addon, url) {
+	// addon is an internal object - single Addon
+	// url is the URL to it
 });
 ```
 
@@ -39,8 +46,8 @@ new addons.Server({
 		// this.user -> get info about the user
 	},
 }, { secret: "SOME SECRET - or leave undefined for test secret" });
-
 ```
+####### For the methods you can implement, and their expected input and output, see (methods)[documentation/methods.md].
 
 ## Authentication
 To authenticate when using Stremio Addons as a client, one must call
