@@ -93,22 +93,3 @@ tape("picking an add-on depending on priority")
 tape("calling all add-ons")
 tape("falling back when addon result is null")
  */
-
-/*
-	// CLIENT
-	var s = new addons.Client({ picker: function(addons) { console.log(addons.length+" addons"); return addons } });
-	s.add("http://localhost:3009");
-	s.setAuth(null, TEST_SECRET);
-	s.call("meta.get", { query: { id: 1 } }, function(err, res)
-	{
-		console.log(err,res);
-		s.call("meta.get", { query: { id: 1 } }, function(err, res)
-		{
-			console.log(err,res);
-		});
-	});
-
-	s.on("pick", function(params) {
-		console.log("pick emitted event with "+params.addons.length+" addons");
-	})
-*/
