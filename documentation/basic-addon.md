@@ -17,28 +17,44 @@ Here's a sample Add-on that will provide BitTorrent streams for a few public dom
 ```javascript
 var Stremio = require("stremio-addons");
 var stremioCentral = "http://api8.herokuapp.com";
+
+var dataset = {
+    "tt0063350": "f17fb68ce756227fce325d0513157915f5634985", // night of the living dead, 1968
+    "tt0032138": "24c8802e2624e17d46cd555f364debd949f2c81e", // the wizard of oz 1939
+    "tt0017136": "dca926c0328bb54d209d82dc8a2f391617b47d7a", // metropolis, 1927
+    "tt0051744": "9f86563ce2ed86bbfedd5d3e9f4e55aedd660960", // house on haunted hill 1959
+    // "tt1254207": // big buck bunny, HTTP stream
+};
+
 var addon = new Stremio.Server({
-	"stream.get": function(args, callback, user) {
+    "stream.get": function(args, callback, user) {
+        if (! args.query) return callback();
+        return callback(null, dataset[args.query.imdb_id] ? {
+            infoHash: dataset[args.query.imdb_id],
+            availability: 2, // must reflect availability of the stream, based on seeders; see multipass
+            //mapIdx: 0,
+            //map: torrent.files,
+            //pieceLength: torrent.pieceLength,
+        } : null);
+    },
+    "stream.find": function(args, callback, user) {
+        callback(null, args.items.map(function(x) { return { availability: dataset[x.query.imdb_id] } }));
+    }
+}, { /* secret: yourSecret */ }, { 
+    // Stremio manifest
+    "name": "Example Addon",
+    "description": "Sample addon providing a few public domain movies",
+    "id": "org.stremio.basic",
+    "version": "1.0.0",
+    "types": ["movie"]
+});
 
-	},
-  "stream.find": function(args, callback, user) {
-
-  }
-}, { allow: [stremioCentral], secret: stremioSecret }, _.extend(require("./stremio-manifest"), _.pick(require("../package"), "version")));
-
-var server = http.createServer(function (req, res) {
-    addon.middleware(req, res, function() { res.end() });
+var server = require("http").createServer(function (req, res) {
+    addon.middleware(req, res, function() { res.end() }); // wire the middleware - also compatible with connect / express
 }).on("listening", function()
 {
-	console.log("Sample Stremio Addon listening on "+server.address().port);
+    console.log("Sample Stremio Addon listening on "+server.address().port);
 }).listen(process.env.PORT || 7000);
-
-// addon.middleware is connect/express-compatible, you can also use it with express
 ```
 
-Here's a sample Add-on that will provide HTTP streams for Big Buck Bunny:
-```
-
-```
-
-You can see a real-world example of a Stremio Add-on here: https://github.com/Ivshti/multipass-torrent/blob/master/stremio-addon/addon.js
+#### You can see a real-world example of a Stremio Add-on here: https://github.com/Ivshti/multipass-torrent/blob/master/stremio-addon/addon.js
