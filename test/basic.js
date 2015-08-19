@@ -1,6 +1,7 @@
 var addons = require("../");
 var tape = require("tape");
 var http = require("http");
+var _ = require("lodash");
 
 var TEST_SECRET = "51af8b26c364cb44d6e8b7b517ce06e39caf036a";
 
@@ -81,6 +82,39 @@ tape("test events", function(t) {
 			t.ok(picker && picker.addons && picker.addons.length == 1 && picker.method == "meta.get", "pick was called with 1 addon");
 			t.ok(!isNaN(res.now), "we have returned timestamp");
 			t.end();
+		});
+	});
+
+});
+
+
+tape("callEvery", function(t) {
+	t.timeoutAfter(2000);
+
+	initServer({ 
+		"stream.get": function(args, cb, sess) {
+			return cb(null, { now: Date.now(), from: "ONE" });
+		}
+	},
+	function(url1) {
+		initServer({ 
+			"stream.get": function(args, cb, sess) {
+				return cb(null, { now: Date.now(), from: "TWO" });
+			}
+		},
+		function(url2) {
+			var s = new addons.Client({ });
+			s.add(url1);
+			s.add(url2);
+			s.setAuth(null, TEST_SECRET);
+			s.callEvery("stream.get", { query: { id: 1 } }, function(err, res)
+			{
+				t.ok(!err, "no err on call");
+				t.ok(res.length == 2, "2 results");
+				t.ok(_.findWhere(res, { from: "ONE" }), "we have results from one");
+				t.ok(_.findWhere(res, { from: "TWO" }), "we have results from two");
+				t.end();
+			});
 		});
 	});
 

@@ -141,7 +141,7 @@ function Stremio(options)
 	// Listing
 	this.get = function(forMethod, all) {
 		var res = _.values(services).sort(function(a,b) { return (b.initialized - a.initialized) || (a.priority - b.priority) });
-		if (forMethod) res = res.filter(function(x){ return (x.methods || []).indexOf(forMethod) != -1 });
+		if (forMethod) res = res.filter(function(x){ return x.initialized ? x.methods.indexOf(forMethod) != -1 : true }); // if it's not initialized, assume it supports the method
 		if (forMethod) res = picker(res, forMethod); // apply the picker for a method
 		return res;
 	};
@@ -169,8 +169,22 @@ function Stremio(options)
 			if (err !== 1) cb(new Error(self.get(method).length ? "no addon supports these arguments" : "no addon supplies this method"));
 		});
 	};
-	_.extend(this, bindDefaults(call))
+	_.extend(this, bindDefaults(call));
 	this.call = call;
+
+	function callEvery(method, args, cb) {
+		var results = [], err;
+		async.each(self.get(method), function(service, callback) {
+			service.call(method, [self.getAuth(), args], function(skip, err, error, result) {
+				if (error) return callback(error);
+                if (!skip && !err && !error) results.push(result);
+                callback();
+            });
+		}, function(err) {
+			cb(err, results);
+		});
+	};
+	this.callEvery = callEvery;
 
 	function picker(s, method) {
 		var params = { addons: s, method: method };
