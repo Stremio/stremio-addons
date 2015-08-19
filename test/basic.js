@@ -121,6 +121,93 @@ tape("callEvery", function(t) {
 });
 
 
+tape("fallback if result is null", function(t) {
+	t.timeoutAfter(2000);
+
+	initServer({ 
+		"stream.get": function(args, cb, sess) {
+			return cb(null, null);
+		}
+	},
+	function(url1) {
+		initServer({ 
+			"stream.get": function(args, cb, sess) {
+				return cb(null, { now: Date.now(), from: "TWO" });
+			}
+		},
+		function(url2) {
+			var s = new addons.Client({ });
+			s.add(url1, { priority: 0 });
+			s.add(url2, { priority: 1 });
+			s.setAuth(null, TEST_SECRET);
+			s.stream.get({ query: { id: 1 } }, function(err, res)
+			{
+				t.ok(!err, "no err on call");
+				t.ok(res, "we have result");
+				t.ok(res.from == "TWO", "we have results from two");
+				t.end();
+			});
+		});
+	});
+
+});
+
+
+tape("intercept error from addon", function(t) {
+	t.timeoutAfter(2000);
+
+	initServer({ 
+		"stream.get": function(args, cb, sess) {
+			return cb(new Error("not supported"), null);
+		}
+	},
+	function(url1) {
+		initServer({ 
+			"stream.get": function(args, cb, sess) {
+				return cb(null, { now: Date.now(), from: "TWO" });
+			}
+		},
+		function(url2) {
+			var s = new addons.Client({ });
+			s.add(url1, { priority: 0 });
+			s.add(url2, { priority: 1 });
+			s.setAuth(null, TEST_SECRET);
+			s.stream.get({ query: { id: 1 } }, function(err, res)
+			{
+				t.ok(err, "we have an error");
+				t.end();
+			});
+		});
+	});
+});
+
+tape("fallback on a network error", function(t) {
+	t.timeoutAfter(2000);
+
+	initServer({ 
+		"stream.get": function(args, cb, sess) {
+			return cb(null, { now: Date.now(), from: "ONE" });
+		}
+	},
+	function(url1) {
+		var s = new addons.Client({ });
+		s.add("http://dummy-dummy-dummy.du", { priority: 0 }); // wrong URL
+		s.add(url1, { priority: 1 });
+		s.setAuth(null, TEST_SECRET);
+		s.stream.get({ query: { id: 1 } }, function(err, res, addon)
+		{
+			t.ok(!err, "no error");
+			t.ok(res && res.from == "ONE", "we have a result");
+			t.ok(addon, "we have the picked addon");
+			t.ok(addon.url == url1, "correct url to picked addon");
+			t.end();
+		});
+	});
+
+});
+
+
+
 /* 
 tape("picking an add-on depending on filter")
 tape("picking an add-on depending on priority")
