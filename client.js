@@ -160,7 +160,7 @@ function Stremio(options)
 			service.call(method, [auth, args], function(skip, err, error, res) {
 				// err, error are respectively HTTP error / Jayson error; we need to implement fallback based on that (do a skip)
 				if (skip == 2) { tried[service.url] = true; s.push(service); } // re-try the service if skip===2 (skipped due to args filter)
-				if (skip || err) return next(); // Go to the next service
+				if (skip || err || (method.match("get$") && res === null) ) return next(); // Go to the next service
 
 				cb(error, res, service);
 				next(1); // Stop
