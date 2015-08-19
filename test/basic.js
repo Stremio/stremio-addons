@@ -181,8 +181,8 @@ tape("intercept error from addon", function(t) {
 	});
 });
 
-tape("fallback on a network error", function(t) {
-	t.timeoutAfter(2000);
+tape("fallback on a network error, emit network-error event", function(t) {
+	t.timeoutAfter(4000);
 
 	initServer({ 
 		"stream.get": function(args, cb, sess) {
@@ -190,16 +190,28 @@ tape("fallback on a network error", function(t) {
 		}
 	},
 	function(url1) {
+		var emitted = false;
+
 		var s = new addons.Client({ });
 		s.add("http://dummy-dummy-dummy.du", { priority: 0 }); // wrong URL
 		s.add(url1, { priority: 1 });
 		s.setAuth(null, TEST_SECRET);
+		
+		/*
+		s.on("network-error", function(addon, url) { 
+			emitted = true; 
+			t.ok(addon.url == url, "addon url returned"); 
+			t.ok(addon.url == url1, "addon url correct"); 
+		});
+		*/
+
 		s.stream.get({ query: { id: 1 } }, function(err, res, addon)
 		{
 			t.ok(!err, "no error");
 			t.ok(res && res.from == "ONE", "we have a result");
 			t.ok(addon, "we have the picked addon");
 			t.ok(addon.url == url1, "correct url to picked addon");
+			//t.ok(emitted, "network-error emitted");
 			t.end();
 		});
 	});
