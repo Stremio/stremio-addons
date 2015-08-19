@@ -11,9 +11,9 @@ Stremio Add-ons are **loaded through HTTP**, so the Add-on has to have it's own 
 
 ## Documentation
 1. [Creating a basic Add-on](documentation/basic-addon.md)
-2. [Using Cinemeta / other Add-ons in your Addon](documentation/using-cinemeta.md)
+2. [Enabling Add-on in Stremio](documentation/enabling-addon.md)
 3. [Methods](documentation/methods.md)
-
+4. [Using Cinemeta](documentation/using-cinemeta.md)
 
 ## Client
 ```javascript
