@@ -1,5 +1,6 @@
 # stremio-addons
 An Add-ons system that works like an RPC system, however it allows to **chain multiple Add-ons** and it automatically selects which addon to handle the call, depending on the arguments and the priority of add-ons (e.g. get a stream). You can also issue calls to all Add-ons and aggregate results (e.g. search metadata).
+Stremio Add-ons are **loaded through HTTP**, so the Add-on has to have it's own server. See "[Creating a basic Add-on](documentation/basic-addon.md)" for the reasons behind this approach.
 
 #### Provides
 
@@ -23,9 +24,9 @@ stremio.setAuth(url, authKey); // Set the authentication for addons that require
 // URL is the URL to the central authentication server - some addons only permit certain servers
 // authKey is the authentication token (user session key) or an Add-on secret if we're authenticating from an Add-on Server
 
-stremio.add(URL, { priority: 0 }); // Priority is an integer, zero is the highest priority
+stremio.add(URLtoAddon, { priority: 0 }); // Priority is an integer, zero is the highest priority
 // OR
-stremio.add(URL);
+stremio.add(URLtoAddon);
 
 stremio.meta.get(args,cb); /* OR */ stremio.call("meta.get", args, cb);
 

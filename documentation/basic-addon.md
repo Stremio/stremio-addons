@@ -7,6 +7,9 @@ The reasons for this are:
 * Security, no extra code running inside Stremio
 * Simpler overall architecture - if the data you're providing to Stremio lies on your servers, the Add-on server can reach it directly and give it to clients
 
+Potential issues
+* Offline use - this is handled in Stremio by caching the catalogue, your personal library and watched streams (limited cache set by the user); as an Add-on creator, you don't need to worry about this
+
 Creating a Stremio Add-on
 ========================
 1. To create a Stremio Add-on, you need to implement the Add-on protocol first - or use a ready solution for Node.js - [stremio-addons](http://github.com/Stremio/stremio-addons).
