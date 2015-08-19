@@ -20,6 +20,15 @@ Here's a sample Add-on that will provide BitTorrent streams for a few public dom
 ```javascript
 var Stremio = require("stremio-addons");
 var stremioCentral = "http://api8.herokuapp.com";
+var mySecret = null; // "your secret"; // pass null to use default testing secret
+
+var manifest = { 
+    "name": "Example Addon",
+    "description": "Sample addon providing a few public domain movies",
+    "id": "org.stremio.basic",
+    "version": "1.0.0",
+    "types": ["movie"]
+};
 
 var dataset = {
     "tt0063350": "f17fb68ce756227fce325d0513157915f5634985", // night of the living dead, 1968
@@ -34,7 +43,7 @@ var addon = new Stremio.Server({
         if (! args.query) return callback();
         return callback(null, dataset[args.query.imdb_id] ? {
             infoHash: dataset[args.query.imdb_id],
-            availability: 2, // must reflect availability of the stream, based on seeders; see multipass
+            availability: 2, // 0-3 integer representing stream availability, 0 being unavailable, 1 being barely streamable, 2 OK, 3 - in great health
             //mapIdx: 0,
             //map: torrent.files,
             //pieceLength: torrent.pieceLength,
@@ -43,14 +52,7 @@ var addon = new Stremio.Server({
     "stream.find": function(args, callback, user) {
         callback(null, args.items.map(function(x) { return { availability: dataset[x.query.imdb_id] } }));
     }
-}, { /* secret: yourSecret */ }, { 
-    // Stremio manifest
-    "name": "Example Addon",
-    "description": "Sample addon providing a few public domain movies",
-    "id": "org.stremio.basic",
-    "version": "1.0.0",
-    "types": ["movie"]
-});
+}, { secret: mySecret }, manifest);
 
 var server = require("http").createServer(function (req, res) {
     addon.middleware(req, res, function() { res.end() }); // wire the middleware - also compatible with connect / express
