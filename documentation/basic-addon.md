@@ -18,41 +18,38 @@ Creating a Stremio Add-on
 
 Here's a sample Add-on that will provide BitTorrent streams for a few public domain movies:
 ```javascript
-var Stremio = require("stremio-addons");
+var Stremio = require("../");
 var stremioCentral = "http://api8.herokuapp.com";
-var mySecret = null; // "your secret"; // pass null to use default testing secret
+var mySecret = "your secret"; 
 
 var manifest = { 
     "name": "Example Addon",
     "description": "Sample addon providing a few public domain movies",
     "id": "org.stremio.basic",
     "version": "1.0.0",
-    "types": ["movie"]
+    "types": ["movie"],
+    "filter": { "infoHash": { "$exists": true }, "query.imdb_id": { "$exists": true }, "query.type": { "$in":["series","movie"] } }
 };
 
 var dataset = {
-    "tt0063350": "f17fb68ce756227fce325d0513157915f5634985", // night of the living dead, 1968
-    "tt0032138": "24c8802e2624e17d46cd555f364debd949f2c81e", // the wizard of oz 1939
-    "tt0017136": "dca926c0328bb54d209d82dc8a2f391617b47d7a", // metropolis, 1927
-    "tt0051744": "9f86563ce2ed86bbfedd5d3e9f4e55aedd660960", // house on haunted hill 1959
+    "tt0063350": { infoHash: "f17fb68ce756227fce325d0513157915f5634985", mapIdx: 0, availability: 2 }, // night of the living dead, 1968
+    "tt0032138": { infoHash: "24c8802e2624e17d46cd555f364debd949f2c81e", mapIdx: 0, availability: 2 }, // the wizard of oz 1939
+    "tt0017136": { infoHash: "dca926c0328bb54d209d82dc8a2f391617b47d7a", mapIdx: 1, availability: 2 }, // metropolis, 1927; first file is a .rar, second is streamable
+    "tt0051744": { infoHash: "9f86563ce2ed86bbfedd5d3e9f4e55aedd660960", mapIdx: 0, availability: 2 }, // house on haunted hill 1959
     // "tt1254207": // big buck bunny, HTTP stream
 };
 
 var addon = new Stremio.Server({
     "stream.get": function(args, callback, user) {
         if (! args.query) return callback();
-        return callback(null, dataset[args.query.imdb_id] ? {
-            infoHash: dataset[args.query.imdb_id],
-            availability: 2, // 0-3 integer representing stream availability, 0 being unavailable, 1 being barely streamable, 2 OK, 3 - in great health
-            //mapIdx: 0,
-            //map: torrent.files,
-            //pieceLength: torrent.pieceLength,
-        } : null);
+        return callback(null, dataset[args.query.imdb_id] ? dataset[args.query.imdb_id] : null);
     },
     "stream.find": function(args, callback, user) {
-        callback(null, args.items.map(function(x) { return { availability: dataset[x.query.imdb_id] } }));
+        callback(null, { items: args.items.map(function(x) { 
+            return dataset[x.query.imdb_id] ? { availability: dataset[x.query.imdb_id].availability } : null }) 
+        });
     }
-}, { secret: mySecret }, manifest);
+}, { /* secret: mySecret */ }, manifest);
 
 var server = require("http").createServer(function (req, res) {
     addon.middleware(req, res, function() { res.end() }); // wire the middleware - also compatible with connect / express

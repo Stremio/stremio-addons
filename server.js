@@ -9,11 +9,11 @@ function Server(methods, options, manifest)
 	var jayson = require("jayson");
 	var jaysonUtils = require("jayson/lib/utils");
 
-	_.extend({ 
+	options = _.extend({ 
 		allow: [ module.parent.CENTRAL ], // default stremio central
 		secret: "8417fe936f0374fbd16a699668e8f3c4aa405d9f" // default secret for testing add-ons
-	}, options);
-	
+	}, options || { });
+
 	Object.keys(methods).forEach(function(key) {
 		if (typeof(methods[key]) != "function") throw Error(key+" should be a function");
 	});
