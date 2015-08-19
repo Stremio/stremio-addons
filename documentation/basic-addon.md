@@ -36,7 +36,7 @@ var dataset = {
     "tt0032138": { infoHash: "24c8802e2624e17d46cd555f364debd949f2c81e", mapIdx: 0, availability: 2 }, // the wizard of oz 1939
     "tt0017136": { infoHash: "dca926c0328bb54d209d82dc8a2f391617b47d7a", mapIdx: 1, availability: 2 }, // metropolis, 1927; first file is a .rar, second is streamable
     "tt0051744": { infoHash: "9f86563ce2ed86bbfedd5d3e9f4e55aedd660960", mapIdx: 0, availability: 2 }, // house on haunted hill 1959
-    // "tt1254207": // big buck bunny, HTTP stream
+    "tt1254207": { url: "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4", availability: 1 }, // big buck bunny, HTTP stream
 };
 
 var addon = new Stremio.Server({
