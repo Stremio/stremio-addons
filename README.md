@@ -6,6 +6,13 @@ An Add-ons system that works like an RPC system, however it allows to **chain mu
 * **Add-on server library**: what we use to initialize an HTTP server that provides a Stremio add-on.
 * **Add-on client library**: a client library to use one or more Stremio add-ons
 
+
+## Documentation
+1. [Creating a basic Add-on](documentation/basic-addon.md)
+2. [Using Cinemeta / other Add-ons in your Addon](documentation/using-cinemeta.md)
+3. [Methods](documentation/methods.md)
+
+
 ## Client
 ```javascript
 var addons = require("stremio-addons");
