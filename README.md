@@ -27,6 +27,7 @@ stremio.setAuth(url, authKey); // Set the authentication for addons that require
 stremio.add(URLtoAddon, { priority: 0 }); // Priority is an integer, zero is the highest priority
 // OR
 stremio.add(URLtoAddon);
+// Priority determines which Add-on to pick first for an action, if several addons provide the same thing (e.g. streaming movies)
 
 stremio.meta.get(args,cb); /* OR */ stremio.call("meta.get", args, cb);
 
