@@ -100,7 +100,7 @@ function Addon(url, options, client, ready)
 	};
 
 	this.isInitializing = function() {
-		return !!q.length();
+		return !this.initialized && q.length();
 	};
 };
 
