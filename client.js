@@ -78,7 +78,6 @@ function Addon(url, options, client, ready)
 			self.initialized = true;
 			if (res && res.methods) self.methods = self.methods.concat(res.methods);
 			if (res && res.manifest) self.manifest = res.manifest;
-			// TODO: error handling, retry, auth, etc.
 			if (ready) ready();
 			done();
 		});
@@ -98,6 +97,10 @@ function Addon(url, options, client, ready)
 
 	this.identifier = function() {
 		return (self.manifest && self.manifest.id) || self.url
+	};
+
+	this.isInitializing = function() {
+		return !!q.length();
 	};
 };
 
