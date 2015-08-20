@@ -177,9 +177,9 @@ function Stremio(options)
 		async.each(self.get(method), function(service, callback) {
 			service.call(method, [self.getAuth(), args], function(skip, err, error, result) {
 				if (error) return callback(error);
-                if (!skip && !err && !error) results.push(result);
-                callback();
-            });
+				if (!skip && !err && !error) results.push(result);
+				callback();
+			});
 		}, function(err) {
 			cb(err, results);
 		});
