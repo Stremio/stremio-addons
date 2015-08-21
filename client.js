@@ -31,7 +31,7 @@ function bindDefaults(call) {
 // TODO: unit test this
 function checkArgs(args, filter)
 {
-	if (_.isEmpty(filter)) return true;
+	if (!filter || _.isEmpty(filter)) return true;
 
 	var args = (args.items && args.items[0]) || args; // if many requests are batched
 	return _.some(filter, function(val, key) {
@@ -85,12 +85,11 @@ function Addon(url, options, client, ready)
 
 	q.push({ }, function() { }); // Start initialization now
 
-	this.call = function(method, args, cb, noFilter)
+	this.call = function(method, args, cb)
 	{
 		if (cb) cb = _.once(cb);
 		q.push({ }, function() {
 			if (self.methods.indexOf(method) == -1) return cb(1);
-			if (!noFilter && self.manifest.filter && !checkArgs(args[1], self.manifest.filter)) return cb(2);  		
 			self.client.request(method, args, function(err, error, res) { cb(0, err, error, res) });
 		});
 	};
@@ -143,18 +142,19 @@ function Stremio(options)
 	
 	// Listing
 	this.get = function(forMethod, all) {
-		var res = _.values(services).sort(function(a,b) { return (b.initialized - a.initialized) || (a.priority - b.priority) });
-		if (forMethod) res = res.filter(function(x){ return x.initialized ? x.methods.indexOf(forMethod) != -1 : true }); // if it's not initialized, assume it supports the method
+		var res = _.values(services).sort(function(a,b) { return (b.initialized - a.initialized) || (a.priority - b.priority)  });
+		if (forMethod) res = res.filter(function(x) { return x.initialized ? x.methods.indexOf(forMethod) != -1 : true }); // if it's not initialized, assume it supports the method
 		if (forMethod) res = picker(res, forMethod); // apply the picker for a method
 		return res;
 	};
 
 	// Bind methods
 	function call(method, args, cb) {
-		var s = self.get();
+		var s = self.get().sort(function(a, b) {
+			return (b.initialized - a.initialized) || (a.priority - b.priority) 
+				|| checkArgs(args[1], b.manifest.filter) - checkArgs(args[1], a.manifest.filter) 
+		});
 		s = picker(s, method);
-
-		var tried = { }; // Services for which we won't use args filter because we're retrying them
 
 		async.forever(function(next) {
 			var service = s.shift();
@@ -162,12 +162,11 @@ function Stremio(options)
 
 			service.call(method, [auth, args], function(skip, err, error, res) {
 				// err, error are respectively HTTP error / Jayson error; we need to implement fallback based on that (do a skip)
-				if (skip == 2) { tried[service.url] = true; s.push(service); } // re-try the service if skip===2 (skipped due to args filter)
 				if (skip || err || (method.match("get$") && res === null) ) return next(); // Go to the next service
 
 				cb(error, res, service);
 				next(1); // Stop
-			}, tried[service.url]); // If we try it a second time, don't care about the args filter
+			});
 		}, function(err) {
 			if (err !== 1) cb(new Error(self.get(method).length ? "no addon supports these arguments" : "no addon supplies this method"));
 		});
