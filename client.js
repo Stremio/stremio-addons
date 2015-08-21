@@ -152,7 +152,7 @@ function Stremio(options)
 	function call(method, args, cb) {
 		var s = self.get().sort(function(a, b) {
 			return (b.initialized - a.initialized) || (a.priority - b.priority) 
-				|| checkArgs(args[1], b.manifest.filter) - checkArgs(args[1], a.manifest.filter) 
+				|| checkArgs(args, b.manifest.filter) - checkArgs(args, a.manifest.filter) 
 		});
 		s = picker(s, method);
 
