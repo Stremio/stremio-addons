@@ -225,3 +225,8 @@ tape("picking an add-on depending on priority")
 tape("calling all add-ons")
 tape("falling back when addon result is null")
  */
+
+var validation = require("../validation");
+tape("validation - stream arguments", function(t) {
+	
+});
