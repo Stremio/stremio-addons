@@ -93,13 +93,13 @@ tape("callEvery", function(t) {
 
 	initServer({ 
 		"stream.get": function(args, cb, sess) {
-			return cb(null, { now: Date.now(), from: "ONE" });
+			return cb(null, { infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223", availability: 2, now: Date.now(), from: "ONE" });
 		}
 	},
 	function(url1) {
 		initServer({ 
 			"stream.get": function(args, cb, sess) {
-				return cb(null, { now: Date.now(), from: "TWO" });
+				return cb(null, { infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223", availability: 2, now: Date.now(), from: "TWO" });
 			}
 		},
 		function(url2) {
@@ -132,7 +132,7 @@ tape("fallback if result is null", function(t) {
 	function(url1) {
 		initServer({ 
 			"stream.get": function(args, cb, sess) {
-				return cb(null, { now: Date.now(), from: "TWO" });
+				return cb(null, { infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223", availability: 2, now: Date.now(), from: "TWO" });
 			}
 		},
 		function(url2) {
@@ -149,7 +149,6 @@ tape("fallback if result is null", function(t) {
 			});
 		});
 	});
-
 });
 
 
@@ -164,7 +163,7 @@ tape("intercept error from addon", function(t) {
 	function(url1) {
 		initServer({ 
 			"stream.get": function(args, cb, sess) {
-				return cb(null, { now: Date.now(), from: "TWO" });
+				return cb(null, { infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223", availability: 2, now: Date.now(), from: "TWO" });
 			}
 		},
 		function(url2) {
@@ -186,7 +185,7 @@ tape("fallback on a network error, emit network-error event", function(t) {
 
 	initServer({ 
 		"stream.get": function(args, cb, sess) {
-			return cb(null, { now: Date.now(), from: "ONE" });
+			return cb(null, { infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223", availability: 2, now: Date.now(), from: "ONE" });
 		}
 	},
 	function(url1) {
