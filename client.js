@@ -3,6 +3,8 @@ var async = require("async");
 var mpath = require("mpath");
 var util = require("util");
 
+var validation = require("./validation");
+
 var MAX_RETRIES = 3;
 var SERVICE_RETRY_TIMEOUT = 30*1000;
 
@@ -87,6 +89,11 @@ function Addon(url, options, client, ready)
 
 	this.call = function(method, args, cb)
 	{
+		// Validate arguments - we should do this via some sort of model system
+		var err;
+		if (method.match("^stream")) (args[1].items || [args[1]]).forEach(function(args) { err =  err || validation.stream_args(args) });
+		if (err) return cb(0, null, err);
+
 		if (cb) cb = _.once(cb);
 		q.push({ }, function() {
 			if (self.methods.indexOf(method) == -1) return cb(1);

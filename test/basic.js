@@ -266,6 +266,27 @@ tape("stream.get validation", function(t) {
 			t.end();
 		});
 	});
+});
 
+tape("stream.find validation", function(t) {
+	t.timeoutAfter(2000);
+
+	initServer({ 
+		"stream.get": function(args, cb, sess) {
+			return cb(null, { now: Date.now() });
+		}
+	},
+	function(url) {
+		var s = new addons.Client({ });
+
+		s.add(url);
+		s.setAuth(null, TEST_SECRET);
+		s.call("stream.find", [{ test: "weqew" }], function(err, res)
+		{
+			t.ok(err, "there is error");
+			t.ok(err.code === 0, "error code is correct");
+			t.end();
+		});
+	});
 });
 

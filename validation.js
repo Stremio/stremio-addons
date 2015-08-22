@@ -9,7 +9,7 @@ module.exports = {
 		if (! ( (stream.infoHash && stream.infoHash.length == 40) || stream.url) ) 
 			return { code: 4, message: "a stream descriptor required in result of stream.*" };
 
-		if (stream.infoHash && !stream.mapIdx)
+		if (stream.infoHash && isNaN(stream.mapIdx) )
 			return { code: 5, message: "mapIdx (file id) required with infoHash in result of stream.*" };
 
 		return false;
