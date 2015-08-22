@@ -1,9 +1,6 @@
 module.exports = {
-	"stream.args": function(args) {
-	    if (! (args.query || args.infoHash)) return { code: 0, message: "query/infoHash requried" };
-	    if (args.query && !args.query.imdb_id) return { code: 1, message: "imdb_id required for query" };
-	    if (args.query && (args.query.type == "series" && !(args.query.hasOwnProperty("episode") && args.query.hasOwnProperty("season"))))
-	        return { code: 2, message: "season and episode required for series type" };
+	"stream_args": function(args) {
+	    if (! ( (args.query && typeof(args.query)=="object") || args.infoHash)) return { code: 0, message: "query/infoHash requried" };
 	    return false;
 	},
 	"stream": function(stream) {
@@ -18,7 +15,7 @@ module.exports = {
 		return false;
 	},
 
-	"meta.args": function(args) {
+	"meta_args": function(args) {
 
 	},
 	"meta": function(meta) {

@@ -227,6 +227,19 @@ tape("falling back when addon result is null")
  */
 
 var validation = require("../validation");
+
 tape("validation - stream arguments", function(t) {
-	
+	t.ok("valid with infoHash", validation.stream_args({ infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223"} ) === false);
+	t.ok("valid with query", validation.stream_args({ query: { imdb_id: "tt0032138" } } ) === false);
+	t.ok("invalid args", validation.stream_args({ test: { imdb_id: "tt0032138" } } ).code == 0);
+	t.end();
+});
+
+tape("validation - stream results", function(t) {
+	t.ok("invalid - no availability", validation.stream({ test: "http://test" }).code === 3);
+	t.ok("valid with infoHash / mapIdx", validation.stream({ availability: 3, infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223", mapIdx: 0 } ) === false);
+	t.ok("invalid with infoHash", validation.stream({ availability: 3, infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223" } ).code === 5);
+	t.ok("valid with url", validation.stream({ availability: 3, url: "http://test" }) === false);
+	t.ok("invalid", validation.stream({ availability: 3, test: "http://test" }).code === 4);
+	t.end();
 });
