@@ -229,17 +229,43 @@ tape("falling back when addon result is null")
 var validation = require("../validation");
 
 tape("validation - stream arguments", function(t) {
-	t.ok("valid with infoHash", validation.stream_args({ infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223"} ) === false);
-	t.ok("valid with query", validation.stream_args({ query: { imdb_id: "tt0032138" } } ) === false);
-	t.ok("invalid args", validation.stream_args({ test: { imdb_id: "tt0032138" } } ).code == 0);
+	t.ok(validation.stream_args({ infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223"} ) === false, "valid with infoHash");
+	t.ok(validation.stream_args({ query: { imdb_id: "tt0032138" } } ) === false, "valid with query");
+	t.ok(validation.stream_args({ test: { imdb_id: "tt0032138" } } ).code == 0, "invalid args");
 	t.end();
 });
 
 tape("validation - stream results", function(t) {
-	t.ok("invalid - no availability", validation.stream({ test: "http://test" }).code === 3);
-	t.ok("valid with infoHash / mapIdx", validation.stream({ availability: 3, infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223", mapIdx: 0 } ) === false);
-	t.ok("invalid with infoHash", validation.stream({ availability: 3, infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223" } ).code === 5);
-	t.ok("valid with url", validation.stream({ availability: 3, url: "http://test" }) === false);
-	t.ok("invalid", validation.stream({ availability: 3, test: "http://test" }).code === 4);
+	t.ok(validation.stream({ test: "http://test" }).code === 3, "invalid - no availability");
+	t.ok(validation.stream({ availability: 3, infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223", mapIdx: 0 } ) === false, "valid with infoHash / mapIdx");
+	t.ok(validation.stream({ availability: 3, infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223" } ).code === 5, "invalid with infoHash");
+	t.ok(validation.stream({ availability: 3, url: "http://test" }) === false, "valid with url");
+	t.ok(validation.stream({ availability: 3, test: "http://test" }).code === 4, "invalid");
 	t.end();
 });
+
+
+
+tape("stream.get validation", function(t) {
+	t.timeoutAfter(2000);
+
+	initServer({ 
+		"stream.get": function(args, cb, sess) {
+			return cb(null, { now: Date.now() });
+		}
+	},
+	function(url) {
+		var s = new addons.Client({ });
+
+		s.add(url);
+		s.setAuth(null, TEST_SECRET);
+		s.call("stream.get", { test: "weqew" }, function(err, res)
+		{
+			t.ok(err, "there is error");
+			t.ok(err.code === 0, "error code is correct");
+			t.end();
+		});
+	});
+
+});
+
