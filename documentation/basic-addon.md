@@ -42,12 +42,11 @@ var dataset = {
 var addon = new Stremio.Server({
     "stream.get": function(args, callback, user) {
         if (! args.query) return callback();
-        return callback(null, dataset[args.query.imdb_id] ? dataset[args.query.imdb_id] : null);
+        return callback(null, dataset[args.query.imdb_id] || null);
     },
     "stream.find": function(args, callback, user) {
-        callback(null, { items: args.items.map(function(x) { 
-            return dataset[x.query.imdb_id] ? { availability: dataset[x.query.imdb_id].availability } : null }) 
-        });
+        // only "availability" is required for stream.find, but we can return the whole object
+        callback(null, { items: args.items.map(function(x) { return dataset[x.query.imdb_id] || null }) });
     }
 }, { /* secret: mySecret */ }, manifest);
 
