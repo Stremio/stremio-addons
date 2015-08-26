@@ -78,6 +78,13 @@ function Server(methods, options, manifest)
 			res.end();
 			return;
 		};
+		
+		if (req.method == "GET") { // unsupported by JSON-RPC, it uses post
+			res.writeHead(302, { location: req.url.replace("http://", "stremio://") });
+			res.end();
+			return;
+		}
+		
 		res.setHeader("Access-Control-Allow-Origin", "*");
 		listener(req, res);
 	};
