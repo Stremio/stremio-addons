@@ -80,7 +80,7 @@ function Server(methods, options, manifest)
 		};
 		
 		if (req.method == "GET") { // unsupported by JSON-RPC, it uses post
-			res.writeHead(301, { location: req.url.replace("http://", "stremio://") });
+			res.writeHead(301, { "Location": req.url.replace("http://", "stremio://") });
 			res.end();
 			return;
 		}
