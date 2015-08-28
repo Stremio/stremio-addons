@@ -71,7 +71,7 @@ function Addon(url, options, client, ready)
 		if (self.initialized) return done();
 
 		self.client.request("meta", [], function(err, error, res) {
-			if (err) { console.error(err); /*self..emit("network-error", self, self.url);*/ return done(); } // network error. just ignore
+			if (err) { console.error(err, self.url); /*self..emit("network-error", err, self, self.url);*/ return done(); } // network error. just ignore
 			
 			if (error) { 
 				console.error(error); 
