@@ -290,3 +290,6 @@ tape("stream.find validation", function(t) {
 	});
 });
 
+tape("add-on priority", function(t) {
+	t.skip("not implemented")
+})
