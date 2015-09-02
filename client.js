@@ -33,7 +33,7 @@ function bindDefaults(call) {
 // TODO: unit test this
 function checkArgs(args, filter)
 {
-	if (!filter || _.isEmpty(filter)) return true;
+	if (!filter || _.isEmpty(filter)) return false;
 
 	var args = (args.items && args.items[0]) || args; // if many requests are batched
 	return _.some(filter, function(val, key) {
