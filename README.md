@@ -76,6 +76,10 @@ browserify -r ./node_modules/stremio-addons/clinet.js:stremio-addons-client > st
 ```
 
 ```javascript
-require("stremio-addons-client") // equivalent of require("stremio-addons").Client
+var client = require("stremio-addons-client"); // equivalent of require("stremio-addons").Client
+var stremio = new client({ 
+   client: function(url) { return Jayson({ url: url, timeout: 10*1000 }) },
+});
+// include jayson.jquery.js - https://raw.githubusercontent.com/tedeh/jayson/84885eed47f2f1d6b67a8aa2c27a6eb7140d7426/lib/client/jquery.js
 ```
 
