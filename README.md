@@ -68,3 +68,14 @@ client.setAuth(/* CENTRAL SERVER or null for default */, /* USER SESSION TOKEN (
 **The authToken** is a session ID we use for addon clients to identify the user. The Addon Server (implemented in server.js) is responsible for evaluating if we're getting requests from a logged-in users. That happens by asking the **central server** if that authToken is valid and belongs to a user. 
 
 **The secret** is a token, issued by a central server that we use to identify our Add-on server to the central server. We can also use our secret to identify ourselves to other Add-ons, if using them as a client - if our Add-on uses other Stremio add-ons under the hood (through the client library).
+
+## Usage in browser 
+```sh
+npm install stremio-addons xml2js # xml2js is workaround for needle issue
+browserify -r ./node_modules/stremio-addons/clinet.js:stremio-addons-client > stremio-addons-client.js
+```
+
+```javascript
+require("stremio-addons-client") // equivalent of require("stremio-addons").Client
+```
+
