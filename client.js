@@ -230,9 +230,15 @@ function rpcClient(endpoint)
 	var client = { };
 	client.request = function(method, params, callback) {
 		var callback = _.once(callback);
-		var body = JSON.stringify({ id: utils.genID(), jsonrpc: "2.0", method: method, params: params });
+		rpcRequest([{ callback: callback, params: params, method: method, id: utils.genID(), jsonrpc: "2.0" }]);
+	};
+	function rpcRequest(requests) { // supports batching
+		var body = JSON.stringify(requests.length == 1 ? requests[0] : requests);
+		var callback = requests[0].callback; // temp
+		var byId = _.indexBy(requests, "id");
 		var req = utils.http.request(_.extend(require("url").parse(endpoint), { method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } }), function(res) {
 			utils.receiveJSON(res, function(err, body) {
+				// TODO: body is array
 				if (err) return callback(err);
 				if (body.error) return callback(null, body.error);
 				callback(null, null, body.result);
