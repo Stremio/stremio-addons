@@ -1,5 +1,6 @@
 var _ = require("lodash");
 var url = require("url");
+var utils = require("./utils");
 
 var SESSION_LIVE = 2*60*60*1000; // 2 hrs
 
@@ -28,8 +29,8 @@ function Server(methods, options, manifest)
 
 		if (sessions[auth[1]]) return cb(null, sessions[auth[1]]);
 
-		var req = require("./utils/http").get(require("url").parse(auth[0]+"/stremio/service/"+options.secret+"/"+encodeURIComponent(auth[1])), function(resp) {
-			require("./utils/receive-json")(resp, function(err, body) {
+		var req = utils.http.get(require("url").parse(auth[0]+"/stremio/service/"+options.secret+"/"+encodeURIComponent(auth[1])), function(resp) {
+			utils.receiveJSON(resp, function(err, body) {
 				if (resp.statusCode==200 && body) {
 					sessions[auth[1]] = body;
 					setTimeout(function() { delete sessions[auth[1]] }, SESSION_LIVE);
@@ -99,8 +100,8 @@ function Server(methods, options, manifest)
 			res.end(respBody);
 		};
 
-		require("./utils/receive-json")(req, function(err, body) {
-			if (err || !body || !body.method) return respond(require("./utils/gen-id")(), { code: -32700, message: "parse error" });
+		utils.receiveJSON(req, function(err, body) {
+			if (err || !body || !body.method) return respond(utils.genID(), { code: -32700, message: "parse error" });
 			handle(body.method, body.params, respond.bind(null, body.id));
 		});
 	};
