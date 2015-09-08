@@ -92,17 +92,20 @@ function Server(methods, options, manifest)
 		req.on("data", function(buf) { b+=buf });
 		req.on("error", function() { res.writeHead(400); res.end() });
 		req.on("end", function() {
-			var body;
-			try { body = JSON.parse(b) } catch(e) { res.writeHead(400); res.end() }
+			var respond = function(response) {
+				res.setHeader("Content-Type", "application/json");
+				res.setHeader("Content-Length", Buffer.byteLength(response, "utf8"));
+				res.end(response);
+			};
 
-			res.setHeader("Content-Type", "application/json");
+			var body;
+			try { body = JSON.parse(b) } catch(e) { return respond({ error: { code: -32700, message: "parse error" } }) }
+
 			handle(body.method, body.params, function(err, result) {
 				var respBody = { jsonrpc: "2.0", id: body.id };
 				if (err) respBody.error = { message: err.message, code: err.code || -32603 };
 				else respBody.result = result;
-				respBody = JSON.stringify(respBody);
-				res.setHeader("Content-Length", Buffer.byteLength(respBody, "utf8"));
-				res.end(respBody);
+				respond(JSON.stringify(respBody));
 			});
 		});
 	};

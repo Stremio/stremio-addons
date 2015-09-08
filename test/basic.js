@@ -173,7 +173,6 @@ tape("intercept error from addon", function(t) {
 			s.setAuth(null, TEST_SECRET);
 			s.stream.get({ query: { id: 1 } }, function(err, res)
 			{
-				console.log(err,res)
 				t.ok(err, "we have an error");
 				t.end();
 			});
