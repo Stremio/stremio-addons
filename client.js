@@ -231,7 +231,7 @@ function rpcClient(endpoint)
 	var client = { };
 	client.request = function(method, params, callback) {
 		var callback = _.once(callback);
-		var body = JSON.stringify({ id: Math.round(Math.random() * Math.pow(2, 24)), jsonrpc: "2.0", method: method, params: params });
+		var body = JSON.stringify({ id: require("./utils/gen-id"), jsonrpc: "2.0", method: method, params: params });
 		var req = http.request(_.extend(require("url").parse(endpoint), { method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } }), function(res) {
 			require("./utils/receive-json")(res, function(err, body) {
 				if (err) return callback(err);

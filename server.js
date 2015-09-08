@@ -88,21 +88,20 @@ function Server(methods, options, manifest)
 		if (! req.headers["content-type"].match("^application/json")) return res.writeHead(415); // unsupported media type
 		res.setHeader("Access-Control-Allow-Origin", "*");
 
-		var respond = function(response) {
+		var respond = function(id, err, body) {
+			var respBody = { jsonrpc: "2.0" };
+			if (err) respBody.error = { message: err.message, code: err.code || -32603 };
+			else respBody.result = body;
+
+			respBody = JSON.stringify(respBody);
 			res.setHeader("Content-Type", "application/json");
-			res.setHeader("Content-Length", Buffer.byteLength(response, "utf8"));
-			res.end(response);
+			res.setHeader("Content-Length", Buffer.byteLength(respBody, "utf8"));
+			res.end(respBody);
 		};
 
 		require("./utils/receive-json")(req, function(err, body) {
-			if (err || !body || !body.method) return respond({ error: { code: -32700, message: "parse error" } });
-
-			handle(body.method, body.params, function(err, result) {
-				var respBody = { jsonrpc: "2.0", id: body.id };
-				if (err) respBody.error = { message: err.message, code: err.code || -32603 };
-				else respBody.result = result;
-				respond(JSON.stringify(respBody));
-			});
+			if (err || !body || !body.method) return respond(require("./utils/gen-id")(), { code: -32700, message: "parse error" });
+			handle(body.method, body.params, respond.bind(null, body.id));
 		});
 	};
 };
