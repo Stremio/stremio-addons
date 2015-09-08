@@ -235,7 +235,7 @@ function rpcClient(endpoint)
 	client.enqueue = function(handle, method, params, callback) {
 		if (! handle.flush) handle.flush = _.debounce(function() {
 			rpcRequest(handle.queue); handle.queue = [];
-		}, handle.ms);
+		}, handle.time);
 		handle.queue.push({ callback: callback, params: params, method: method, id: utils.genID(), jsonrpc: "2.0" });
 		handle.flush();
 	};
