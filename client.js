@@ -123,6 +123,7 @@ function Stremio(options)
 
 	var auth;
 	var services = {};
+	var debounced = { };
 
 	// Set the authentication
 	this.setAuth = function(url, token) {
@@ -153,6 +154,12 @@ function Stremio(options)
 		if (forMethod) res = res.filter(function(x) { return x.initialized ? x.methods.indexOf(forMethod) != -1 : true }); // if it's not initialized, assume it supports the method
 		if (forMethod) res = picker(res, forMethod); // apply the picker for a method
 		return res;
+	};
+
+	// Set de-bounced batching
+	this.setBatchingDebounce = function(method, ms) {
+		if (self.manifest && self.methods.indexOf(method) == -1) return;
+		debounced[method] = ms ? { time: ms, queue: [] } : null;
 	};
 
 	// Bind methods

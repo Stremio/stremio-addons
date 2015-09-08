@@ -121,6 +121,32 @@ tape("callEvery", function(t) {
 });
 
 
+tape("debounced batching test", function(t) {
+	t.timeoutAfter(2000);
+
+	initServer({ 
+		"stream.test": function(args, cb, sess, batched) {
+			t.ok(batched, "is batched");
+			return cb(null, { infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223", availability: 2, now: Date.now(), from: "ONE" });
+		}
+	},
+	function(url1) {
+		var s = new addons.Client({ });
+		s.add(url1);
+		s.setAuth(null, TEST_SECRET);
+		s.setBatchingDebounce("stream.test", 50);
+
+		var called = 0;
+		[1,2,3,4,5].forEach(function(i) {
+			s.call("stream.test", { query: { id: 1 } }, function(err, res)
+			{
+				t.ok(!err, "no err on call");
+				if (++called == 5) t.end();
+			});
+		});
+	});
+});
+
 tape("fallback if result is null", function(t) {
 	t.timeoutAfter(2000);
 
