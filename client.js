@@ -221,6 +221,9 @@ function getTypes(services) {
 };
 
 // Utility for JSON-RPC
+// Rationales in our own client
+// 1) have more control over the process, be able to implement debounced batching
+// 2) reduce number of dependencies
 function rpcClient(endpoint)
 {
 	var http; try { http = require("stream-http"); } catch(e) { http = require("http") };
@@ -232,7 +235,7 @@ function rpcClient(endpoint)
 		var req = http.request(_.extend(require("url").parse(endpoint), { method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } }), function(res) {
 			res.setEncoding("utf8");
 			res.on("error", function(err) { callback(err) });
-			
+
 			var body = "";
 			res.on("data", function(d) { body += d });
 			res.on("end", function() {
