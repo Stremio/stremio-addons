@@ -124,13 +124,14 @@ tape("callEvery", function(t) {
 tape("debounced batching test", function(t) {
 	t.timeoutAfter(6000);
 
-	var onTick = -1;
+	var j = 0;
+	var called = 0;
+
 	initServer({ 
 		"stream.test": function(args, cb, sess) {
-			//var batched = // TODO based on time
-			var batched = false;
-			t.ok(batched, "is batched");
-			return cb(null, { infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223", availability: 2, now: Date.now(), from: "ONE" });
+			t.ok(j == 5, "is batched");
+			cb(null, { infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223", availability: 2, now: Date.now(), from: "ONE" });
+			if (++called == 5) t.end();
 		}
 	},
 	function(url1) {
@@ -139,13 +140,12 @@ tape("debounced batching test", function(t) {
 		s.setAuth(null, TEST_SECRET);
 		s.setBatchingDebounce("stream.test", 4000);
 
-		var called = 0;
 		[1,2,3,4,5].forEach(function(i) {
 			setTimeout(function() {
 				s.call("stream.test", { query: { id: 1 } }, function(err, res)
 				{
 					t.ok(!err, "no err on call");
-					if (++called == 5) t.end();
+					j = i;
 				});
 			}, i*500);
 		});
