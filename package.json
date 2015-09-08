@@ -4,7 +4,6 @@
   "description": "Stremio Add-on Server / Client",
   "main": "index.js",
   "dependencies": {
-    "jayson": "1.1.x",
     "lodash": "3.3.x",
     "async": "0.9.x",
     "needle": "0.9.x",

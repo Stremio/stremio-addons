@@ -21,7 +21,7 @@ function initServer(methods, callback) {
 }
 
 tape("initialize server, basic call", function(t) {
-	t.timeoutAfter(5000); // 5s because of slow auth
+	t.timeoutAfter(10000); // 5s because of slow auth
 
 	var received = false;
 

@@ -133,7 +133,7 @@ function Stremio(options)
 	// Adding services
 	this.add = function(url, opts) {
 		if (services[url]) return;
-		services[url] = new Addon(url, opts || {}, options.client || require("jayson").client.http, function() { 
+		services[url] = new Addon(url, opts || {}, options.client || rpcClient, function() { 
 			// callback for ready service
 			self.emit("addon-ready", services[url], url);
 		});
@@ -165,7 +165,7 @@ function Stremio(options)
 			if (! service) return next(true); // end the loop
 
 			service.call(method, [auth, args], function(skip, err, error, res) {
-				// err, error are respectively HTTP error / Jayson error; we need to implement fallback based on that (do a skip)
+				// err, error are respectively HTTP error / JSON-RPC error; we need to implement fallback based on that (do a skip)
 				if (skip || err || (method.match("get$") && res === null) ) return next(); // Go to the next service
 
 				cb(error, res, service);
@@ -210,6 +210,22 @@ function getTypes(services) {
 	});
 	
 	return types;
+};
+
+// Utility for JSON-RPC
+function rpcClient(endpoint)
+{
+	var needle = require("needle");
+	var client = {};
+	client.request = function(method, params, callback) {
+		needle.post(endpoint, { id: Math.round(Math.random() * Math.pow(2, 24)), jsonrpc: "2.0", method: method, params: params }, { json: true }, function(err, resp, body) {
+			if (err) return callback(err);
+			if (! body) return callback(new Error("empty response"));
+			if (body.error) return callback(null, body.error);
+			callback(null, null, body.result);
+		});
+	};
+	return client;
 };
 
 module.exports = Stremio;
