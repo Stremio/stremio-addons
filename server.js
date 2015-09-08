@@ -6,9 +6,6 @@ var SESSION_LIVE = 2*60*60*1000; // 2 hrs
 
 function Server(methods, options, manifest)
 {	
-	var jayson = require("jayson");
-	var jaysonUtils = require("jayson/lib/utils");
-
 	options = _.extend({ 
 		allow: [ module.parent.CENTRAL ], // default stremio central
 		secret: "8417fe936f0374fbd16a699668e8f3c4aa405d9f" // default secret for testing add-ons
@@ -45,27 +42,10 @@ function Server(methods, options, manifest)
 		})
 	};
 
-
-	var server = jayson.server({ }, { router: function(method) {
-		if (method == "meta") return meta;
-		if (! methods[method]) return null;
-		
-		return function(auth, args, callback) {
-			if (!(auth && auth[1]) && methods[method].noauth) return methods[method](args,callback,{ noauth: true }); // the function is allowed without auth
-			if (! auth) return callback({ message: "auth not specified", code: 1 });
-
-			checkSession(auth, function(err, session) {
-				if (err && methods[method].noauth) return methods[method](args,callback,{ noauth: true }); // the function is allowed without auth
-				if (err) return callback(err);
-				methods[method](args, callback, session);
-			});
-		};
-	} });
-	var listener = jaysonUtils.getHttpListener({ }, server);
-
 	this.middleware = function(req, res, next) {
+		// Only serves stremio endpoint - currently /stremio/v1
 		var parsed = url.parse(req.url);
-		if (parsed.pathname != module.parent.STREMIO_PATH) return next();
+		if (parsed.pathname != module.parent.STREMIO_PATH) return next(); 
 		
 		if (req.method === "OPTIONS") {
 			var headers = {};
@@ -77,16 +57,55 @@ function Server(methods, options, manifest)
 			res.writeHead(200, headers);
 			res.end();
 			return;
-		};
-		
+		};	
 		if (req.method == "GET") { // unsupported by JSON-RPC, it uses post
 			res.writeHead(301, { "Location": req.url.replace("http://", "stremio://") });
 			res.end();
 			return;
 		}
 		
+		if (req.method == "POST") return serveRPC(req, res, function(method, params, cb) {
+			if (method == "meta") return meta(cb);
+			if (! methods[method]) return cb({ message: "method not supported", code: -32601 }, null);
+
+			var auth = params[0], args = params[1];
+			if (!(auth && auth[1]) && methods[method].noauth) return methods[method](args, cb, { noauth: true }); // the function is allowed without auth
+			if (! auth) return cb({ message: "auth not specified", code: 1 });
+			
+			checkSession(auth, function(err, session) {
+				if (err && methods[method].noauth) return methods[method](args, cb, { noauth: true }); // the function is allowed without auth
+				if (err) return callback(err);
+				methods[method](args, cb, session);
+			});
+		});
+
+		res.writeHead(405); // method not allowed
+		res.end();
+	};
+
+	function serveRPC(req, res, handle) {
+		if (! req.headers["content-type"].match("^application/json")) return res.writeHead(415); // unsupported media type
 		res.setHeader("Access-Control-Allow-Origin", "*");
-		listener(req, res);
+		
+		var b = "";
+		req.setEncoding("utf8");
+		req.on("data", function(buf) { b+=buf });
+		req.on("error", function() { res.writeHead(400); res.end() });
+		req.on("end", function() {
+			var body;
+			try { body = JSON.parse(b) } catch(e) { res.writeHead(400); res.end() }
+
+			res.setHeader("Content-Type", "application/json");
+			handle(body.method, body.params, function(err, result) {
+				var respBody = JSON.stringify({ 
+					jsonrpc: "2.0",
+					result: result, error: err ? { message: err.message, code: err.code } : undefined,
+					id: body.id
+				});
+				res.setHeader("Content-Length", Buffer.byteLength(respBody, "utf8"));
+				res.end(respBody);
+			});
+		});
 	};
 };
 

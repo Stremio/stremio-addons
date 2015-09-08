@@ -21,7 +21,7 @@ function initServer(methods, callback) {
 }
 
 tape("initialize server, basic call", function(t) {
-	t.timeoutAfter(2000);
+	t.timeoutAfter(5000); // 5s because of slow auth
 
 	var received = false;
 
@@ -173,6 +173,7 @@ tape("intercept error from addon", function(t) {
 			s.setAuth(null, TEST_SECRET);
 			s.stream.get({ query: { id: 1 } }, function(err, res)
 			{
+				console.log(err,res)
 				t.ok(err, "we have an error");
 				t.end();
 			});
