@@ -226,20 +226,15 @@ function getTypes(services) {
 // 2) reduce number of dependencies
 function rpcClient(endpoint)
 {
-	var http; try { http = require("stream-http"); } catch(e) { http = require("http") };
+	var http = require("./utils/http");
 
 	var client = { };
 	client.request = function(method, params, callback) {
 		var callback = _.once(callback);
 		var body = JSON.stringify({ id: Math.round(Math.random() * Math.pow(2, 24)), jsonrpc: "2.0", method: method, params: params });
 		var req = http.request(_.extend(require("url").parse(endpoint), { method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } }), function(res) {
-			res.setEncoding("utf8");
-			res.on("error", function(err) { callback(err) });
-
-			var body = "";
-			res.on("data", function(d) { body += d });
-			res.on("end", function() {
-				try { body = JSON.parse(body) } catch(e) { return callback(e) };
+			require("./utils/receive-json")(res, function(err, body) {
+				if (err) return callback(err);
 				if (body.error) return callback(null, body.error);
 				callback(null, null, body.result);
 			});

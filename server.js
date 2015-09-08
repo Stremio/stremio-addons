@@ -1,6 +1,5 @@
 var _ = require("lodash");
 var url = require("url");
-var needle = require("needle");
 
 var SESSION_LIVE = 2*60*60*1000; // 2 hrs
 
@@ -29,17 +28,19 @@ function Server(methods, options, manifest)
 
 		if (sessions[auth[1]]) return cb(null, sessions[auth[1]]);
 
-		needle.get(auth[0]+"/stremio/service/"+options.secret+"/"+encodeURIComponent(auth[1]), function(err, resp) {
-			if (err) return cb({ message: "failed to connect to center", code: 5 });
-			if (resp.statusCode==200) {
-				sessions[auth[1]] = resp.body;
-				setTimeout(function() { delete sessions[auth[1]] }, SESSION_LIVE);
-				return cb(null, resp.body);
-			};
-
-			if (!resp.body.message) console.error("auth server returned",resp.body);
-			return cb(resp.body.message ? resp.body : { message: "unknown error reaching auth server", code: 8 }); // error
-		})
+		var req = require("./utils/http").get(require("url").parse(auth[0]+"/stremio/service/"+options.secret+"/"+encodeURIComponent(auth[1])), function(resp) {
+			require("./utils/receive-json")(resp, function(err, body) {
+				if (resp.statusCode==200 && body) {
+					sessions[auth[1]] = body;
+					setTimeout(function() { delete sessions[auth[1]] }, SESSION_LIVE);
+					return cb(null, body);
+				};
+				if (err) return cb(err);
+				if (!body.message) console.error("auth server returned", body);
+				return cb(body.message ? body : { message: "unknown error reaching auth server", code: 8 }); // error
+			});
+		});
+		req.on("error", function(e) { cb({ message: "failed to connect to center", code: 5 }) });
 	};
 
 	this.middleware = function(req, res, next) {
@@ -86,20 +87,15 @@ function Server(methods, options, manifest)
 	function serveRPC(req, res, handle) {
 		if (! req.headers["content-type"].match("^application/json")) return res.writeHead(415); // unsupported media type
 		res.setHeader("Access-Control-Allow-Origin", "*");
-		
-		var b = "";
-		req.setEncoding("utf8");
-		req.on("data", function(buf) { b+=buf });
-		req.on("error", function() { res.writeHead(400); res.end() });
-		req.on("end", function() {
-			var respond = function(response) {
-				res.setHeader("Content-Type", "application/json");
-				res.setHeader("Content-Length", Buffer.byteLength(response, "utf8"));
-				res.end(response);
-			};
 
-			var body;
-			try { body = JSON.parse(b) } catch(e) { return respond({ error: { code: -32700, message: "parse error" } }) }
+		var respond = function(response) {
+			res.setHeader("Content-Type", "application/json");
+			res.setHeader("Content-Length", Buffer.byteLength(response, "utf8"));
+			res.end(response);
+		};
+
+		require("./utils/receive-json")(req, function(err, body) {
+			if (err || !body || !body.method) return respond({ error: { code: -32700, message: "parse error" } });
 
 			handle(body.method, body.params, function(err, result) {
 				var respBody = { jsonrpc: "2.0", id: body.id };
