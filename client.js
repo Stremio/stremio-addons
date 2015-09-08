@@ -55,10 +55,11 @@ console.log(checkArgs({ query: {} }, f) === false);
 console.log(checkArgs({ query: { idx: 5 } } , f) === false);
 */
 
-function Addon(url, options, client, ready)
+function Addon(url, options, stremio, ready)
 {
 	var self = this;
 
+	var client = options.client || rpcClient;
 	this.client = client(url+(module.parent ? module.parent.STREMIO_PATH : "/stremio/v1") );
 	this.url = url;
 	this.priority = options.priority || 0;
@@ -134,7 +135,7 @@ function Stremio(options)
 	// Adding services
 	this.add = function(url, opts) {
 		if (services[url]) return;
-		services[url] = new Addon(url, opts || {}, options.client || rpcClient, function() { 
+		services[url] = new Addon(url, opts || {}, self, function() { 
 			// callback for ready service
 			self.emit("addon-ready", services[url], url);
 		});
