@@ -223,15 +223,27 @@ function getTypes(services) {
 // Utility for JSON-RPC
 function rpcClient(endpoint)
 {
-	var needle = require("needle");
-	var client = {};
+	var http; try { http = require("stream-http"); } catch(e) { http = require("http") };
+
+	var client = { };
 	client.request = function(method, params, callback) {
-		needle.post(endpoint, { id: Math.round(Math.random() * Math.pow(2, 24)), jsonrpc: "2.0", method: method, params: params }, { json: true }, function(err, resp, body) {
-			if (err) return callback(err);
-			if (! body) return callback(new Error("empty response"));
-			if (body.error) return callback(null, body.error);
-			callback(null, null, body.result);
+		var callback = _.once(callback);
+		var body = JSON.stringify({ id: Math.round(Math.random() * Math.pow(2, 24)), jsonrpc: "2.0", method: method, params: params });
+		var req = http.request(_.extend(require("url").parse(endpoint), { method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } }), function(res) {
+			res.setEncoding("utf8");
+			res.on("error", function(err) { callback(err) });
+			
+			var body = "";
+			res.on("data", function(d) { body += d });
+			res.on("end", function() {
+				try { body = JSON.parse(body) } catch(e) { return callback(e) };
+				if (body.error) return callback(null, body.error);
+				callback(null, null, body.result);
+			});
 		});
+		req.on("error", function(err) { callback(err) });
+		req.write(body);
+		req.end();
 	};
 	return client;
 };
