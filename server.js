@@ -67,18 +67,19 @@ function Server(methods, options, manifest)
 			return;
 		}
 		
-		if (req.method == "POST") return serveRPC(req, res, function(method, params, cb) {
+		// WARNING: _batched is internal, used in the tests; figure out a better way to do it
+		if (req.method == "POST") return serveRPC(req, res, function(method, params, cb, _batched) {
 			if (method == "meta") return meta(cb);
 			if (! methods[method]) return cb({ message: "method not supported", code: -32601 }, null);
 
 			var auth = params[0], args = params[1];
-			if (!(auth && auth[1]) && methods[method].noauth) return methods[method](args, cb, { noauth: true }); // the function is allowed without auth
+			if (!(auth && auth[1]) && methods[method].noauth) return methods[method](args, cb, { noauth: true }, _batched); // the function is allowed without auth
 			if (! auth) return cb({ message: "auth not specified", code: 1 });
 			
 			checkSession(auth, function(err, session) {
 				if (err && methods[method].noauth) return methods[method](args, cb, { noauth: true }); // the function is allowed without auth
 				if (err) return callback(err);
-				methods[method](args, cb, session);
+				methods[method](args, cb, session, _batched);
 			});
 		});
 
@@ -90,11 +91,13 @@ function Server(methods, options, manifest)
 		if (! req.headers["content-type"].match("^application/json")) return res.writeHead(415); // unsupported media type
 		res.setHeader("Access-Control-Allow-Origin", "*");
 
-		var respond = function(id, err, body) {
+		function formatResp(id, err, body) {
 			var respBody = { jsonrpc: "2.0", id: id };
 			if (err) respBody.error = { message: err.message, code: err.code || -32603 };
 			else respBody.result = body;
-
+			return respBody;
+		};
+		function send(respBody) {
 			respBody = JSON.stringify(respBody);
 			res.setHeader("Content-Type", "application/json");
 			res.setHeader("Content-Length", Buffer.byteLength(respBody, "utf8"));
@@ -102,10 +105,19 @@ function Server(methods, options, manifest)
 		};
 
 		utils.receiveJSON(req, function(err, body) {
-			if (err || !body || !body.method) return respond(utils.genID(), { code: -32700, message: "parse error" });
-
-			//if (Array.isArray(body)) return async.map(body, function(body, cb) {  })
-			handle(body.method, body.params, respond.bind(null, body.id));
+			if (err) return send({ code: -32700, message: "parse error" }); // TODO: jsonrpc, id prop
+			
+			if (Array.isArray(body)) {
+				async.map(body, function(b, cb) { 
+					// WARNING: same logic as -->
+					if (!b || !b.id || !b.method) return cb(null, formatResp(null, { code: -32700, message: "parse error" })); 
+					handle(b.method, b.params, function(err, bb) { cb(null, formatResp(b.id, err, bb)) }, true);
+				}, function(err, bodies) { send(bodies) });
+			} else { 
+				// --> THIS
+				if (!body || !body.id || !body.method) return cb({ code: -32700, message: "parse error" });
+				handle(body.method, body.params, function(err, b) { send(formatResp(body.id, err, b)) });
+			}
 		});
 	};
 };

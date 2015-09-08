@@ -124,9 +124,11 @@ tape("callEvery", function(t) {
 tape("debounced batching test", function(t) {
 	t.timeoutAfter(2000);
 
+	var onTick = -1;
 	initServer({ 
-		"stream.test": function(args, cb, sess, batched) {
-			t.ok(batched, "is batched");
+		"stream.test": function(args, cb, sess, _batched) {
+			// HACK to test if batched
+			t.ok(_batched, "is batched");
 			return cb(null, { infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223", availability: 2, now: Date.now(), from: "ONE" });
 		}
 	},
