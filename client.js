@@ -99,7 +99,8 @@ function Addon(url, options, stremio, ready)
 		if (cb) cb = _.once(cb);
 		q.push({ }, function() {
 			if (self.methods.indexOf(method) == -1) return cb(1);
-			self.client.request(method, args, function(err, error, res) { cb(0, err, error, res) });
+			var m = (stremio.debounced[method] && self.client.enqueue) ? self.client.enqueue.bind(null, stremio.debounced[method]) : self.client.request;
+			m(method, args, function(err, error, res) { cb(0, err, error, res) });
 		});
 	};
 
@@ -125,7 +126,7 @@ function Stremio(options)
 
 	var auth;
 	var services = {};
-	var debounced = { };
+	self.debounced = { };
 
 	// Set the authentication
 	this.setAuth = function(url, token) {
@@ -161,7 +162,7 @@ function Stremio(options)
 	// Set de-bounced batching
 	this.setBatchingDebounce = function(method, ms) {
 		if (self.manifest && self.methods.indexOf(method) == -1) return;
-		debounced[method] = ms ? { time: ms, queue: [] } : null;
+		self.debounced[method] = ms ? { time: ms, queue: [] } : null;
 	};
 
 	// Bind methods
@@ -229,10 +230,17 @@ function rpcClient(endpoint)
 {
 	var client = { };
 	client.request = function(method, params, callback) {
-		var callback = _.once(callback);
 		rpcRequest([{ callback: callback, params: params, method: method, id: utils.genID(), jsonrpc: "2.0" }]);
 	};
+	client.enqueue = function(handle, method, params, callback) {
+		if (! handle.flush) handle.flush = _.debounce(function() {
+			rpcRequest(handle.queue); handle.queue = [];
+		}, handle.ms);
+		handle.queue.push({ callback: callback, params: params, method: method, id: utils.genID(), jsonrpc: "2.0" });
+		handle.flush();
+	};
 	function rpcRequest(requests) { // supports batching
+		requests.forEach(function(x) { x.callback = _.once(x.callback )});
 		var body = JSON.stringify(requests.length == 1 ? requests[0] : requests);
 		var byId = _.indexBy(requests, "id");
 		var callbackAll = function() { requests.forEach(function(x) { x.callback && x.callback.apply(null, arguments) }) };
