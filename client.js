@@ -72,7 +72,7 @@ function Addon(url, options, stremio, ready)
 		if (self.initialized) return done();
 
 		self.client.request("meta", [], function(err, error, res) {
-			if (err) { console.error(err, self.url); stremio.emit("network-error", err, self, self.url); return done(); } // network error. just ignore
+			if (err) { stremio.emit("network-error", err, self, self.url); return done(); } // network error. just ignore
 			
 			if (error) { 
 				console.error(error); 
