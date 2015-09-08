@@ -97,11 +97,10 @@ function Server(methods, options, manifest)
 
 			res.setHeader("Content-Type", "application/json");
 			handle(body.method, body.params, function(err, result) {
-				var respBody = JSON.stringify({ 
-					jsonrpc: "2.0",
-					result: result, error: err ? { message: err.message, code: err.code } : undefined,
-					id: body.id
-				});
+				var respBody = { jsonrpc: "2.0", id: body.id };
+				if (err) respBody.error = { message: err.message, code: err.code || -32603 };
+				else respBody.result = result;
+				respBody = JSON.stringify(respBody);
 				res.setHeader("Content-Length", Buffer.byteLength(respBody, "utf8"));
 				res.end(respBody);
 			});
