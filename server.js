@@ -67,13 +67,12 @@ function Server(methods, options, manifest)
 			return;
 		}
 		
-		// WARNING: _batched is internal, used in the tests; figure out a better way to do it
-		if (req.method == "POST") return serveRPC(req, res, function(method, params, cb, _batched) {
+		if (req.method == "POST") return serveRPC(req, res, function(method, params, cb) {
 			if (method == "meta") return meta(cb);
 			if (! methods[method]) return cb({ message: "method not supported", code: -32601 }, null);
 
 			var auth = params[0], args = params[1];
-			if (!(auth && auth[1]) && methods[method].noauth) return methods[method](args, cb, { noauth: true }, _batched); // the function is allowed without auth
+			if (!(auth && auth[1]) && methods[method].noauth) return methods[method](args, cb, { noauth: true }); // the function is allowed without auth
 			if (! auth) return cb({ message: "auth not specified", code: 1 });
 			
 			checkSession(auth, function(err, session) {
@@ -111,7 +110,7 @@ function Server(methods, options, manifest)
 				async.map(body, function(b, cb) { 
 					// WARNING: same logic as -->
 					if (!b || !b.id || !b.method) return cb(null, formatResp(null, { code: -32700, message: "parse error" })); 
-					handle(b.method, b.params, function(err, bb) { cb(null, formatResp(b.id, err, bb)) }, true);
+					handle(b.method, b.params, function(err, bb) { cb(null, formatResp(b.id, err, bb)) });
 				}, function(err, bodies) { send(bodies) });
 			} else { 
 				// --> THIS
