@@ -222,13 +222,11 @@ tape("fallback on a network error, emit network-error event", function(t) {
 		s.add(url1, { priority: 1 });
 		s.setAuth(null, TEST_SECRET);
 		
-		/*
-		s.on("network-error", function(addon, url) { 
+		s.on("network-error", function(err, addon, url) { 
 			emitted = true; 
 			t.ok(addon.url == url, "addon url returned"); 
-			t.ok(addon.url == url1, "addon url correct"); 
+			t.ok(addon.url == "http://dummy-dummy-dummy.du", "addon url correct"); 
 		});
-		*/
 
 		s.stream.get({ query: { id: 1 } }, function(err, res, addon)
 		{
