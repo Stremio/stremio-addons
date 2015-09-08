@@ -234,17 +234,19 @@ function rpcClient(endpoint)
 	};
 	function rpcRequest(requests) { // supports batching
 		var body = JSON.stringify(requests.length == 1 ? requests[0] : requests);
-		var callback = requests[0].callback; // temp
 		var byId = _.indexBy(requests, "id");
+		var callbackAll = function() { requests.forEach(function(x) { x.callback && x.callback.apply(null, arguments) }) };
 		var req = utils.http.request(_.extend(require("url").parse(endpoint), { method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } }), function(res) {
 			utils.receiveJSON(res, function(err, body) {
-				// TODO: body is array
-				if (err) return callback(err);
-				if (body.error) return callback(null, body.error);
-				callback(null, null, body.result);
+				if (err) return callbackAll(err);
+				(Array.isArray(body) ? body : [body]).forEach(function(body) {
+					var callback = (byId[body.id] && byId[body.id].callback) || _.noop;
+					if (body.error) return callback(null, body.error);
+					callback(null, null, body.result);
+				});
 			});
 		});
-		req.on("error", function(err) { callback(err) });
+		req.on("error", callbackAll);
 		req.write(body);
 		req.end();
 	};

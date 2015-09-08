@@ -1,6 +1,7 @@
 var _ = require("lodash");
 var url = require("url");
 var utils = require("./utils");
+var async = require("async");
 
 var SESSION_LIVE = 2*60*60*1000; // 2 hrs
 
@@ -90,7 +91,7 @@ function Server(methods, options, manifest)
 		res.setHeader("Access-Control-Allow-Origin", "*");
 
 		var respond = function(id, err, body) {
-			var respBody = { jsonrpc: "2.0" };
+			var respBody = { jsonrpc: "2.0", id: id };
 			if (err) respBody.error = { message: err.message, code: err.code || -32603 };
 			else respBody.result = body;
 
@@ -102,6 +103,8 @@ function Server(methods, options, manifest)
 
 		utils.receiveJSON(req, function(err, body) {
 			if (err || !body || !body.method) return respond(utils.genID(), { code: -32700, message: "parse error" });
+
+			//if (Array.isArray(body)) return async.map(body, function(body, cb) {  })
 			handle(body.method, body.params, respond.bind(null, body.id));
 		});
 	};
