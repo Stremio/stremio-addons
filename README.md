@@ -71,7 +71,7 @@ client.setAuth(/* CENTRAL SERVER or null for default */, /* USER SESSION TOKEN (
 
 ## Usage in browser 
 ```sh
-browserify -r ./node_modules/stremio-addons/client.js:stremio-addons > stremio-addons.js
+browserify -r ./node_modules/stremio-addons/index.js:stremio-addons > stremio-addons.js
 ```
 Or use the pre-built ``browser/stremio-addons.js`` with ``window.require("stremio-addons")``
 ```html

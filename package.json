@@ -9,9 +9,12 @@
     "mpath": "0.2.x"
   },
   "devDependencies": {
-    "tape": "4.x.x"
+    "tape": "4.x.x",
+    "browserify": "*",
+    "uglifyjs": "*"
   },
   "scripts": {
+    "prepublish": "browserify -r ./index.js:stremio-addons | uglifyjs > browser/stremio-addons.min.js ; git commit browser/stremio-addons.min.js -m 'stremio-addons.min.js update'",
     "test": "tape test/*.js"
   },
   "repository": {
