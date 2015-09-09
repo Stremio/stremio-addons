@@ -6,8 +6,7 @@
   "dependencies": {
     "lodash": "3.3.x",
     "async": "0.9.x",
-    "mpath": "0.2.x",
-    "stream-http": "^1.2.0"
+    "mpath": "0.2.x"
   },
   "devDependencies": {
     "tape": "4.x.x"
