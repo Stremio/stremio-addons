@@ -71,15 +71,14 @@ client.setAuth(/* CENTRAL SERVER or null for default */, /* USER SESSION TOKEN (
 
 ## Usage in browser 
 ```sh
-npm install stremio-addons xml2js # xml2js is workaround for needle issue
-browserify -r ./node_modules/stremio-addons/clinet.js:stremio-addons-client > stremio-addons-client.js
+browserify -r ./node_modules/stremio-addons/client.js:stremio-addons > stremio-addons.js
 ```
-
-```javascript
-var client = require("stremio-addons-client"); // equivalent of require("stremio-addons").Client
-var stremio = new client({ 
-   client: function(url) { return Jayson({ url: url, timeout: 10*1000 }) },
-});
-// include jayson.jquery.js - https://raw.githubusercontent.com/tedeh/jayson/84885eed47f2f1d6b67a8aa2c27a6eb7140d7426/lib/client/jquery.js
+Or use the pre-built ``browser/stremio-addons.js`` with ``window.require("stremio-addons")``
+```html
+<script src="public/stremio-addons.js"></script>
+<script>
+var client = window.require("stremio-addons").Client();
+/// ...
+</script>
 ```
 
