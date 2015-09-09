@@ -166,7 +166,7 @@ function Stremio(options)
 
 	// Bind methods
 	function call(method, args, cb) {
-		var s = _.sortBy(self.get(), function(x) { return -checkArgs(args, x.manifest.filter) });
+		var s = _.sortBy(self.get(method), function(x) { return -checkArgs(args, x.manifest.filter) });
 		s = picker(s, method);
 
 		async.forever(function(next) {
