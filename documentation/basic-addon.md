@@ -46,7 +46,8 @@ var addon = new Stremio.Server({
     },
     "stream.find": function(args, callback, user) {
         // only "availability" is required for stream.find, but we can return the whole object
-        callback(null, { items: args.items.map(function(x) { return dataset[x.query.imdb_id] || null }) });
+        if (! args.query) return callback();
+        callback(null, return dataset[args.query.imdb_id] || null);
     }
 }, { /* secret: mySecret */ }, manifest);
 

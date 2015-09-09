@@ -36,7 +36,6 @@ function checkArgs(args, filter)
 {
 	if (!filter || _.isEmpty(filter)) return true;
 
-	var args = (args.items && args.items[0]) || args; // if many requests are batched
 	return _.some(filter, function(val, key) {
 		var v = mpath.get(key, args);
 		if (val.$exists) return (v !== undefined) == val.$exists;
@@ -93,7 +92,7 @@ function Addon(url, options, stremio, ready)
 	{
 		// Validate arguments - we should do this via some sort of model system
 		var err;
-		if (method.match("^stream")) (args[1].items || [args[1]]).forEach(function(args) { err =  err || validation.stream_args(args) });
+		if (method.match("^stream")) [args[1]].forEach(function(args) { err =  err || validation.stream_args(args) });
 		if (err) return cb(0, null, err);
 
 		if (cb) cb = _.once(cb);
