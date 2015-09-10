@@ -25,6 +25,7 @@ var mySecret = "your secret";
 var manifest = { 
     "name": "Example Addon",
     "description": "Sample addon providing a few public domain movies",
+    "icon": "URL to 256x256 monochrome png icon", "background": "URL to 1366x756 png background",
     "id": "org.stremio.basic",
     "version": "1.0.0",
     "types": ["movie"],
