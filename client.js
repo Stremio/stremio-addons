@@ -160,11 +160,13 @@ function Stremio(options)
 	};
 
 	function fallthrough(s, method, args, cb) {
+		var networkErr; // save last network error to return it potentially
 		async.forever(function(next) {
 			var service = s.shift();
 			if (! service) return next(true); // end the loop
 
 			service.call(method, [auth, args], function(skip, err, error, res) {
+				networkErr = err;
 				// err, error are respectively HTTP error / JSON-RPC error; we need to implement fallback based on that (do a skip)
 				if (skip || err || (method.match("get$") && res === null) ) return next(); // Go to the next service
 
@@ -172,7 +174,7 @@ function Stremio(options)
 				next(1); // Stop
 			});
 		}, function(err) {
-			if (err !== 1) cb(new Error(self.get(method).length ? "no addon supports these arguments" : "no addon supplies this method"));
+			if (err !== 1) cb(new Error(networkErr || "no addon supplies this method / arguments"));
 		});
 	};
 
