@@ -67,10 +67,10 @@ function Addon(url, options, stremio, ready)
 			
 			if (error) { 
 				console.error(error); 
-				if (self.retries++ < MAX_RETRIES) setTimeout(function() { self.initialized = false; self.lastError = error; }, SERVICE_RETRY_TIMEOUT); 
+				if (self.retries++ < MAX_RETRIES) setTimeout(function() { self.initialized = false }, SERVICE_RETRY_TIMEOUT); 
 			} // service error. mark initialized, can re-try after 30 sec
 			self.initialized = true;
-			self.lastError = null;
+			self.lastError = error;
 			if (res && res.methods) self.methods = self.methods.concat(res.methods);
 			if (res && res.manifest) self.manifest = res.manifest;
 			if (ready) ready();
