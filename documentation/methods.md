@@ -21,6 +21,17 @@ First thing to keep in mind here is that Stremio supports video streaming throug
 # Metadata
 Stremio's metadata model is designed to support movies, series and video channels (like YouTube channels). All metadata-related modules must return compatible data.
 
+#### Request format: 
+``query`` - MongoDB-like query object, where all objects must be matched against; must support ``$in``, ``$exists``, ``$gt``, ``$lt`` operators
+
+``projection`` - MongoDB-like projection object, also accepts string values - ``lean``, ``medium`` and ``full``; lean contains name, year, release date, cast, director; medium also includes episodes (if applicable) and the full projection also includes all images and full cast info
+
+``complete`` - only return items with complete (+images) metadata
+
+``limit`` - limit to N results
+
+``skip`` - skip first N
+
 ## meta.get
 
 ## meta.find
