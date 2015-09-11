@@ -20,6 +20,19 @@ function initServer(methods, callback) {
 	return server;
 }
 
+// TODO: unit test this properly
+/*
+var f = { "query.id": { $exists: true }, "query.type": { $in: ["foo", "bar"] }, toplevel: { $exists: true } };
+console.log(checkArgs({ toplevel: 5 }, f) === true);
+console.log(checkArgs({ query: { id: 2 } }, f) === true);
+console.log(checkArgs({ query: { type: "foo" } }, f) === true);
+console.log(checkArgs({ query: { type: "bar" } }, f) === true);
+console.log(checkArgs({ query: { type: ["bar"] } }, f) === true);
+console.log(checkArgs({query: { type: "somethingelse" } }, f) === false);
+console.log(checkArgs({ query: {} }, f) === false);
+console.log(checkArgs({ query: { idx: 5 } } , f) === false);
+*/
+
 tape("initialize server, basic call", function(t) {
 	t.timeoutAfter(10000); // 5s because of slow auth
 
