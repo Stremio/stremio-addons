@@ -194,6 +194,8 @@ function Stremio(options)
 		});
 	};
 	this.callEvery = callEvery;
+        
+        this.checkArgs = checkArgs;
 
 	function picker(s, method) {
 		var params = { addons: s, method: method };
