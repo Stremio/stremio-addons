@@ -159,11 +159,7 @@ function Stremio(options)
 		self.debounced[method] = ms;
 	};
 
-	// Bind methods
-	function call(method, args, cb) {
-		var s = self.get(method, args);
-		s = picker(s, method);
-
+	function fallthrough(s, method, args, cb) {
 		async.forever(function(next) {
 			var service = s.shift();
 			if (! service) return next(true); // end the loop
@@ -179,8 +175,10 @@ function Stremio(options)
 			if (err !== 1) cb(new Error(self.get(method).length ? "no addon supports these arguments" : "no addon supplies this method"));
 		});
 	};
-	_.extend(this, bindDefaults(call));
-	this.call = call;
+
+	function call(method, args, cb) {
+		return fallthrough(self.get(method, args), method, args, cb);
+	};
 
 	function callEvery(method, args, cb) {
 		var results = [], err;
@@ -194,9 +192,6 @@ function Stremio(options)
 			cb(err, results);
 		});
 	};
-	this.callEvery = callEvery;
-
-	this.checkArgs = checkArgs;
 
 	function picker(s, method) {
 		var params = { addons: s, method: method };
@@ -204,6 +199,14 @@ function Stremio(options)
 		self.emit("pick", params);
 		return [].concat(params.addons);
 	}
+
+
+	this.fallthrough = fallthrough;
+	this.call = call;
+	this.callEvery = callEvery;
+	this.checkArgs = checkArgs;
+	_.extend(this, bindDefaults(call));
+
 };
 util.inherits(Stremio, require("events").EventEmitter);
 
