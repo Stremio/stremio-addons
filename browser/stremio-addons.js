@@ -160,16 +160,14 @@ function Stremio(options)
 		self.debounced[method] = ms;
 	};
 
-	// Bind methods
-	function call(method, args, cb) {
-		var s = self.get(method, args);
-		s = picker(s, method);
-
+	function fallthrough(s, method, args, cb) {
+		var networkErr; // save last network error to return it potentially
 		async.forever(function(next) {
 			var service = s.shift();
 			if (! service) return next(true); // end the loop
 
 			service.call(method, [auth, args], function(skip, err, error, res) {
+				networkErr = err;
 				// err, error are respectively HTTP error / JSON-RPC error; we need to implement fallback based on that (do a skip)
 				if (skip || err || (method.match("get$") && res === null) ) return next(); // Go to the next service
 
@@ -177,11 +175,13 @@ function Stremio(options)
 				next(1); // Stop
 			});
 		}, function(err) {
-			if (err !== 1) cb(new Error(self.get(method).length ? "no addon supports these arguments" : "no addon supplies this method"));
+			if (err !== 1) cb(new Error(networkErr || "no addon supplies this method / arguments"));
 		});
 	};
-	_.extend(this, bindDefaults(call));
-	this.call = call;
+
+	function call(method, args, cb) {
+		return fallthrough(self.get(method, args), method, args, cb);
+	};
 
 	function callEvery(method, args, cb) {
 		var results = [], err;
@@ -195,9 +195,6 @@ function Stremio(options)
 			cb(err, results);
 		});
 	};
-	this.callEvery = callEvery;
-
-	this.checkArgs = checkArgs;
 
 	function picker(s, method) {
 		var params = { addons: s, method: method };
@@ -205,6 +202,14 @@ function Stremio(options)
 		self.emit("pick", params);
 		return [].concat(params.addons);
 	}
+
+
+	this.fallthrough = fallthrough;
+	this.call = call;
+	this.callEvery = callEvery;
+	this.checkArgs = checkArgs;
+	_.extend(this, bindDefaults(call));
+
 };
 util.inherits(Stremio, require("events").EventEmitter);
 
