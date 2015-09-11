@@ -174,7 +174,7 @@ function Stremio(options)
 				next(1); // Stop
 			});
 		}, function(err) {
-			if (err !== 1) cb(new Error(networkErr || "no addon supplies this method / arguments"));
+			if (err !== 1) cb(networkErr || new Error("no addon supplies this method / arguments"));
 		});
 	};
 
