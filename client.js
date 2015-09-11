@@ -78,9 +78,10 @@ function Addon(url, options, stremio, ready)
 			
 			if (error) { 
 				console.error(error); 
-				if (self.retries++ < MAX_RETRIES) setTimeout(function() { self.initialized = false }, SERVICE_RETRY_TIMEOUT); 
+				if (self.retries++ < MAX_RETRIES) setTimeout(function() { self.initialized = false; self.lastError = error; }, SERVICE_RETRY_TIMEOUT); 
 			} // service error. mark initialized, can re-try after 30 sec
 			self.initialized = true;
+			self.lastError = null;
 			if (res && res.methods) self.methods = self.methods.concat(res.methods);
 			if (res && res.manifest) self.manifest = res.manifest;
 			if (ready) ready();
@@ -193,7 +194,7 @@ function Stremio(options)
 
 	function callEvery(method, args, cb) {
 		var results = [], err;
-		async.each(self.get(method), function(service, callback) {
+		async.each(self.get(method).filter(function(x) { return x.initialized || !x.lastError }), function(service, callback) {
 			service.call(method, [self.getAuth(), args], function(skip, err, error, result) {
 				if (error) return callback(error);
 				if (!skip && !err && !error) results.push(result);
