@@ -77,7 +77,7 @@ function Server(methods, options, manifest)
 			
 			checkSession(auth, function(err, session) {
 				if (err && methods[method].noauth) return methods[method](args, cb, { noauth: true }); // the function is allowed without auth
-				if (err) return callback(err);
+				if (err) return cb(err);
 				methods[method](args, cb, session);
 			});
 		});
