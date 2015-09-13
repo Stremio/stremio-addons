@@ -63,6 +63,7 @@ function Addon(url, options, stremio, ready)
 		if (self.initialized) return done();
 
 		self.client.request("meta", [], function(err, error, res) {
+			self.networkErr = err;
 			if (err) { stremio.emit("network-error", err, self, self.url); return done(); } // network error. just ignore
 			
 			if (error) { 
@@ -70,7 +71,6 @@ function Addon(url, options, stremio, ready)
 				if (self.retries++ < MAX_RETRIES) setTimeout(function() { self.initialized = false }, SERVICE_RETRY_TIMEOUT); 
 			} // service error. mark initialized, can re-try after 30 sec
 			self.initialized = true;
-			self.lastError = error;
 			if (res && res.methods) self.methods = self.methods.concat(res.methods);
 			if (res && res.manifest) self.manifest = res.manifest;
 			if (ready) ready();
@@ -146,7 +146,7 @@ function Stremio(options)
 	
 	// Listing
 	this.get = function(forMethod, forArgs) {
-		var res = _.chain(services).values().sortBy(function(x){ return x.priority }).sortBy(function(x) { return -(x.initialized && !x.lastError) }).value();
+		var res = _.chain(services).values().sortBy(function(x){ return x.priority }).sortBy(function(x) { return -(x.initialized && !x.networkErr) }).value();
 		if (forMethod) res = res.filter(function(x) { return x.initialized ? x.methods.indexOf(forMethod) != -1 : true }); // if it's not initialized, assume it supports the method
 		if (forMethod) res = picker(res, forMethod); // apply the picker for a method
 		if (forArgs) res = _.sortBy(res, function(x) { return -checkArgs(forArgs, x.manifest.filter) });
@@ -184,7 +184,7 @@ function Stremio(options)
 
 	function callEvery(method, args, cb) {
 		var results = [], err;
-		async.each(self.get(method).filter(function(x) { return x.initialized || !x.lastError }), function(service, callback) {
+		async.each(self.get(method).filter(function(x) { return x.initialized || !x.networkErr }), function(service, callback) {
 			service.call(method, [self.getAuth(), args], function(skip, err, error, result) {
 				if (error) return callback(error);
 				if (!skip && !err && !error) results.push(result);
