@@ -66,6 +66,7 @@ function Addon(url, options, stremio, ready)
 			self.networkErr = err;
 			if (err) { stremio.emit("network-error", err, self, self.url); return done(); } // network error. just ignore
 			
+			// Re-try if the add-on responds with error on meta; this is usually due to a temporarily failing add-on
 			if (error) { 
 				console.error(error); 
 				if (self.retries++ < MAX_RETRIES) setTimeout(function() { self.initialized = false }, SERVICE_RETRY_TIMEOUT); 
