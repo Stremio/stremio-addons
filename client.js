@@ -146,7 +146,7 @@ function Stremio(options)
 	
 	// Listing
 	this.get = function(forMethod, forArgs) {
-		var res = _.chain(services).values().sortBy(function(x){ return x.priority }).sortBy(function(x) { return -x.initialized }).value();
+		var res = _.chain(services).values().sortBy(function(x){ return x.priority }).sortBy(function(x) { return -(x.initialized && !x.lastError) }).value();
 		if (forMethod) res = res.filter(function(x) { return x.initialized ? x.methods.indexOf(forMethod) != -1 : true }); // if it's not initialized, assume it supports the method
 		if (forMethod) res = picker(res, forMethod); // apply the picker for a method
 		if (forArgs) res = _.sortBy(res, function(x) { return -checkArgs(forArgs, x.manifest.filter) });
