@@ -135,7 +135,7 @@ tape("callEvery", function(t) {
 
 
 tape("debounced batching test", function(t) {
-	t.timeoutAfter(4000);
+	t.timeoutAfter(2000);
 
 	var j = 0;
 	var called = 0;
@@ -151,7 +151,7 @@ tape("debounced batching test", function(t) {
 		var s = new addons.Client({ });
 		s.add(url1);
 		s.setAuth(null, TEST_SECRET);
-		s.setBatchingDebounce("stream.test", 1500);
+		s.setBatchingDebounce("stream.test", 300);
 
 		[1,2,3,4,5].forEach(function(i) {
 			setTimeout(function() {
@@ -160,7 +160,7 @@ tape("debounced batching test", function(t) {
 				{
 					t.ok(!err, "no err on call");
 				});
-			}, i*250);
+			}, i*50);
 		});
 	});
 });
