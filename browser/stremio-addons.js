@@ -250,7 +250,7 @@ function rpcClient(endpoint)
 		var req = utils.http.request(_.extend(require("url").parse(endpoint), { 
 			method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } 
 		}), function(res) {
-			res.setTimeout(RPC_TIMEOUT);
+			//res.setTimeout(RPC_TIMEOUT);
 
 			utils.receiveJSON(res, function(err, body) {
 				if (err) return callbackAll(err);
