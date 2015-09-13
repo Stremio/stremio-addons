@@ -227,6 +227,7 @@ function getTypes(services) {
 // Rationales in our own client
 // 1) have more control over the process, be able to implement debounced batching
 // 2) reduce number of dependencies
+var RPC_TIMEOUT = 8*1000;
 function rpcClient(endpoint)
 {
 	var client = { };
@@ -245,7 +246,11 @@ function rpcClient(endpoint)
 		var body = JSON.stringify(requests.length == 1 ? requests[0] : requests);
 		var byId = _.indexBy(requests, "id");
 		var callbackAll = function() { requests.forEach(function(x) { x.callback && x.callback.apply(null, arguments) }) };
-		var req = utils.http.request(_.extend(require("url").parse(endpoint), { method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } }), function(res) {
+		var req = utils.http.request(_.extend(require("url").parse(endpoint), { 
+			method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } 
+		}), function(res) {
+			res.setTimeout(RPC_TIMEOUT);
+
 			utils.receiveJSON(res, function(err, body) {
 				if (err) return callbackAll(err);
 				(Array.isArray(body) ? body : [body]).forEach(function(body) {
