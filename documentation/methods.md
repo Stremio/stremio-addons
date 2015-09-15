@@ -36,7 +36,7 @@ Example
 Stremio's metadata model is designed to support movies, series and video channels (like YouTube channels). All metadata-related modules must return compatible data.
 
 #### Request format: 
-``query`` - MongoDB-like query object, where all objects must be matched against; must support ``$in``, ``$exists``, ``$gt``, ``$lt`` operators
+``query`` - MongoDB-like query object, where all objects must be matched against; must support ``$in``, ``$exists``, ``$gt``, ``$lt`` operators; on ``meta.search`` method, this is a string
 
 ``projection`` - MongoDB-like projection object, also accepts string values - ``lean``, ``medium`` and ``full``; lean contains name, year, release date, cast, director; medium also includes episodes (if applicable) and the full projection also includes all images and full cast info
 
@@ -47,11 +47,13 @@ Stremio's metadata model is designed to support movies, series and video channel
 ``skip`` - skip first N
 
 ## meta.get
+Takes request, as described, returns an array of matched results in ``lean`` projection unless specified otherwise.
 
 ## meta.find
+Takes request, as described, returns the first matched result in ``full`` projection unless specified otherwise.
 
 ## meta.search
-
+Perform a text search. Arguments are exactly the same as the request format, except ``query`` is a string. Returns an array of matches.
 
 **Metadata model - required properties**
 ```javascript
