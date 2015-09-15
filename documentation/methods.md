@@ -24,6 +24,8 @@ Additionally, one of these have to be passed to point to the stream itself
 
 ``externalUrl`` - URL to the video, which should be opened in a browser (webpage) 
 
+**NOTE** The .find methods return array of responses.
+
 Example
 ```javascript
 { 
@@ -68,6 +70,7 @@ Stremio's metadata model is designed to support movies, series and video channel
 
 }
 ```
+**NOTE** The .find methods return array of responses.
 
 ## meta.get
 Takes request, as described, returns an array of matched results in ``lean`` projection unless specified otherwise.
