@@ -3,11 +3,14 @@
 # Streaming
 First thing to keep in mind here is that Stremio supports video streaming through HTTP or BitTorrent-compatible descriptors. If you are interested in other protocols, contact us at [office@strem.io](mailto:office@strem.io).
 
-## stream.get
+#### Request format
+``query`` - an object containing ``imdb_id`` or ``yt_id`` (strings), and also ``season``, ``episode`` (numbers) if applicable
+**example**
+```javascript
+{ query: { imdb_id: "tt0032138" } }
+```
 
-## stream.find
-
-**Stream model - required properties**
+#### Response format
 
 ``availability`` - 0-3 integer representing stream availability - 0 available, 1 barely available, 2 OK, 3 highly available
 
@@ -32,6 +35,12 @@ Example
 // This would start streaming wizard of oz in HD in Stremio
 ```
 
+
+## stream.get
+
+## stream.find
+
+
 # Metadata
 Stremio's metadata model is designed to support movies, series and video channels (like YouTube channels). All metadata-related modules must return compatible data.
 
@@ -46,16 +55,8 @@ Stremio's metadata model is designed to support movies, series and video channel
 
 ``skip`` - skip first N
 
-## meta.get
-Takes request, as described, returns an array of matched results in ``lean`` projection unless specified otherwise.
 
-## meta.find
-Takes request, as described, returns the first matched result in ``full`` projection unless specified otherwise.
-
-## meta.search
-Perform a text search. Arguments are exactly the same as the request format, except ``query`` is a string. Returns an array of matches.
-
-**Metadata model - required properties**
+#### Response format
 ```javascript
 {
 	name: "",
@@ -67,3 +68,13 @@ Perform a text search. Arguments are exactly the same as the request format, exc
 
 }
 ```
+
+## meta.get
+Takes request, as described, returns an array of matched results in ``lean`` projection unless specified otherwise.
+
+## meta.find
+Takes request, as described, returns the first matched result in ``full`` projection unless specified otherwise.
+
+## meta.search
+Perform a text search. Arguments are exactly the same as the request format, except ``query`` is a string. Returns an array of matches.
+
