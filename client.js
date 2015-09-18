@@ -246,7 +246,7 @@ function rpcClient(endpoint)
 		requests.forEach(function(x) { x.callback = _.once(x.callback )});
 		var body = JSON.stringify(requests.length == 1 ? requests[0] : requests);
 		var byId = _.indexBy(requests, "id");
-		var callbackAll = function() { requests.forEach(function(x) { x.callback && x.callback.apply(null, arguments) }) };
+		var callbackAll = function() { var args = arguments; requests.forEach(function(x) { x.callback && x.callback.apply(null, args) }) };
 		var req = utils.http.request(_.extend(require("url").parse(endpoint), { 
 			method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } 
 		}), function(res) {
