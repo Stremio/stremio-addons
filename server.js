@@ -69,8 +69,7 @@ function Server(methods, options, manifest)
 			return;
 		};	
 		if (req.method == "GET") { // unsupported by JSON-RPC, it uses post
-			res.writeHead(301, { "Location": req.url.replace("http://", "stremio://") });
-			res.end();
+			utils.http.get(require("url").parse(module.parent.CENTRAL+"/stremio/addon/"+manifest.id)).pipe(res);
 			return;
 		}
 		
