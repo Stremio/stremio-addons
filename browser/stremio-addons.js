@@ -13069,6 +13069,13 @@ function Server(methods, options, manifest)
 		if (typeof(methods[key]) != "function") throw Error(key+" should be a function");
 	});
 
+	// Announce to central
+	var body = JSON.stringify({ id: manifest.id, manifest: manifest });
+	var req = utils.http.request(_.extend(url.parse(module.parent.CENTRAL+"/stremio/announce/"+options.secret), { 
+		method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } 
+	}), function(res) { /* console.log(res.statusCode); currently we don't care */ });
+	req.end(body);
+
 	// Introspect the addon
 	function meta(cb) {
 		cb(null, {
