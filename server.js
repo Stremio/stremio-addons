@@ -69,7 +69,7 @@ function Server(methods, options, manifest)
 			return;
 		};	
 		if (req.method == "GET") { // unsupported by JSON-RPC, it uses post
-			utils.http.get(_.extend({ headers: { referer: req.url  } }, require("url").parse(module.parent.CENTRAL+"/stremio/addon/"+manifest.id)), function(resp) { resp.pipe(res) });
+			utils.http.get(require("url").parse(module.parent.CENTRAL+"/stremio/addon/"+manifest.id+"?announce="+encodeURIComponent(req.url)), function(resp) { resp.pipe(res) });
 			return;
 		}
 		
