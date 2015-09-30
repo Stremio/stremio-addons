@@ -9,6 +9,7 @@ var validation = require("./validation");
 
 var MAX_RETRIES = 3;
 var SERVICE_RETRY_TIMEOUT = 30*1000;
+var FALLTHROUGH_TRY_NEXT = 2*1000;
 
 function bindDefaults(call) {
 	return {
@@ -162,11 +163,12 @@ function Stremio(options)
 	};
 
 	function fallthrough(s, method, args, cb) {
-		var networkErr; // save last network error to return it potentially
+		var cb = _.once(cb), networkErr; // save last network error to return it potentially
 		async.forever(function(next) {
-			var service = s.shift();
+			var service = s.shift(), next = _.once(next);
 			if (! service) return next(true); // end the loop
 
+			setTimeout(next, FALLTHROUGH_TRY_NEXT); // request the next one too (request in parallel) if we don't get anything for a few secs
 			service.call(method, [auth, args], function(skip, err, error, res) {
 				networkErr = err;
 				// err, error are respectively HTTP error / JSON-RPC error; we need to implement fallback based on that (do a skip)
