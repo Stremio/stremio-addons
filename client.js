@@ -4,8 +4,6 @@ var mpath = require("mpath");
 var util = require("util");
 var utils = require("./utils");
 
-var validation = require("./validation");
-
 var MAX_RETRIES = 3;
 var SERVICE_RETRY_TIMEOUT = 30*1000;
 var FALLTHROUGH_TRY_NEXT = 2*1000;
@@ -86,7 +84,7 @@ function Addon(url, options, stremio, ready)
 	{
 		// Validate arguments - we should do this via some sort of model system
 		var err;
-		if (method.match("^stream")) [args[1]].forEach(function(args) { err =  err || validation.stream_args(args) });
+		//if (method.match("^stream")) [args[1]].forEach(function(args) { err =  err || validation.stream_args(args) });
 		if (err) return cb(0, null, err);
 
 		if (stremio.debounced[method]) _.extend(debounced[method] = debounced[method] || { queue: [] }, { time: stremio.debounced[method] });
