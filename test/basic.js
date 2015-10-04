@@ -271,6 +271,8 @@ tape("falling back when addon result is null")
 var validation = require("../validation");
 
 tape("validation - stream arguments", function(t) {
+	//t.skip("validation disabled"); return t.end();
+
 	t.ok(validation.stream_args({ infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223"} ) === false, "valid with infoHash");
 	t.ok(validation.stream_args({ query: { imdb_id: "tt0032138" } } ) === false, "valid with query");
 	t.ok(validation.stream_args({ test: { imdb_id: "tt0032138" } } ).code == 0, "invalid args");
@@ -278,6 +280,8 @@ tape("validation - stream arguments", function(t) {
 });
 
 tape("validation - stream results", function(t) {
+        //t.skip("validation disabled"); return t.end();
+
 	t.ok(validation.stream({ test: "http://test" }).code === 3, "invalid - no availability");
 	t.ok(validation.stream({ availability: 3, infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223", mapIdx: 0 } ) === false, "valid with infoHash / mapIdx");
 	t.ok(validation.stream({ availability: 3, infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223" } ).code === 5, "invalid with infoHash");
@@ -290,6 +294,8 @@ tape("validation - stream results", function(t) {
 
 tape("stream.get validation", function(t) {
 	t.timeoutAfter(2000);
+        t.skip("validation disabled"); return t.end();
+
 
 	initServer({ 
 		"stream.get": function(args, cb, sess) {
@@ -311,6 +317,8 @@ tape("stream.get validation", function(t) {
 });
 
 tape("stream.find validation", function(t) {
+
+        t.skip("validation disabled"); return t.end();
 	t.timeoutAfter(2000);
 
 	initServer({ 
