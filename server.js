@@ -32,7 +32,8 @@ function Server(methods, options, manifest)
 	};
 
 	var sessions = { };
-	function checkSession(auth, cb) {
+	var checkSession = async.queue(function(task, cb) {
+		var auth = task.auth;
 		if (options.allow && options.allow.indexOf(auth[0])==-1) return cb({ message: "not allowed to auth via that server", code: 2 });
 
 		if (sessions[auth[1]]) return cb(null, sessions[auth[1]]);
@@ -50,7 +51,7 @@ function Server(methods, options, manifest)
 			});
 		});
 		req.on("error", function(e) { cb({ message: "failed to connect to center", code: 5 }) });
-	};
+	}, 1);
 
 	this.middleware = function(req, res, next) {
 		// Only serves stremio endpoint - currently /stremio/v1
@@ -81,7 +82,7 @@ function Server(methods, options, manifest)
 			if (!(auth && auth[1]) && methods[method].noauth) return methods[method](args, cb, { noauth: true }); // the function is allowed without auth
 			if (! auth) return cb({ message: "auth not specified", code: 1 });
 			
-			checkSession(auth, function(err, session) {
+			checkSession.push({ auth: auth }, function(err, session) {
 				if (err && methods[method].noauth) return methods[method](args, cb, { noauth: true }); // the function is allowed without auth
 				if (err) return cb(err);
 				methods[method](args, cb, session);
