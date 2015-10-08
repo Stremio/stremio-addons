@@ -3,7 +3,7 @@ var url = require("url");
 var utils = require("./utils");
 var async = require("async");
 
-var SESSION_LIVE = 2*60*60*1000; // 2 hrs
+var SESSION_LIVE = 10*60*60*1000; // 10 hrs
 
 function Server(methods, options, manifest)
 {	
