@@ -166,7 +166,7 @@ function Stremio(options)
 			if (! service) return next(true); // end the loop
 
 			var t;
-			if (s.length) t = setTimeout(next, FALLTHROUGH_TRY_NEXT); // request the next one too (request in parallel) if we don't get anything for a few secs
+			if (s.length && args.stremio_rushed) t = setTimeout(next, FALLTHROUGH_TRY_NEXT); // request the next one too (request in parallel) if we don't get anything for a few secs
 			service.call(method, [auth, args], function(skip, err, error, res) {
 				if (t) clearTimeout(t);
 				
