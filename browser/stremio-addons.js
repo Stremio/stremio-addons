@@ -13131,16 +13131,20 @@ function Server(methods, options, manifest)
 		}
 		
 		if (req.method == "POST") return serveRPC(req, res, function(method, params, cb) {
+			var fwd = req.headers["x-forwarded-for"];
+			var remoteIp = fwd ? fwd.split(",").pop() : req.connection.remoteAddress;
+
 			if (method == "meta") return meta(cb);
 			if (! methods[method]) return cb({ message: "method not supported", code: -32601 }, null);
 
 			var auth = params[0], args = params[1];
-			if (!(auth && auth[1]) && methods[method].noauth) return methods[method](args, cb, { noauth: true }); // the function is allowed without auth
+			if (!(auth && auth[1]) && methods[method].noauth) return methods[method](args, cb, { noauth: true, remoteIp: remoteIp }); // the function is allowed without auth
 			if (! auth) return cb({ message: "auth not specified", code: 1 });
 			
 			checkSession.push({ auth: auth }, function(err, session) {
-				if (err && methods[method].noauth) return methods[method](args, cb, { noauth: true }); // the function is allowed without auth
+				if (err && methods[method].noauth) return methods[method](args, cb, { noauth: true, remoteIp: remoteIp }); // the function is allowed without auth
 				if (err) return cb(err);
+				session.remoteIp = remoteIp;
 				methods[method](args, cb, session);
 			});
 		});
