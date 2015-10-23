@@ -30,7 +30,6 @@ function bindDefaults(call) {
 };
 
 // Check arguments against the service's filter
-// TODO: unit test this
 function checkArgs(args, filter)
 {
 	if (!filter || _.isEmpty(filter)) return true;
@@ -102,7 +101,9 @@ function Addon(url, options, stremio, ready)
 	};
 
 	this.isInitializing = function() {
-		return !this.initialized && q.length();
+		// this is wrong here, because .length() returns pending, not in progress
+		//return !this.initialized && q.length();
+		return !this.initialized && !this.networkErr;
 	};
 };
 
