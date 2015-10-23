@@ -29,7 +29,6 @@ function bindDefaults(call) {
 };
 
 // Check arguments against the service's filter
-// TODO: unit test this
 function checkArgs(args, filter)
 {
 	if (!filter || _.isEmpty(filter)) return true;
