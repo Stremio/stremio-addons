@@ -1,12 +1,12 @@
 {
   "name": "stremio-addons",
-  "version": "1.14.9",
+  "version": "1.15.0",
   "description": "Stremio Add-on Server / Client",
   "main": "index.js",
   "dependencies": {
-    "lodash": "3.3.x",
     "async": "0.9.x",
-    "mpath": "0.2.x"
+    "dot-object": "^1.3.0",
+    "lodash": "3.3.x"
   },
   "devDependencies": {
     "tape": "4.x.x",
