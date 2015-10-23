@@ -2,6 +2,7 @@ var _ = require("lodash");
 var async = require("async");
 var util = require("util");
 var utils = require("./utils");
+var dot = require("dot-object");
 
 var MAX_RETRIES = 3;
 var SERVICE_RETRY_TIMEOUT = 30*1000;
@@ -13,7 +14,6 @@ function bindDefaults(call) {
 			get: call.bind(null, "meta.get"),
 			find: call.bind(null, "meta.find"),
 			search: call.bind(null, "meta.search")
-			// we also have meta.submit
 		},
 		index: { 
 			get: call.bind(null, "index.get")
@@ -33,9 +33,9 @@ function bindDefaults(call) {
 function checkArgs(args, filter)
 {
 	if (!filter || _.isEmpty(filter)) return true;
-	var flat = require("dot-object").dot(args);
+	var flat = dot.dot(args);
 	return _.some(filter, function(val, key) {
-		var v = flat[key];
+		var v = dot.pick(key, args) || flat[key]; // bit of a hack to handle the case where a key has dot in it
 		if (val.$exists) return (v !== undefined) == val.$exists;
 		if (val.$in) return _.intersection(Array.isArray(v) ? v : [v], val.$in).length;
 	});

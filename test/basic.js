@@ -343,7 +343,7 @@ tape("checkArgs", function(t) {
 	t.ok(checkArgs({ "query.id": 2 }, f) === true, "passing flat dot property with $exists");
 	t.ok(checkArgs({ query: { type: "foo" } }, f) === true, "nested with $in");
 	t.ok(checkArgs({ query: { type: "bar" } }, f) === true, "nested with $in");
-	//t.ok(checkArgs({ query: { type: { $in: ["bar"] } } }, f) === true, "nested with an array with $in");
+	t.ok(checkArgs({ query: { type: ["bar"] } }, f) === true, "nested with an array with $in");
 	t.ok(checkArgs({ query: { type: "somethingelse" } }, f) === false, "nested with $in - not matching");
 	t.ok(checkArgs({ query: {} }, f) === false, "nested - not matching");
 	t.ok(checkArgs({ query: { idx: 5 } } , f) === false, "nested - not maching");
