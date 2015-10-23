@@ -1,6 +1,5 @@
 var _ = require("lodash");
 var async = require("async");
-var mpath = require("mpath");
 var util = require("util");
 var utils = require("./utils");
 
@@ -34,9 +33,9 @@ function bindDefaults(call) {
 function checkArgs(args, filter)
 {
 	if (!filter || _.isEmpty(filter)) return true;
-
+	var flat = require("dot-object").dot(args);
 	return _.some(filter, function(val, key) {
-		var v = mpath.get(key, args);
+		var v = flat[key];
 		if (val.$exists) return (v !== undefined) == val.$exists;
 		if (val.$in) return _.intersection(Array.isArray(v) ? v : [v], val.$in).length;
 	});
