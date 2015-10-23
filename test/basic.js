@@ -20,18 +20,6 @@ function initServer(methods, callback) {
 	return server;
 }
 
-// TODO: unit test this properly
-/*
-var f = { "query.id": { $exists: true }, "query.type": { $in: ["foo", "bar"] }, toplevel: { $exists: true } };
-console.log(checkArgs({ toplevel: 5 }, f) === true);
-console.log(checkArgs({ query: { id: 2 } }, f) === true);
-console.log(checkArgs({ query: { type: "foo" } }, f) === true);
-console.log(checkArgs({ query: { type: "bar" } }, f) === true);
-console.log(checkArgs({ query: { type: ["bar"] } }, f) === true);
-console.log(checkArgs({query: { type: "somethingelse" } }, f) === false);
-console.log(checkArgs({ query: {} }, f) === false);
-console.log(checkArgs({ query: { idx: 5 } } , f) === false);
-*/
 
 tape("initialize server, basic call", function(t) {
 	t.timeoutAfter(10000); // 5s because of slow auth
@@ -292,6 +280,7 @@ tape("validation - stream results", function(t) {
 
 
 
+
 tape("stream.get validation", function(t) {
 	t.timeoutAfter(2000);
         t.skip("validation disabled"); return t.end();
@@ -341,5 +330,23 @@ tape("stream.find validation", function(t) {
 });
 
 tape("add-on priority", function(t) {
-	t.skip("not implemented")
-})
+	t.skip("not implemented");
+	t.end();
+});
+
+tape("checkArgs", function(t) { 
+	var checkArgs = (new addons.Client({ })).checkArgs;
+
+	var f = { "query.id": { $exists: true }, "query.type": { $in: ["foo", "bar"] }, toplevel: { $exists: true } };
+	t.ok(checkArgs({ toplevel: 5 }, f) === true, "basic top-level match");
+	t.ok(checkArgs({ query: { id: 2 } }, f) === true, "nested on one level with $exists");
+	t.ok(checkArgs({ "query.id": 2 }, f) === true, "passing flat dot property with $exists");
+	t.ok(checkArgs({ query: { type: "foo" } }, f) === true, "nested with $in");
+	t.ok(checkArgs({ query: { type: "bar" } }, f) === true, "nested with $in");
+	//t.ok(checkArgs({ query: { type: { $in: ["bar"] } } }, f) === true, "nested with an array with $in");
+	t.ok(checkArgs({ query: { type: "somethingelse" } }, f) === false, "nested with $in - not matching");
+	t.ok(checkArgs({ query: {} }, f) === false, "nested - not matching");
+	t.ok(checkArgs({ query: { idx: 5 } } , f) === false, "nested - not maching");
+
+	t.end();
+});
