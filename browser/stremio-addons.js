@@ -101,9 +101,7 @@ function Addon(url, options, stremio, ready)
 	};
 
 	this.isInitializing = function() {
-		// this is wrong here, because .length() returns pending, not in progress
-		//return !this.initialized && q.length();
-		return !this.initialized && !this.networkErr;
+		return !this.initialized && !q.idle();
 	};
 };
 
