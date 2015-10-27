@@ -47,7 +47,10 @@ function Addon(url, options, stremio, ready)
 	var self = this;
 
 	var client = options.client || rpcClient;
-	this.client = client(url+(module.parent ? module.parent.STREMIO_PATH : "/stremio/v1") );
+	this.client = client(url+(module.parent ? module.parent.STREMIO_PATH : "/stremio/v1") , { 
+		timeout: options.timeout || stremio.options.timeout || 10000,
+		respTimeout: options.respTimeout || stremio.options.respTimeout || 10000,
+	});
 	this.url = url;
 	this.priority = options.priority || 0;
 	this.initialized = false;
@@ -114,7 +117,7 @@ function Stremio(options)
 		return getTypes(self.get("meta.find"));
 	} });
 
-	options = options || {};
+	options = self.options = options || {};
 
 	var auth;
 	var services = {};
@@ -230,8 +233,7 @@ function getTypes(services) {
 // Rationales in our own client
 // 1) have more control over the process, be able to implement debounced batching
 // 2) reduce number of dependencies
-var RPC_TIMEOUT = 8*1000;
-function rpcClient(endpoint)
+function rpcClient(endpoint, options)
 {
 	var client = { };
 	client.request = function(method, params, callback) {
@@ -252,7 +254,7 @@ function rpcClient(endpoint)
 		var req = utils.http.request(_.extend(require("url").parse(endpoint), { 
 			method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } 
 		}), function(res) {
-			//res.setTimeout(RPC_TIMEOUT);
+			if (options.respTimeout) res.setTimeout(options.respTimeout);
 
 			utils.receiveJSON(res, function(err, body) {
 				if (err) return callbackAll(err);
@@ -263,7 +265,9 @@ function rpcClient(endpoint)
 				});
 			});
 		});
+		if (options.timeout) req.setTimeout(options.timeout);
 		req.on("error", callbackAll);
+		req.on("timeout", function() { callbackAll(new Error("rpc request timed out")) });
 		req.write(body);
 		req.end();
 	};
