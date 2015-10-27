@@ -52,6 +52,9 @@ async.eachSeries(addons, function(url, ready) {
 		});
 	});
 
+	// TODO: stream.find
+	//test("stream.find responds") // copy from somewhere else; test .url || .yt_id || (.infoHash && .hasOwnProperty('mapIdx'))
+
 	// Test if an add-on implements the Stremio protocol OK and responds
 	test("meta.find - get top 100 items", function(t) {
 		if (!s.get("meta.find").length) { t.skip("no meta.find in this add-on"); return t.end(); }
@@ -59,8 +62,13 @@ async.eachSeries(addons, function(url, ready) {
 		s.meta.find({ query: { }, limit: 100 }, function(err, meta) { 
 			t.error(err);
 			t.ok(meta, "has results");
-			t.ok(meta.length == 100, "100 items");
-			t.end();
+			t.ok(meta && meta.length == 100, "100 items");
+			if (meta && s.get("stream.find").length) {
+				t.comment("testing stream.find for the same catalogue");
+				//meta.slice(0, 10).
+			} else {
+				t.end();
+			}
 		});
 	});
 	
@@ -71,7 +79,7 @@ async.eachSeries(addons, function(url, ready) {
 			t.error(err);
 			t.ok(meta, "has results");
 			var genres = { };
-			meta.forEach(function(x) { x.genre && x.genre.forEach(function(g) { genres[g] = 1 }) });
+			if (meta) meta.forEach(function(x) { x.genre && x.genre.forEach(function(g) { genres[g] = 1 }) });
 			t.ok(Object.keys(genres).length > 3, "more than 3 genres");
 			t.end();
 		});
@@ -79,8 +87,6 @@ async.eachSeries(addons, function(url, ready) {
 
 	//test("meta.find - particular genre")
 	//test("meta.find - returns valid results") // copy from filmon addon
-
-	//test("stream.find responds") // copy from somewhere else; test .url || .yt_id || (.infoHash && .hasOwnProperty('mapIdx'))
 
 	/* Send errors to Slack webhook
 	 */
@@ -90,7 +96,8 @@ async.eachSeries(addons, function(url, ready) {
 		output.push(x);
 		//if (x.hasOwnProperty("ok") && !x.ok) errors.push(x);
 	}).on("end", function() {
-		if (! hasErr) return;
+		if (! hasErr) return ready();
+
 		var body = require("querystring").stringify({ payload: JSON.stringify({ 
 			channel: "#mon-stremio", username: "webhookbot",
 			text: "*WARNING: "+url+" failing*\n```"+output.join("\n")+"```\n",
@@ -103,6 +110,7 @@ async.eachSeries(addons, function(url, ready) {
 			method: "POST"
 		}), function() {
 			console.log("Sent errors to slack");
+			ready();
 		});
 		req.write(body);
 		req.end();
@@ -110,7 +118,8 @@ async.eachSeries(addons, function(url, ready) {
 
 	/* Default stream
 	 */
-	test.createStream()
-		.on("end", ready) // test the next add-on
-		.pipe(process.stdout); // pipe to stdout
+	console.log("\n\n");
+	test.createStream().pipe(process.stdout); // pipe to stdout
+}, function() {
+	process.exit();
 });
