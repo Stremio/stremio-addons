@@ -23,7 +23,13 @@ async.eachSeries(addons, function(url, ready) {
 	s.setAuth(null, TEST_SECRET);
 
 	test("simple http request", function(t) {
-
+		require("http").request(require("url").parse(url), function(resp) {
+			t.ok(resp, "has response");
+			t.end();
+		}).on("error", function(err) {
+			t.error(err);
+			t.end();
+		});
 	});
 
 	test("is available - fires addon-ready", function(t) {
