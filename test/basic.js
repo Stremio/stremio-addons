@@ -375,5 +375,5 @@ tape("checkArgs", function(t) {
 	t.ok(checkArgs({ query: {} }, f) === false, "nested - not matching");
 	t.ok(checkArgs({ query: { idx: 5 } } , f) === false, "nested - not maching");
 
-	t.end();
+	process.nextTick(function() { t.end(); });
 });
