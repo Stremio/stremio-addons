@@ -249,6 +249,34 @@ tape("fallback on a network error, emit network-error event", function(t) {
 
 
 
+tape("timeouts after opts.timeout time", function(t) {
+	t.timeoutAfter(4000);
+
+	initServer({ 
+		"stream.get": function(args, cb, sess) {
+			// wait to time-out
+		}
+	},
+	function(url1) {
+		var start = Date.now();
+		var s = new addons.Client({ timeout: 1000 });
+		s.add(url1, { priority: 1 });
+		s.setAuth(null, TEST_SECRET);
+
+		s.stream.get({ query: { id: 1 } }, function(err, res, addon)
+		{
+			t.ok((Date.now()-start)>=1000, "waited 2 seconds");
+			console.log(err, res)
+			t.ok(err, "has error");
+			t.end();
+		});
+	});
+
+});
+
+
+
+
 /* 
 tape("picking an add-on depending on filter")
 tape("picking an add-on depending on priority")

@@ -46,7 +46,10 @@ function Addon(url, options, stremio, ready)
 	var self = this;
 
 	var client = options.client || rpcClient;
-	this.client = client(url+(module.parent ? module.parent.STREMIO_PATH : "/stremio/v1") , { timeout: options.timeout || 10000 });
+	this.client = client(url+(module.parent ? module.parent.STREMIO_PATH : "/stremio/v1") , { 
+		timeout: options.timeout || stremio.options.timeout || 10000,
+		respTimeout: options.respTimeout || stremio.options.respTimeout || 10000,
+	});
 	this.url = url;
 	this.priority = options.priority || 0;
 	this.initialized = false;
@@ -113,7 +116,7 @@ function Stremio(options)
 		return getTypes(self.get("meta.find"));
 	} });
 
-	options = options || {};
+	options = self.options = options || {};
 
 	var auth;
 	var services = {};
@@ -250,7 +253,7 @@ function rpcClient(endpoint, options)
 		var req = utils.http.request(_.extend(require("url").parse(endpoint), { 
 			method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } 
 		}), function(res) {
-			if (options.timeout) res.setTimeout(options.timeout);
+			if (options.respTimeout) res.setTimeout(options.respTimeout);
 
 			utils.receiveJSON(res, function(err, body) {
 				if (err) return callbackAll(err);
@@ -261,7 +264,9 @@ function rpcClient(endpoint, options)
 				});
 			});
 		});
+		if (options.timeout) req.setTimeout(options.timeout)
 		req.on("error", callbackAll);
+		req.on("timeout", callbackAll);
 		req.write(body);
 		req.end();
 	};
