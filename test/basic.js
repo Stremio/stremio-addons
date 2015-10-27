@@ -310,7 +310,7 @@ tape("validation - stream results", function(t) {
 
 tape("stream.get validation", function(t) {
 	t.timeoutAfter(2000);
-        t.skip("validation disabled"); return t.end();
+    t.skip("validation disabled"); return t.end();
 
 
 	initServer({ 
@@ -334,7 +334,7 @@ tape("stream.get validation", function(t) {
 
 tape("stream.find validation", function(t) {
 
-        t.skip("validation disabled"); return t.end();
+    t.skip("validation disabled"); return t.end();
 	t.timeoutAfter(2000);
 
 	initServer({ 

@@ -46,18 +46,41 @@ async.eachSeries(addons, function(url, ready) {
 			t.ok(stats, "has results");
 			t.ok(stats && stats.statsNum, "has statsNum");
 			if (stats && stats.stats) stats.stats.forEach(function(s) {
-				t.notEqual(s.color || s.colour, "red", "square is not red"); 
+				t.notEqual(s.color || s.colour, "red", "square "+s.name+" is not red"); 
 			});
 			t.end();
 		});
 	});
 
 	// Test if an add-on implements the Stremio protocol OK and responds
-	//test("meta.find - get top 100 items")
-	//test("meta.find - collect genres")
-	//test("meta.find - particular genre")
+	test("meta.find - get top 100 items", function(t) {
+		if (!s.get("meta.find").length) { t.skip("no meta.find in this add-on"); return t.end(); }
 
-	//test("stream.find responds")
+		s.meta.find({ query: { }, limit: 100 }, function(err, meta) { 
+			t.error(err);
+			t.ok(meta, "has results");
+			t.ok(meta.length == 100, "100 items");
+			t.end();
+		});
+	});
+	
+	test("meta.find - collect genres", function(t) {
+		if (!s.get("meta.find").length) { t.skip("no meta.find in this add-on"); return t.end(); }
+
+		s.meta.find({ query: { }, limit: 500 }, function(err, meta) { 
+			t.error(err);
+			t.ok(meta, "has results");
+			var genres = { };
+			meta.forEach(function(x) { x.genre && x.genre.forEach(function(g) { genres[g] = 1 }) });
+			t.ok(Object.keys(genres).length > 3, "more than 3 genres");
+			t.end();
+		});
+	});
+
+	//test("meta.find - particular genre")
+	//test("meta.find - returns valid results") // copy from filmon addon
+
+	//test("stream.find responds") // copy from somewhere else; test .url || .yt_id || (.infoHash && .hasOwnProperty('mapIdx'))
 
 	/* Send errors to Slack webhook
 	 */
