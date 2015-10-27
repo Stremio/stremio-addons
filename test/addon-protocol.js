@@ -10,9 +10,10 @@ var TEST_SECRET = "51af8b26c364cb44d6e8b7b517ce06e39caf036a";
 var addons = process.argv.filter(function(x) { return x.match("^http") });
 if (! addons.length) throw "No add-ons specified";
 
-var slackPush;
+var slackPush, slackChannel;
 process.argv.forEach(function(x) { 
 	if (x.match("--slack-push")) slackPush = x.split("=")[1];
+	if (x.match("--slack-channel")) slackChannel = x.split("=")[1];
 });
 
 async.eachSeries(addons, function(url, ready) {
@@ -99,7 +100,7 @@ async.eachSeries(addons, function(url, ready) {
 		if (! hasErr) return ready();
 
 		var body = require("querystring").stringify({ payload: JSON.stringify({ 
-			channel: "#mon-stremio", username: "webhookbot",
+			channel: slackChannel || "#mon-stremio", username: "webhookbot",
 			text: "*WARNING: "+url+" failing*\n```"+output.join("\n")+"```\n",
 			icon_emoji: ":bug:"
 		}) });
