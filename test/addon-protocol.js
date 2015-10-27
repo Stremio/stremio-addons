@@ -1,11 +1,7 @@
 var stremio = require("../");
 var tape = require("tape");
-var http = require("http");
 var _ = require("lodash");
 var async = require("async");
-
-
-// WARNING; it doens't appear tests run in parallel?!
 
 var NETWORK_TIMEOUT = 8000;
 
@@ -26,15 +22,20 @@ async.eachSeries(addons, function(url, ready) {
 	s.add(url, { priority: 1 });
 	s.setAuth(null, TEST_SECRET);
 
-	test(url+" is available - fires addon-ready", function(t) {
+	test("simple http request", function(t) {
+
+	});
+
+	test("is available - fires addon-ready", function(t) {
+		t.comment("Testing "+url);
 		s.on("addon-ready", function(addon) {
 			t.ok(addon && addon.url == url, "has proper url");
 			t.end();
 		});
 	});
 
-	test(url+" stats.get responds", function(t) {
-		s.call("stats.get", {}, function(err, stats) {
+	test("stats.get responds", function(t) {
+		s.call("stats.get", { }, function(err, stats) {
 			t.error(err, "has error");
 			t.ok(stats, "has results");
 			t.ok(stats && stats.statsNum, "has statsNum");
@@ -52,6 +53,8 @@ async.eachSeries(addons, function(url, ready) {
 
 	//test("stream.find responds")
 
+	/* Send errors to Slack webhook
+	 */
 	var hasErr = false, output = [];
 	if (slackPush) test.createStream({ /* objectMode: true */ }).on("data", function(x) {
 		if (x.match("^not ok")) hasErr = true;
@@ -59,10 +62,25 @@ async.eachSeries(addons, function(url, ready) {
 		//if (x.hasOwnProperty("ok") && !x.ok) errors.push(x);
 	}).on("end", function() {
 		if (! hasErr) return;
-		var body = "* "+url+" failing *\n```"+output.join("\n")+"```\n";
-		console.log(body)
+		var body = require("querystring").stringify({ payload: JSON.stringify({ 
+			channel: "#mon-stremio", username: "webhookbot",
+			text: "*WARNING: "+url+" failing*\n```"+output.join("\n")+"```\n",
+			icon_emoji: ":bug:"
+		}) });
+
+		console.log("Sending errors to slack");
+		var req = require("https").request(_.extend(require("url").parse(slackPush), { 
+			headers: { "Content-Type": "application/x-www-form-urlencoded", "Content-Length": body.length },
+			method: "POST"
+		}), function() {
+			console.log("Sent errors to slack");
+		});
+		req.write(body);
+		req.end();
 	});
 
+	/* Default stream
+	 */
 	test.createStream()
 		.on("end", ready) // test the next add-on
 		.pipe(process.stdout); // pipe to stdout
