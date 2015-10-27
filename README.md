@@ -20,6 +20,8 @@ Stremio Add-ons are **loaded through HTTP**, so the Add-on has to have it's own 
 var addons = require("stremio-addons");
 var stremio = new addons.Client({ /* options; picker: function(addons) { return addons } */ });
 // specify a picker function to filter / sort the addons we'll use
+// timeout: specify a request timeout
+// respTimeout: specify response timeout
 
 stremio.setAuth(url, authKey); // Set the authentication for addons that require auth
 // URL is the URL to the central authentication server - some addons only permit certain servers
