@@ -266,7 +266,6 @@ tape("timeouts after opts.timeout time", function(t) {
 		s.stream.get({ query: { id: 1 } }, function(err, res, addon)
 		{
 			t.ok((Date.now()-start)>=1000, "waited 2 seconds");
-			console.log(err, res)
 			t.ok(err, "has error");
 			t.end();
 		});
