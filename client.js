@@ -48,7 +48,7 @@ function Addon(url, options, stremio, ready)
 	var client = options.client || rpcClient;
 	this.client = client(url+(module.parent ? module.parent.STREMIO_PATH : "/stremio/v1") , { 
 		timeout: options.timeout || stremio.options.timeout || 10000,
-		respTimeout: options.respTimeout || stremio.options.respTimeout || 10000,
+		respTimeout: options.respTimeout || stremio.options.respTimeout //|| 10000,
 	});
 	this.url = url;
 	this.priority = options.priority || 0;
@@ -253,7 +253,7 @@ function rpcClient(endpoint, options)
 		var req = utils.http.request(_.extend(require("url").parse(endpoint), { 
 			method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } 
 		}), function(res) {
-			if (options.respTimeout) res.setTimeout(options.respTimeout);
+			if (options.respTimeout && res.setTimeout) res.setTimeout(options.respTimeout);
 
 			utils.receiveJSON(res, function(err, body) {
 				if (err) return callbackAll(err);
