@@ -31,7 +31,7 @@ async.eachSeries(addons, function(url, ready) {
 			t.error(err);
 			t.end();
 		}).on("timeout", function() { t.error("timeout"); t.end() });
-		req.setTimeout(5000)
+		req.setTimeout(5000);	
 	});
 
 	test("is available - fires addon-ready", function(t) {
@@ -63,7 +63,7 @@ async.eachSeries(addons, function(url, ready) {
 			t.error(err);
 			t.ok(meta, "has results");
 			t.ok(meta && meta.length == 100, "100 items");
-			topitems = meta.slice(0, 30);
+			topitems = meta ? meta.slice(0, 30) : [];
 			t.end();
 		});
 	});
@@ -82,6 +82,8 @@ async.eachSeries(addons, function(url, ready) {
 	});
 
 	test("stream.find for top items of meta.find", function(t) {
+		if (!s.get("stream.find").length) { t.skip("no stream.find in this add-on"); return t.end(); }
+
 		async.eachSeries(topitems, function(item, next) {
 			s.stream.find({ query: _.pick(item, "imdb_id", "yt_id", "filmon_id") }, function(err, streams) {
 				t.error(err);
@@ -103,12 +105,13 @@ async.eachSeries(addons, function(url, ready) {
 	/* Send errors to Slack webhook
 	 */
 	var hasErr = false, output = [];
-	if (slackPush) test.createStream({ /* objectMode: true */ }).on("data", function(x) {
+	test.createStream({ /* objectMode: true */ }).on("data", function(x) {
 		if (x.match("^not ok")) hasErr = true;
 		output.push(x);
 		//if (x.hasOwnProperty("ok") && !x.ok) errors.push(x);
 	}).on("end", function() {
 		if (! hasErr) return ready();
+		if (!slackPush) return ready();
 
 		var body = require("querystring").stringify({ payload: JSON.stringify({ 
 			channel: slackChannel || "#mon-stremio", username: "webhookbot",
