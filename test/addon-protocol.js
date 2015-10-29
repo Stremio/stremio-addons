@@ -34,10 +34,12 @@ async.eachSeries(addons, function(url, ready) {
 		req.setTimeout(5000);	
 	});
 
+	var LID;
 	test("is available - fires addon-ready", function(t) {
 		t.comment("Testing "+url);
 		s.on("addon-ready", function(addon) {
 			t.ok(addon && addon.url == url, "has proper url");
+			if (addon.manifest.stremio_LID) LID = addon.manifest.stremio_LID; 
 			t.end();
 		});
 	});
@@ -63,7 +65,8 @@ async.eachSeries(addons, function(url, ready) {
 			t.error(err);
 			t.ok(meta, "has results");
 			t.ok(meta && meta.length == 100, "100 items");
-			topitems = meta ? meta.slice(0, 30) : [];
+			topitems = meta ? meta.filter(function(x) { return x.popularities[LID] }).slice(0, 15) : [];
+			t.ok(topitems.length, "has popular items");
 			t.end();
 		});
 	});
@@ -83,16 +86,19 @@ async.eachSeries(addons, function(url, ready) {
 
 	test("stream.find for top items of meta.find", function(t) {
 		if (!s.get("stream.find").length) { t.skip("no stream.find in this add-on"); return t.end(); }
-
+		if (! (topitems && topitems.length)) { t.skip("no topitems"); return t.end(); }
+		
 		async.eachSeries(topitems, function(item, next) {
 			s.stream.find({ query: _.pick(item, "imdb_id", "yt_id", "filmon_id") }, function(err, streams) {
 				t.error(err);
 				t.ok(streams && streams.length, "has streams");
 				var stream = streams[0];
+				
+				if (! stream) return next(new Error("no stream"));
 
 				t.ok(stream.hasOwnProperty("availability"), "has availability");
 				t.ok(stream.availability > 0, "availability > 0");
-				t.ok(stream.url || stream.yt_id || (stream.infoHash && stream.hasOwnProperty("mapIdx")))
+				t.ok(stream.url || stream.yt_id || (stream.infoHash && stream.hasOwnProperty("mapIdx")), "has an HTTP / YouTube / BitTorrent stream");
 				next();
 			});
 
