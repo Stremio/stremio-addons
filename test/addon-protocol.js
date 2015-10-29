@@ -24,13 +24,14 @@ async.eachSeries(addons, function(url, ready) {
 	s.setAuth(null, TEST_SECRET);
 
 	test("simple http request", function(t) {
-		require("http").request(require("url").parse(url), function(resp) {
+		var req = require("http").request(require("url").parse(url), function(resp) {
 			t.ok(resp, "has response");
 			t.end();
 		}).on("error", function(err) {
 			t.error(err);
 			t.end();
-		});
+		}).on("timeout", function() { t.error("timeout"); t.end() });
+		req.setTimeout(5000)
 	});
 
 	test("is available - fires addon-ready", function(t) {
@@ -53,10 +54,8 @@ async.eachSeries(addons, function(url, ready) {
 		});
 	});
 
-	// TODO: stream.find
-	//test("stream.find responds") // copy from somewhere else; test .url || .yt_id || (.infoHash && .hasOwnProperty('mapIdx'))
-
 	// Test if an add-on implements the Stremio protocol OK and responds
+	var topitems;
 	test("meta.find - get top 100 items", function(t) {
 		if (!s.get("meta.find").length) { t.skip("no meta.find in this add-on"); return t.end(); }
 
@@ -64,12 +63,8 @@ async.eachSeries(addons, function(url, ready) {
 			t.error(err);
 			t.ok(meta, "has results");
 			t.ok(meta && meta.length == 100, "100 items");
-			if (meta && s.get("stream.find").length) {
-				t.comment("testing stream.find for the same catalogue");
-				//meta.slice(0, 10).
-			} else {
-				t.end();
-			}
+			topitems = meta.slice(0, 30);
+			t.end();
 		});
 	});
 	
@@ -84,6 +79,22 @@ async.eachSeries(addons, function(url, ready) {
 			t.ok(Object.keys(genres).length > 3, "more than 3 genres");
 			t.end();
 		});
+	});
+
+	test("stream.find for top items of meta.find", function(t) {
+		async.eachSeries(topitems, function(item, next) {
+			s.stream.find({ query: _.pick(item, "imdb_id", "yt_id", "filmon_id") }, function(err, streams) {
+				t.error(err);
+				t.ok(streams && streams.length, "has streams");
+				var stream = streams[0];
+
+				t.ok(stream.hasOwnProperty("availability"), "has availability");
+				t.ok(stream.availability > 0, "availability > 0");
+				t.ok(stream.url || stream.yt_id || (stream.infoHash && stream.hasOwnProperty("mapIdx")))
+				next();
+			});
+
+		}, function() { t.end() });
 	});
 
 	//test("meta.find - particular genre")
