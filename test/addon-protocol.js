@@ -35,7 +35,7 @@ async.eachSeries(addons, function(url, ready) {
 			t.error(err);
 			t.end();
 		}).on("timeout", function() { t.error("network timeout"); t.end() });
-		req.setTimeout(10000);	
+		req.setTimeout(15000);	
 	});
 
 	var LID;
@@ -64,7 +64,7 @@ async.eachSeries(addons, function(url, ready) {
 	test("meta.find - get top 100 items", function(t) {
 		if (!s.get("meta.find").length) { t.skip("no meta.find in this add-on"); return t.end(); }
 
-		s.meta.find({ query: { }, limit: 100 }, function(err, meta) { 
+		s.meta.find({ query: { type: "movie" }, limit: 100, sort: { popularity: -1 } }, function(err, meta) { 
 			t.error(err);
 			t.ok(meta, "has results");
 			t.ok(meta && meta.length == 100, "100 items");
@@ -79,7 +79,7 @@ async.eachSeries(addons, function(url, ready) {
 	test("meta.find - collect genres", function(t) {
 		if (!s.get("meta.find").length) { t.skip("no meta.find in this add-on"); return t.end(); }
 
-		s.meta.find({ query: { }, limit: 500 }, function(err, meta) { 
+		s.meta.find({ query: { }, limit: 500 , sort: { popularity: -1 } }, function(err, meta) { 
 			t.error(err);
 			t.ok(meta, "has results");
 			var genres = { };
@@ -94,7 +94,8 @@ async.eachSeries(addons, function(url, ready) {
 		if (! (topitems && topitems.length)) { t.skip("no topitems"); return t.end(); }
 
 		async.eachSeries(topitems, function(item, next) {
-			s.stream.find({ query: _.pick(item, "imdb_id", "yt_id", "filmon_id") }, function(err, streams) {
+			t.comment("trying "+item.name);
+			s.stream.find({ query: _.pick(item, "imdb_id", "yt_id", "filmon_id", "type") }, function(err, streams) {
 				t.error(err);
 				t.ok(streams && streams.length, "has streams");
 				var stream = streams[0];
