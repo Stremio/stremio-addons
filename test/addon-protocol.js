@@ -16,6 +16,8 @@ process.argv.forEach(function(x) {
 	if (x.match("--slack-channel")) slackChannel = x.split("=")[1];
 });
 
+var hasErr = false, output = [];
+
 async.eachSeries(addons, function(url, ready) {
 	var test = tape.createHarness();
 
@@ -87,7 +89,7 @@ async.eachSeries(addons, function(url, ready) {
 	test("stream.find for top items of meta.find", function(t) {
 		if (!s.get("stream.find").length) { t.skip("no stream.find in this add-on"); return t.end(); }
 		if (! (topitems && topitems.length)) { t.skip("no topitems"); return t.end(); }
-		
+
 		async.eachSeries(topitems, function(item, next) {
 			s.stream.find({ query: _.pick(item, "imdb_id", "yt_id", "filmon_id") }, function(err, streams) {
 				t.error(err);
@@ -110,7 +112,6 @@ async.eachSeries(addons, function(url, ready) {
 
 	/* Send errors to Slack webhook
 	 */
-	var hasErr = false, output = [];
 	test.createStream({ /* objectMode: true */ }).on("data", function(x) {
 		if (x.match("^not ok")) hasErr = true;
 		output.push(x);
@@ -142,5 +143,5 @@ async.eachSeries(addons, function(url, ready) {
 	console.log("\n\n");
 	test.createStream().pipe(process.stdout); // pipe to stdout
 }, function() {
-	process.exit();
+	process.exit(hasErr ? 1 : 0);
 });
