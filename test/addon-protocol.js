@@ -18,6 +18,8 @@ process.argv.forEach(function(x) {
 
 var hasErr = false, output = [];
 
+var topitems = []; // global, so we can test meta and stream add-ons at once
+
 async.eachSeries(addons, function(url, ready) {
 	var test = tape.createHarness();
 
@@ -32,8 +34,8 @@ async.eachSeries(addons, function(url, ready) {
 		}).on("error", function(err) {
 			t.error(err);
 			t.end();
-		}).on("timeout", function() { t.error("timeout"); t.end() });
-		req.setTimeout(5000);	
+		}).on("timeout", function() { t.error("network timeout"); t.end() });
+		req.setTimeout(10000);	
 	});
 
 	var LID;
@@ -59,7 +61,6 @@ async.eachSeries(addons, function(url, ready) {
 	});
 
 	// Test if an add-on implements the Stremio protocol OK and responds
-	var topitems;
 	test("meta.find - get top 100 items", function(t) {
 		if (!s.get("meta.find").length) { t.skip("no meta.find in this add-on"); return t.end(); }
 
@@ -67,7 +68,9 @@ async.eachSeries(addons, function(url, ready) {
 			t.error(err);
 			t.ok(meta, "has results");
 			t.ok(meta && meta.length == 100, "100 items");
-			topitems = meta ? meta.filter(function(x) { return x.popularities && x.popularities[LID] }).slice(0, 15) : [];
+			topitems = meta ? meta.filter(function(x) { 
+				return LID ? (x.popularities && x.popularities[LID]) : x.popularity 
+			}).slice(0, 15) : topitems;
 			t.ok(topitems.length, "has popular items");
 			t.end();
 		});
