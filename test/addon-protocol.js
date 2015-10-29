@@ -3,7 +3,7 @@ var tape = require("tape");
 var _ = require("lodash");
 var async = require("async");
 
-var NETWORK_TIMEOUT = 8000;
+var NETWORK_TIMEOUT = 10*1000;
 
 var TEST_SECRET = "51af8b26c364cb44d6e8b7b517ce06e39caf036a";
 
