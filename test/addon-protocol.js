@@ -3,7 +3,7 @@ var tape = require("tape");
 var _ = require("lodash");
 var async = require("async");
 
-var NETWORK_TIMEOUT = 10*1000;
+var NETWORK_TIMEOUT = 15*1000;
 
 var TEST_SECRET = "51af8b26c364cb44d6e8b7b517ce06e39caf036a";
 
@@ -67,7 +67,7 @@ async.eachSeries(addons, function(url, ready) {
 			t.error(err);
 			t.ok(meta, "has results");
 			t.ok(meta && meta.length == 100, "100 items");
-			topitems = meta ? meta.filter(function(x) { return x.popularities[LID] }).slice(0, 15) : [];
+			topitems = meta ? meta.filter(function(x) { return x.popularities && x.popularities[LID] }).slice(0, 15) : [];
 			t.ok(topitems.length, "has popular items");
 			t.end();
 		});
