@@ -265,6 +265,7 @@ function rpcClient(endpoint, options)
 				});
 			});
 		});
+
 		if (options.timeout) req.setTimeout(options.timeout);
 		req.on("error", callbackAll);
 		req.on("timeout", function() { callbackAll(new Error("rpc request timed out")) });
