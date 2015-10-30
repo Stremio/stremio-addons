@@ -10,10 +10,11 @@ var TEST_SECRET = "51af8b26c364cb44d6e8b7b517ce06e39caf036a";
 var addons = process.argv.filter(function(x) { return x.match("^http") });
 if (! addons.length) throw "No add-ons specified";
 
-var slackPush, slackChannel;
+var slackPush, slackChannel, noStats;
 process.argv.forEach(function(x) { 
 	if (x.match("--slack-push")) slackPush = x.split("=")[1];
 	if (x.match("--slack-channel")) slackChannel = x.split("=")[1];
+	if (x.match("--no-stats")) noStats = true;
 });
 
 var hasErr = false, output = [];
@@ -49,6 +50,7 @@ async.eachSeries(addons, function(url, ready) {
 	});
 
 	test("stats.get responds", function(t) {
+		if (noStats) { t.skip("--no-stats"); t.end(); return }
 		s.call("stats.get", { }, function(err, stats) {
 			t.error(err, "has error");
 			t.ok(stats, "has results");
