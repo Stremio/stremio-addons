@@ -183,6 +183,35 @@ tape("fallback if result is null", function(t) {
 	});
 });
 
+tape("fallback if network times out", function(t) {
+	t.timeoutAfter(3000);
+
+	initServer({ 
+		"meta.find": function(args, cb, sess) {
+		}
+	},
+	function(url1) {
+		initServer({ 
+			"meta.find": function(args, cb, sess) {
+				return cb(null, [{ _id: "test" }, { _id: "test2" }])
+			}
+		},
+		function(url2) {
+			var s = new addons.Client({ timeout: 500 });
+			s.add(url1, { priority: 0 });
+			s.add(url2, { priority: 1 });
+			s.setAuth(null, TEST_SECRET);
+			s.meta.find({ query: { id: 1 } }, function(err, res)
+			{
+				t.ok(!err, "no err on call");
+				t.ok(res, "we have result");
+				t.ok(res.length==2, "we have items");
+				t.end();
+			});
+		});
+	});
+});
+
 
 tape("intercept error from addon", function(t) {
 	t.timeoutAfter(2000);
