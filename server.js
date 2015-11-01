@@ -114,7 +114,7 @@ function Server(methods, options, manifest)
 		};
 
 		utils.receiveJSON(req, function(err, body) {
-			if (err) return send({ code: -32700, message: "parse error" }); // TODO: jsonrpc, id prop
+			if (err) return send(formatResp(null, { code: -32700, message: "parse error" })); // TODO: jsonrpc, id prop
 			
 			if (Array.isArray(body)) {
 				async.map(body, function(b, cb) { 
@@ -124,7 +124,7 @@ function Server(methods, options, manifest)
 				}, function(err, bodies) { send(bodies) });
 			} else { 
 				// --> THIS
-				if (!body || !body.id || !body.method) return cb({ code: -32700, message: "parse error" });
+				if (!body || !body.id || !body.method) return send(formatResp(null, { code: -32700, message: "parse error" }));
 				handle(body.method, body.params, function(err, b) { send(formatResp(body.id, err, b)) });
 			}
 		});
