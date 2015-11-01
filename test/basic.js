@@ -58,7 +58,7 @@ tape("initialize server, basic call", function(t) {
 });
 
 tape("initialize server, basic call - stremioget", function(t) {
-	t.timeoutAfter(1000); 
+	t.timeoutAfter(2000); 
 
 	var received = false;
 

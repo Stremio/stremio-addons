@@ -248,9 +248,10 @@ function rpcClient(endpoint, options)
 	function rpcRequest(requests) { // supports batching
 		var isGet = !!endpoint.match("stremioget");
 
-		requests.forEach(function(x) { 
+		requests.forEach(function(x, i) { 
 			x.callback = _.once(x.callback);
 			if (isGet) x.params[0] = null; // get requests limited to noauth
+			if (isGet) x.id = i+1; // unify ids
 		});
 
 		var body = JSON.stringify(requests.length == 1 ? requests[0] : requests);
@@ -260,7 +261,7 @@ function rpcClient(endpoint, options)
 		var reqObj = { };
 		if (!isGet) _.extend(reqObj, require("url").parse(endpoint), { method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } });
 		else _.extend(reqObj, require("url").parse(endpoint+"/q.json?b="+new Buffer(body, "binary").toString("base64")));
-
+		
 		var req = utils.http.request(reqObj, function(res) {
 			if (options.respTimeout && res.setTimeout) res.setTimeout(options.respTimeout);
 

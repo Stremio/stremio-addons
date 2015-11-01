@@ -114,7 +114,7 @@ function Server(methods, options, manifest)
 		};
 
 		utils.receiveJSON(req, function(err, body) {
-			if (err) return send(formatResp(null, { code: -32700, message: "parse error" })); // TODO: jsonrpc, id prop
+			if (err) return send({ code: -32700, message: "parse error" }); // TODO: jsonrpc, id prop
 			
 			if (Array.isArray(body)) {
 				async.map(body, function(b, cb) { 
