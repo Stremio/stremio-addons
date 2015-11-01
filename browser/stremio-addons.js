@@ -1,4 +1,5 @@
 require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function (Buffer){
 var _ = require("lodash");
 var async = require("async");
 var util = require("util");
@@ -247,13 +248,22 @@ function rpcClient(endpoint, options)
 		handle.flush();
 	};
 	function rpcRequest(requests) { // supports batching
-		requests.forEach(function(x) { x.callback = _.once(x.callback )});
+		var isGet = !!endpoint.match("stremioget");
+
+		requests.forEach(function(x) { 
+			x.callback = _.once(x.callback);
+			if (isGet) x.params[0] = null; // get requests limited to noauth
+		});
+
 		var body = JSON.stringify(requests.length == 1 ? requests[0] : requests);
 		var byId = _.indexBy(requests, "id");
 		var callbackAll = function() { var args = arguments; requests.forEach(function(x) { x.callback && x.callback.apply(null, args) }) };
-		var req = utils.http.request(_.extend(require("url").parse(endpoint), { 
-			method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } 
-		}), function(res) {
+
+		var reqObj = { };
+		if (!isGet) _.extend(reqObj, require("url").parse(endpoint), { method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } });
+		else _.extend(reqObj, require("url").parse(endpoint+"/q.json?b="+new Buffer(body, "binary").toString("base64")));
+
+		var req = utils.http.request(reqObj, function(res) {
 			if (options.respTimeout && res.setTimeout) res.setTimeout(options.respTimeout);
 
 			utils.receiveJSON(res, function(err, body) {
@@ -269,7 +279,7 @@ function rpcClient(endpoint, options)
 		if (options.timeout) req.setTimeout(options.timeout);
 		req.on("error", callbackAll);
 		req.on("timeout", function() { callbackAll(new Error("rpc request timed out")) });
-		req.write(body);
+		if (! isGet) req.write(body);
 		req.end();
 	};
 	return client;
@@ -277,7 +287,8 @@ function rpcClient(endpoint, options)
 
 module.exports = Stremio;
 
-},{"./utils":47,"async":2,"dot-object":44,"events":8,"lodash":45,"url":40,"util":42}],2:[function(require,module,exports){
+}).call(this,require("buffer").Buffer)
+},{"./utils":47,"async":2,"buffer":4,"dot-object":44,"events":8,"lodash":45,"url":40,"util":42}],2:[function(require,module,exports){
 (function (process){
 /*!
  * async
@@ -20749,7 +20760,7 @@ function Server(methods, options, manifest)
 	this.middleware = function(req, res, next) {
 		// Only serves stremio endpoint - currently /stremio/v1
 		var parsed = url.parse(req.url);
-		if (parsed.pathname != module.parent.STREMIO_PATH) return next(); 
+		if (! parsed.pathname.match(module.parent.STREMIO_PATH)) return next(); 
 		
 		if (req.method === "OPTIONS") {
 			var headers = {};
@@ -20761,17 +20772,14 @@ function Server(methods, options, manifest)
 			res.writeHead(200, headers);
 			res.end();
 			return;
-		};	
-		if (req.method == "GET") { // unsupported by JSON-RPC, it uses post
-			utils.http.get(require("url").parse(module.parent.CENTRAL+"/stremio/addon/"+manifest.id+"?announce="+encodeURIComponent("http://"+req.headers.host+req.url)), function(resp) { resp.pipe(res) });
-			return;
-		}
+		};
 		
-		if (req.method == "POST") return serveRPC(req, res, function(method, params, cb) {
+		if (req.method == "POST" || ( req.method == "GET" && parsed.pathname.match("q.json$") ) ) return serveRPC(req, res, function(method, params, cb) {
 			if (method == "meta") return meta(cb);
 			if (! methods[method]) return cb({ message: "method not supported", code: -32601 }, null);
 
 			var auth = params[0], args = params[1];
+			if (options.stremioget) return methods[method](args, cb, { stremioget: true }); // everything is allowed without auth in stremioget mode
 			if (!(auth && auth[1]) && methods[method].noauth) return methods[method](args, cb, { noauth: true }); // the function is allowed without auth
 			if (! auth) return cb({ message: "auth not specified", code: 1 });
 			
@@ -20780,14 +20788,19 @@ function Server(methods, options, manifest)
 				if (err) return cb(err);
 				methods[method](args, cb, session);
 			});
-		});
+		}); else if (req.method == "GET") { // unsupported by JSON-RPC, it uses post
+			utils.http.get(require("url").parse(module.parent.CENTRAL+"/stremio/addon/"+manifest.id+"?announce="+encodeURIComponent("http://"+req.headers.host+req.url)), function(resp) { resp.pipe(res) });
+			return;
+		}
 
 		res.writeHead(405); // method not allowed
 		res.end();
 	};
 
 	function serveRPC(req, res, handle) {
-		if (! req.headers["content-type"].match("^application/json")) return res.writeHead(415); // unsupported media type
+		var isGet = req.url.match("q.json");
+		var isJson = req.headers["content-type"] && req.headers["content-type"].match("^application/json");
+		if (!(isGet || isJson)) return res.writeHead(415); // unsupported media type
 		res.setHeader("Access-Control-Allow-Origin", "*");
 
 		function formatResp(id, err, body) {
@@ -20827,8 +20840,15 @@ module.exports = Server;
 },{"./utils":47,"async":2,"buffer":4,"lodash":45,"url":40}],47:[function(require,module,exports){
 (function (Buffer){
 module.exports.http = require("http");
+var url = require("url");
 
 module.exports.receiveJSON = function(resp, callback) {
+	if (resp.method == "GET") {
+		var body = url.parse(resp.url, true).query.b;
+		try { body = JSON.parse(new Buffer(body, "base64").toString()) } catch(e) { return callback(e) };
+		return callback(null, body);
+	}
+
 	var body = [];
 	resp.on("data", function(b) { body.push(b) });
 	resp.on("end", function() {
@@ -20842,7 +20862,7 @@ module.exports.genID = function() {
 };
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":4,"http":30}],"stremio-addons":[function(require,module,exports){
+},{"buffer":4,"http":30,"url":40}],"stremio-addons":[function(require,module,exports){
 module.STREMIO_PATH = "/stremio/v1";
 module.CENTRAL = "http://api8.herokuapp.com";
 
