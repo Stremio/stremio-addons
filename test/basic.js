@@ -68,7 +68,7 @@ tape("initialize server, basic call - stremioget", function(t) {
 
 			t.ok(args.query.id == 1, "we are receiving arguments");
 			t.ok(!!sess, "we have session");
-			t.ok(sess.isAnotherService, "we are calling from another service"); 
+			//t.ok(sess.isAnotherService, "we are calling from another service"); // no auth when we're stremioget
 			return cb(null, { now: Date.now() });
 		}
 	},
