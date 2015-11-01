@@ -81,7 +81,7 @@ async.eachSeries(addons, function(url, ready) {
 	test("meta.find - collect genres", function(t) {
 		if (!s.get("meta.find").length) { t.skip("no meta.find in this add-on"); return t.end(); }
 
-		s.meta.find({ query: { }, limit: 500 , sort: { popularity: -1 } }, function(err, meta) { 
+		s.meta.find({ query: { }, limit: 500, projection: { genre: 1 }, sort: { popularity: -1 } }, function(err, meta) { 
 			t.error(err);
 			t.ok(meta, "has results");
 			var genres = { };
