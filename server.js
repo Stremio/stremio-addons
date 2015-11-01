@@ -109,6 +109,7 @@ function Server(methods, options, manifest)
 			respBody = JSON.stringify(respBody);
 			res.setHeader("Content-Type", "application/json");
 			res.setHeader("Content-Length", Buffer.byteLength(respBody, "utf8"));
+			res.setHeader("Cache-Control", "public, max-age=600");
 			res.end(respBody);
 		};
 
