@@ -5,8 +5,8 @@ var _ = require("lodash");
 
 var TEST_SECRET = "51af8b26c364cb44d6e8b7b517ce06e39caf036a";
 
-function initServer(methods, callback) {
-	var server = new addons.Server(methods, { secret: TEST_SECRET }, { 
+function initServer(methods, callback, opts) {
+	var server = new addons.Server(methods, _.extend({ secret: TEST_SECRET  }, opts), { 
 	 filter: { "query.id": { $exists: true }, "query.types": { $in: [ "foo", "bar" ] } }
 	});
 
@@ -22,7 +22,7 @@ function initServer(methods, callback) {
 
 
 tape("initialize server, basic call", function(t) {
-	t.timeoutAfter(10000); // 5s because of slow auth
+	t.timeoutAfter(5000); // 5s because of slow auth
 
 	var received = false;
 
@@ -55,9 +55,43 @@ tape("initialize server, basic call", function(t) {
 			});
 		});
 	});
-
 });
 
+tape("initialize server, basic call - stremioget", function(t) {
+	t.timeoutAfter(1000); 
+
+	var received = false;
+
+	initServer({ 
+		"meta.get": function(args, cb, sess) {
+			received = true;
+
+			t.ok(args.query.id == 1, "we are receiving arguments");
+			t.ok(!!sess, "we have session");
+			t.ok(sess.isAnotherService, "we are calling from another service"); 
+			return cb(null, { now: Date.now() });
+		}
+	},
+	function(url) {
+		var s = new addons.Client({ picker: function(addons) { t.ok("picker called with 1 addon", addons.length==1); return addons } });
+		s.add(url+"/stremioget");
+		s.call("meta.get", { query: { id: 1 } }, function(err, res)
+		{
+			t.ok(!err, "no err on first call");
+			t.ok(!isNaN(res.now), "we have returned timestamp");			
+			t.ok(received, "call was received");
+
+			// two calls because first will wait for central server authentication
+			s.call("meta.get", { query: { id: 1 } }, function(err, res)
+			{
+				t.ok(!err, "no err on second call");
+				t.ok(!isNaN(res.now), "we have returned timestamp");
+				t.end();
+			});
+		});
+	}, { stremioget: true });
+
+});
 
 tape("test events", function(t) {
 	t.timeoutAfter(2000);

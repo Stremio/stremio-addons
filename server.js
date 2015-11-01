@@ -56,7 +56,7 @@ function Server(methods, options, manifest)
 	this.middleware = function(req, res, next) {
 		// Only serves stremio endpoint - currently /stremio/v1
 		var parsed = url.parse(req.url);
-		if (parsed.pathname != module.parent.STREMIO_PATH) return next(); 
+		if (! parsed.pathname.match(module.parent.STREMIO_PATH)) return next(); 
 		
 		if (req.method === "OPTIONS") {
 			var headers = {};
@@ -68,7 +68,12 @@ function Server(methods, options, manifest)
 			res.writeHead(200, headers);
 			res.end();
 			return;
-		};	
+		};
+
+		if (req.method == "GET" && parsed.pathname.match("q.json$")) {
+			console.log("GET request "+url);
+		}
+
 		if (req.method == "GET") { // unsupported by JSON-RPC, it uses post
 			utils.http.get(require("url").parse(module.parent.CENTRAL+"/stremio/addon/"+manifest.id+"?announce="+encodeURIComponent("http://"+req.headers.host+req.url)), function(resp) { resp.pipe(res) });
 			return;
