@@ -20779,7 +20779,7 @@ function Server(methods, options, manifest)
 			if (! methods[method]) return cb({ message: "method not supported", code: -32601 }, null);
 
 			var auth = params[0], args = params[1];
-			if (options.stremioget) return methods[method](args, cb, { stremioget: true }); // everything is allowed without auth in stremioget mode
+			if (options.stremioget && !method.match("stats")) return methods[method](args, cb, { stremioget: true }); // everything is allowed without auth in stremioget mode
 			if (!(auth && auth[1]) && methods[method].noauth) return methods[method](args, cb, { noauth: true }); // the function is allowed without auth
 			if (! auth) return cb({ message: "auth not specified", code: 1 });
 			
