@@ -250,9 +250,10 @@ function rpcClient(endpoint, options)
 	function rpcRequest(requests) { // supports batching
 		var isGet = !!endpoint.match("stremioget");
 
-		requests.forEach(function(x) { 
+		requests.forEach(function(x, i) { 
 			x.callback = _.once(x.callback);
 			if (isGet) x.params[0] = null; // get requests limited to noauth
+			if (isGet) x.id = i+1; // unify ids
 		});
 
 		var body = JSON.stringify(requests.length == 1 ? requests[0] : requests);
@@ -262,7 +263,7 @@ function rpcClient(endpoint, options)
 		var reqObj = { };
 		if (!isGet) _.extend(reqObj, require("url").parse(endpoint), { method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } });
 		else _.extend(reqObj, require("url").parse(endpoint+"/q.json?b="+new Buffer(body, "binary").toString("base64")));
-
+		
 		var req = utils.http.request(reqObj, function(res) {
 			if (options.respTimeout && res.setTimeout) res.setTimeout(options.respTimeout);
 
@@ -20813,6 +20814,7 @@ function Server(methods, options, manifest)
 			respBody = JSON.stringify(respBody);
 			res.setHeader("Content-Type", "application/json");
 			res.setHeader("Content-Length", Buffer.byteLength(respBody, "utf8"));
+			res.setHeader("Cache-Control", "public, max-age=600");
 			res.end(respBody);
 		};
 
@@ -20827,7 +20829,7 @@ function Server(methods, options, manifest)
 				}, function(err, bodies) { send(bodies) });
 			} else { 
 				// --> THIS
-				if (!body || !body.id || !body.method) return cb({ code: -32700, message: "parse error" });
+				if (!body || !body.id || !body.method) return send(formatResp(null, { code: -32700, message: "parse error" }));
 				handle(body.method, body.params, function(err, b) { send(formatResp(body.id, err, b)) });
 			}
 		});
