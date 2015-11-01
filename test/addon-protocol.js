@@ -100,7 +100,7 @@ async.eachSeries(addons, function(url, ready) {
 			s.stream.find({ query: _.pick(item, "imdb_id", "yt_id", "filmon_id", "type") }, function(err, streams) {
 				t.error(err);
 				t.ok(streams && streams.length, "has streams");
-				var stream = streams[0];
+				var stream = streams && streams[0];
 				
 				if (! stream) return next(new Error("no stream"));
 
