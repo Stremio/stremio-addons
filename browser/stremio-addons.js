@@ -269,6 +269,7 @@ function rpcClient(endpoint, options)
 
 			utils.receiveJSON(res, function(err, body) {
 				if (err) return callbackAll(err);
+				//console.log(res.headers["cf-cache-status"]);
 				(Array.isArray(body) ? body : [body]).forEach(function(body) {
 					var callback = (byId[body.id] && byId[body.id].callback) || _.noop;
 					if (body.error) return callback(null, body.error);
@@ -20814,7 +20815,7 @@ function Server(methods, options, manifest)
 			respBody = JSON.stringify(respBody);
 			res.setHeader("Content-Type", "application/json");
 			res.setHeader("Content-Length", Buffer.byteLength(respBody, "utf8"));
-			res.setHeader("Cache-Control", "public, max-age=600");
+			res.setHeader("Cache-Control", "public, max-age="+(60*60));
 			res.end(respBody);
 		};
 
