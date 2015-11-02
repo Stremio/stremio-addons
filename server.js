@@ -109,7 +109,7 @@ function Server(methods, options, manifest)
 			respBody = JSON.stringify(respBody);
 			res.setHeader("Content-Type", "application/json");
 			res.setHeader("Content-Length", Buffer.byteLength(respBody, "utf8"));
-			res.setHeader("Cache-Control", "public, max-age="+(60*60));
+			res.setHeader("Cache-Control", "public, max-age="+(options.cacheTTL || (2*60*60) ) ); // 2 hours default
 			res.end(respBody);
 		};
 
