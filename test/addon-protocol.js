@@ -113,6 +113,27 @@ async.eachSeries(addons, function(url, ready) {
 		}, function() { t.end() });
 	});
 
+
+	test("subtitles.get for top items of meta.find", function(t) {
+		if (!s.get("subtitles.get").length) { t.skip("no subtitles.get in this add-on"); return t.end(); }
+		if (! (topitems && topitems.length)) { t.skip("no topitems"); return t.end(); }
+
+		async.eachSeries(topitems, function(item, next) {
+			t.comment("trying "+item.name);
+			s.subtitles.get({ 
+				item_hash: item.type == "movie" ? item.imdb_id : item.imdb_id+" 1 1", 
+				supportsZip: true,
+				meta: item.type=="series" ?
+				{ imdb_id: item.imdb_id, season: item.state.season, episode: item.state.episode } :
+				{ imdb_id: item.imdb_id }
+			}, function(err, resp) {
+				console.log(err,resp)
+				next();
+			});
+		}, function() { t.end() });
+	});
+
+
 	//test("meta.find - particular genre")
 	//test("meta.find - returns valid results") // copy from filmon addon
 
