@@ -267,6 +267,7 @@ function rpcClient(endpoint, options)
 
 			utils.receiveJSON(res, function(err, body) {
 				if (err) return callbackAll(err);
+				//console.log(res.headers["cf-cache-status"]);
 				(Array.isArray(body) ? body : [body]).forEach(function(body) {
 					var callback = (byId[body.id] && byId[body.id].callback) || _.noop;
 					if (body.error) return callback(null, body.error);
