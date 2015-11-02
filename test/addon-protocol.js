@@ -121,13 +121,14 @@ async.eachSeries(addons, function(url, ready) {
 		async.eachSeries(topitems, function(item, next) {
 			t.comment("trying "+item.name);
 			s.subtitles.get({ 
-				item_hash: item.type == "movie" ? item.imdb_id : item.imdb_id+" 1 1", 
-				supportsZip: true,
+				hash: item.type == "movie" ? item.imdb_id : item.imdb_id+" 1 1", 
 				meta: item.type=="series" ?
 				{ imdb_id: item.imdb_id, season: item.state.season, episode: item.state.episode } :
 				{ imdb_id: item.imdb_id }
 			}, function(err, resp) {
-				console.log(err,resp)
+				t.error(err);
+				t.ok(resp && resp.subtitles);
+				t.ok(resp && resp.hash);
 				next();
 			});
 		}, function() { t.end() });
