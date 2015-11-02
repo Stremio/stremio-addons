@@ -127,8 +127,8 @@ async.eachSeries(addons, function(url, ready) {
 				{ imdb_id: item.imdb_id }
 			}, function(err, resp) {
 				t.error(err);
-				t.ok(resp && resp.subtitles);
-				t.ok(resp && resp.hash);
+				t.ok(resp && resp.subtitles, "has subtitles");
+				t.ok(resp && resp.hash, "has item hash");
 				next();
 			});
 		}, function() { t.end() });
