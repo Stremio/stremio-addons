@@ -35,11 +35,11 @@ function checkArgs(args, filter)
 {
 	if (!filter || _.isEmpty(filter)) return true;
 	var flat = dot.dot(args);
-	return _.some(filter, function(val, key) {
+	return _.filter(filter, function(val, key) {
 		var v = dot.pick(key, args) || flat[key]; // bit of a hack to handle the case where a key has dot in it
 		if (val.$exists) return (v !== undefined) == val.$exists;
 		if (val.$in) return _.intersection(Array.isArray(v) ? v : [v], val.$in).length;
-	});
+	}).length;
 };
 
 
@@ -20710,6 +20710,7 @@ var utils = require("./utils");
 var async = require("async");
 
 var SESSION_LIVE = 10*60*60*1000; // 10 hrs
+var CACHE_TTL = 2.5 * 60 * 60; // seconds to live for the cache
 
 function Server(methods, options, manifest)
 {	
@@ -20815,7 +20816,7 @@ function Server(methods, options, manifest)
 			respBody = JSON.stringify(respBody);
 			res.setHeader("Content-Type", "application/json");
 			res.setHeader("Content-Length", Buffer.byteLength(respBody, "utf8"));
-			res.setHeader("Cache-Control", "public, max-age="+(60*60));
+			res.setHeader("Cache-Control", "public, max-age="+(options.cacheTTL || CACHE_TTL ) ); // around 2 hours default
 			res.end(respBody);
 		};
 
