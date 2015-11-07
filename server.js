@@ -4,6 +4,7 @@ var utils = require("./utils");
 var async = require("async");
 
 var SESSION_LIVE = 10*60*60*1000; // 10 hrs
+var CACHE_TTL = 2.5 * 60 * 60; // seconds to live for the cache
 
 function Server(methods, options, manifest)
 {	
@@ -109,7 +110,7 @@ function Server(methods, options, manifest)
 			respBody = JSON.stringify(respBody);
 			res.setHeader("Content-Type", "application/json");
 			res.setHeader("Content-Length", Buffer.byteLength(respBody, "utf8"));
-			res.setHeader("Cache-Control", "public, max-age="+(options.cacheTTL || (2*60*60) ) ); // 2 hours default
+			res.setHeader("Cache-Control", "public, max-age="+(options.cacheTTL || CACHE_TTL ) ); // around 2 hours default
 			res.end(respBody);
 		};
 
