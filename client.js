@@ -33,11 +33,11 @@ function checkArgs(args, filter)
 {
 	if (!filter || _.isEmpty(filter)) return true;
 	var flat = dot.dot(args);
-	return _.some(filter, function(val, key) {
+	return _.filter(filter, function(val, key) {
 		var v = dot.pick(key, args) || flat[key]; // bit of a hack to handle the case where a key has dot in it
 		if (val.$exists) return (v !== undefined) == val.$exists;
 		if (val.$in) return _.intersection(Array.isArray(v) ? v : [v], val.$in).length;
-	});
+	}).length;
 };
 
 

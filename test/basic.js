@@ -42,7 +42,7 @@ tape("initialize server, basic call", function(t) {
 		s.setAuth(null, TEST_SECRET);
 		s.call("meta.get", { query: { id: 1 } }, function(err, res)
 		{
-			t.ok(!err, "no err on first call");
+			t.error(err, "no err on first call");
 			t.ok(!isNaN(res.now), "we have returned timestamp");			
 			t.ok(received, "call was received");
 
@@ -239,7 +239,7 @@ tape("fallback if network times out", function(t) {
 			{
 				t.ok(!err, "no err on call");
 				t.ok(res, "we have result");
-				t.ok(res.length==2, "we have items");
+				t.ok(res && res.length==2, "we have items");
 				t.end();
 			});
 		});
@@ -428,15 +428,15 @@ tape("checkArgs", function(t) {
 	var checkArgs = (new addons.Client({ })).checkArgs;
 
 	var f = { "query.id": { $exists: true }, "query.type": { $in: ["foo", "bar"] }, toplevel: { $exists: true } };
-	t.ok(checkArgs({ toplevel: 5 }, f) === true, "basic top-level match");
-	t.ok(checkArgs({ query: { id: 2 } }, f) === true, "nested on one level with $exists");
-	t.ok(checkArgs({ "query.id": 2 }, f) === true, "passing flat dot property with $exists");
-	t.ok(checkArgs({ query: { type: "foo" } }, f) === true, "nested with $in");
-	t.ok(checkArgs({ query: { type: "bar" } }, f) === true, "nested with $in");
-	t.ok(checkArgs({ query: { type: ["bar"] } }, f) === true, "nested with an array with $in");
-	t.ok(checkArgs({ query: { type: "somethingelse" } }, f) === false, "nested with $in - not matching");
-	t.ok(checkArgs({ query: {} }, f) === false, "nested - not matching");
-	t.ok(checkArgs({ query: { idx: 5 } } , f) === false, "nested - not maching");
+	t.ok(checkArgs({ toplevel: 5 }, f) == true, "basic top-level match");
+	t.ok(checkArgs({ query: { id: 2 } }, f) == true, "nested on one level with $exists");
+	t.ok(checkArgs({ "query.id": 2 }, f) == true, "passing flat dot property with $exists");
+	t.ok(checkArgs({ query: { type: "foo" } }, f) == true, "nested with $in");
+	t.ok(checkArgs({ query: { type: "bar" } }, f) == true, "nested with $in");
+	t.ok(checkArgs({ query: { type: ["bar"] } }, f) == true, "nested with an array with $in");
+	t.ok(checkArgs({ query: { type: "somethingelse" } }, f) == false, "nested with $in - not matching");
+	t.ok(checkArgs({ query: {} }, f) == false, "nested - not matching");
+	t.ok(checkArgs({ query: { idx: 5 } } , f) == false, "nested - not maching");
 
 	process.nextTick(function() { t.end(); });
 });
