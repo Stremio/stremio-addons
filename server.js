@@ -4,6 +4,7 @@ var utils = require("./utils");
 var async = require("async");
 
 var SESSION_LIVE = 10*60*60*1000; // 10 hrs
+var CACHE_TTL = 2.5 * 60 * 60; // seconds to live for the cache
 
 function Server(methods, options, manifest)
 {	
@@ -67,7 +68,7 @@ function Server(methods, options, manifest)
 
 		// Only serves stremio endpoint - currently /stremio/v1
 		var parsed = url.parse(req.url);
-		if (parsed.pathname != module.parent.STREMIO_PATH) return next(); 
+		if (! parsed.pathname.match(module.parent.STREMIO_PATH)) return next(); 
 		
 		if (req.method === "OPTIONS") {
 			var headers = {};
@@ -79,17 +80,14 @@ function Server(methods, options, manifest)
 			res.writeHead(200, headers);
 			res.end();
 			return;
-		};	
-		if (req.method == "GET") { // unsupported by JSON-RPC, it uses post
-			utils.http.get(require("url").parse(module.parent.CENTRAL+"/stremio/addon/"+manifest.id+"?announce="+encodeURIComponent("http://"+req.headers.host+req.url)), function(resp) { resp.pipe(res) });
-			return;
-		}
+		};
 		
-		if (req.method == "POST") return serveRPC(req, res, function(method, params, cb) {
+		if (req.method == "POST" || ( req.method == "GET" && parsed.pathname.match("q.json$") ) ) return serveRPC(req, res, function(method, params, cb) {
 			if (method == "meta") return meta(cb);
 			if (! methods[method]) return cb({ message: "method not supported", code: -32601 }, null);
 
 			var auth = params[0], args = params[1];
+			if (options.stremioget && !method.match("stats")) return methods[method](args, cb, { stremioget: true }); // everything is allowed without auth in stremioget mode
 			if (!(auth && auth[1]) && methods[method].noauth) return methods[method](args, cb, { noauth: true }); // the function is allowed without auth
 			if (! auth) return cb({ message: "auth not specified", code: 1 });
 			
@@ -98,14 +96,19 @@ function Server(methods, options, manifest)
 				if (err) return cb(err);
 				methods[method](args, cb, session);
 			});
-		});
+		}); else if (req.method == "GET") { // unsupported by JSON-RPC, it uses post
+			utils.http.get(require("url").parse(module.parent.CENTRAL+"/stremio/addon/"+manifest.id+"?announce="+encodeURIComponent("http://"+req.headers.host+req.url)), function(resp) { resp.pipe(res) });
+			return;
+		}
 
 		res.writeHead(405); // method not allowed
 		res.end();
 	};
 
 	function serveRPC(req, res, handle) {
-		if (! req.headers["content-type"].match("^application/json")) return res.writeHead(415); // unsupported media type
+		var isGet = req.url.match("q.json");
+		var isJson = req.headers["content-type"] && req.headers["content-type"].match("^application/json");
+		if (!(isGet || isJson)) return res.writeHead(415); // unsupported media type
 		res.setHeader("Access-Control-Allow-Origin", "*");
 
 		function formatResp(id, err, body) {
@@ -118,6 +121,7 @@ function Server(methods, options, manifest)
 			respBody = JSON.stringify(respBody);
 			res.setHeader("Content-Type", "application/json");
 			res.setHeader("Content-Length", Buffer.byteLength(respBody, "utf8"));
+			res.setHeader("Cache-Control", "public, max-age="+(options.cacheTTL || CACHE_TTL ) ); // around 2 hours default
 			res.end(respBody);
 		};
 
@@ -132,7 +136,7 @@ function Server(methods, options, manifest)
 				}, function(err, bodies) { send(bodies) });
 			} else { 
 				// --> THIS
-				if (!body || !body.id || !body.method) return cb({ code: -32700, message: "parse error" });
+				if (!body || !body.id || !body.method) return send(formatResp(null, { code: -32700, message: "parse error" }));
 				handle(body.method, body.params, function(err, b) { send(formatResp(body.id, err, b)) });
 			}
 		});

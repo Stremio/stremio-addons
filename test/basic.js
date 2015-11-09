@@ -5,8 +5,8 @@ var _ = require("lodash");
 
 var TEST_SECRET = "51af8b26c364cb44d6e8b7b517ce06e39caf036a";
 
-function initServer(methods, callback) {
-	var server = new addons.Server(methods, { secret: TEST_SECRET }, { 
+function initServer(methods, callback, opts) {
+	var server = new addons.Server(methods, _.extend({ secret: TEST_SECRET  }, opts), { 
 	 filter: { "query.id": { $exists: true }, "query.types": { $in: [ "foo", "bar" ] } }
 	});
 
@@ -22,7 +22,7 @@ function initServer(methods, callback) {
 
 
 tape("initialize server, basic call", function(t) {
-	t.timeoutAfter(10000); // 5s because of slow auth
+	t.timeoutAfter(5000); // 5s because of slow auth
 
 	var received = false;
 
@@ -42,7 +42,7 @@ tape("initialize server, basic call", function(t) {
 		s.setAuth(null, TEST_SECRET);
 		s.call("meta.get", { query: { id: 1 } }, function(err, res)
 		{
-			t.ok(!err, "no err on first call");
+			t.error(err, "no err on first call");
 			t.ok(!isNaN(res.now), "we have returned timestamp");			
 			t.ok(received, "call was received");
 
@@ -55,9 +55,43 @@ tape("initialize server, basic call", function(t) {
 			});
 		});
 	});
-
 });
 
+tape("initialize server, basic call - stremioget", function(t) {
+	t.timeoutAfter(2000); 
+
+	var received = false;
+
+	initServer({ 
+		"meta.get": function(args, cb, sess) {
+			received = true;
+
+			t.ok(args.query.id == 1, "we are receiving arguments");
+			t.ok(!!sess, "we have session");
+			//t.ok(sess.isAnotherService, "we are calling from another service"); // no auth when we're stremioget
+			return cb(null, { now: Date.now() });
+		}
+	},
+	function(url) {
+		var s = new addons.Client({ picker: function(addons) { t.ok("picker called with 1 addon", addons.length==1); return addons } });
+		s.add(url+"/stremioget");
+		s.call("meta.get", { query: { id: 1 } }, function(err, res)
+		{
+			t.ok(!err, "no err on first call");
+			t.ok(!isNaN(res.now), "we have returned timestamp");			
+			t.ok(received, "call was received");
+
+			// two calls because first will wait for central server authentication
+			s.call("meta.get", { query: { id: 1 } }, function(err, res)
+			{
+				t.ok(!err, "no err on second call");
+				t.ok(!isNaN(res.now), "we have returned timestamp");
+				t.end();
+			});
+		});
+	}, { stremioget: true });
+
+});
 
 tape("test events", function(t) {
 	t.timeoutAfter(2000);
@@ -177,6 +211,35 @@ tape("fallback if result is null", function(t) {
 				t.ok(!err, "no err on call");
 				t.ok(res, "we have result");
 				t.ok(res.from == "TWO", "we have results from two");
+				t.end();
+			});
+		});
+	});
+});
+
+tape("fallback if network times out", function(t) {
+	t.timeoutAfter(3000);
+
+	initServer({ 
+		"meta.find": function(args, cb, sess) {
+		}
+	},
+	function(url1) {
+		initServer({ 
+			"meta.find": function(args, cb, sess) {
+				return cb(null, [{ _id: "test" }, { _id: "test2" }])
+			}
+		},
+		function(url2) {
+			var s = new addons.Client({ timeout: 500 });
+			s.add(url1, { priority: 0 });
+			s.add(url2, { priority: 1 });
+			s.setAuth(null, TEST_SECRET);
+			s.meta.find({ query: { id: 1 } }, function(err, res)
+			{
+				t.ok(!err, "no err on call");
+				t.ok(res, "we have result");
+				t.ok(res && res.length==2, "we have items");
 				t.end();
 			});
 		});
@@ -365,15 +428,15 @@ tape("checkArgs", function(t) {
 	var checkArgs = (new addons.Client({ })).checkArgs;
 
 	var f = { "query.id": { $exists: true }, "query.type": { $in: ["foo", "bar"] }, toplevel: { $exists: true } };
-	t.ok(checkArgs({ toplevel: 5 }, f) === true, "basic top-level match");
-	t.ok(checkArgs({ query: { id: 2 } }, f) === true, "nested on one level with $exists");
-	t.ok(checkArgs({ "query.id": 2 }, f) === true, "passing flat dot property with $exists");
-	t.ok(checkArgs({ query: { type: "foo" } }, f) === true, "nested with $in");
-	t.ok(checkArgs({ query: { type: "bar" } }, f) === true, "nested with $in");
-	t.ok(checkArgs({ query: { type: ["bar"] } }, f) === true, "nested with an array with $in");
-	t.ok(checkArgs({ query: { type: "somethingelse" } }, f) === false, "nested with $in - not matching");
-	t.ok(checkArgs({ query: {} }, f) === false, "nested - not matching");
-	t.ok(checkArgs({ query: { idx: 5 } } , f) === false, "nested - not maching");
+	t.ok(checkArgs({ toplevel: 5 }, f) == true, "basic top-level match");
+	t.ok(checkArgs({ query: { id: 2 } }, f) == true, "nested on one level with $exists");
+	t.ok(checkArgs({ "query.id": 2 }, f) == true, "passing flat dot property with $exists");
+	t.ok(checkArgs({ query: { type: "foo" } }, f) == true, "nested with $in");
+	t.ok(checkArgs({ query: { type: "bar" } }, f) == true, "nested with $in");
+	t.ok(checkArgs({ query: { type: ["bar"] } }, f) == true, "nested with an array with $in");
+	t.ok(checkArgs({ query: { type: "somethingelse" } }, f) == false, "nested with $in - not matching");
+	t.ok(checkArgs({ query: {} }, f) == false, "nested - not matching");
+	t.ok(checkArgs({ query: { idx: 5 } } , f) == false, "nested - not maching");
 
 	process.nextTick(function() { t.end(); });
 });

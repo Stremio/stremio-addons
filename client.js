@@ -33,11 +33,11 @@ function checkArgs(args, filter)
 {
 	if (!filter || _.isEmpty(filter)) return true;
 	var flat = dot.dot(args);
-	return _.some(filter, function(val, key) {
+	return _.filter(filter, function(val, key) {
 		var v = dot.pick(key, args) || flat[key]; // bit of a hack to handle the case where a key has dot in it
 		if (val.$exists) return (v !== undefined) == val.$exists;
 		if (val.$in) return _.intersection(Array.isArray(v) ? v : [v], val.$in).length;
-	});
+	}).length;
 };
 
 
@@ -246,17 +246,28 @@ function rpcClient(endpoint, options)
 		handle.flush();
 	};
 	function rpcRequest(requests) { // supports batching
-		requests.forEach(function(x) { x.callback = _.once(x.callback )});
+		var isGet = !!endpoint.match("stremioget");
+
+		requests.forEach(function(x, i) { 
+			x.callback = _.once(x.callback);
+			if (isGet) x.params[0] = null; // get requests limited to noauth
+			if (isGet) x.id = i+1; // unify ids
+		});
+
 		var body = JSON.stringify(requests.length == 1 ? requests[0] : requests);
 		var byId = _.indexBy(requests, "id");
 		var callbackAll = function() { var args = arguments; requests.forEach(function(x) { x.callback && x.callback.apply(null, args) }) };
-		var req = utils.http.request(_.extend(require("url").parse(endpoint), { 
-			method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } 
-		}), function(res) {
+
+		var reqObj = { };
+		if (!isGet) _.extend(reqObj, require("url").parse(endpoint), { method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } });
+		else _.extend(reqObj, require("url").parse(endpoint+"/q.json?b="+new Buffer(body, "binary").toString("base64")));
+		
+		var req = utils.http.request(reqObj, function(res) {
 			if (options.respTimeout && res.setTimeout) res.setTimeout(options.respTimeout);
 
 			utils.receiveJSON(res, function(err, body) {
 				if (err) return callbackAll(err);
+				//console.log(res.headers["cf-cache-status"]);
 				(Array.isArray(body) ? body : [body]).forEach(function(body) {
 					var callback = (byId[body.id] && byId[body.id].callback) || _.noop;
 					if (body.error) return callback(null, body.error);
@@ -264,10 +275,11 @@ function rpcClient(endpoint, options)
 				});
 			});
 		});
+
 		if (options.timeout) req.setTimeout(options.timeout);
 		req.on("error", callbackAll);
 		req.on("timeout", function() { callbackAll(new Error("rpc request timed out")) });
-		req.write(body);
+		if (! isGet) req.write(body);
 		req.end();
 	};
 	return client;
