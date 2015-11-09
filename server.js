@@ -54,6 +54,17 @@ function Server(methods, options, manifest)
 	}, 1);
 
 	this.middleware = function(req, res, next) {
+		var start = Date.now(), finished = false;
+		req._statsNotes = [];
+		var getInfo = function() { return [req.url].concat(req._statsNotes).filter(function(x) { return x }) };
+		if (process.env.STREMIO_LOGGING) {
+			res.on("finish", function() {
+				finished = true;
+				console.log("-> ["+(Date.now()-start)+"ms] "+getInfo().join(", ")+" / "+res.statusCode)
+			});
+			setTimeout(function() { if (!finished) console.log("-> [WARNING] "+getInfo().join(", ")+" taking more than 3000ms to run") }, 3000);
+		}
+
 		// Only serves stremio endpoint - currently /stremio/v1
 		var parsed = url.parse(req.url);
 		if (parsed.pathname != module.parent.STREMIO_PATH) return next(); 
