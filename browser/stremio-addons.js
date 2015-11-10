@@ -20927,7 +20927,7 @@ module.exports.genID = function() {
 }).call(this,require("buffer").Buffer)
 },{"buffer":4,"http":37,"url":32}],"stremio-addons":[function(require,module,exports){
 module.STREMIO_PATH = "/stremio/v1";
-module.CENTRAL = "http://api8.herokuapp.com";
+module.CENTRAL = "http://api9.strem.io";
 
 module.exports.Client = require("./client");
 module.exports.Server = require("./server");
