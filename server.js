@@ -61,9 +61,9 @@ function Server(methods, options, manifest)
 		if (process.env.STREMIO_LOGGING) {
 			res.on("finish", function() {
 				finished = true;
-				console.log("["+(new Date()).toISOString()+"] -> ["+(Date.now()-start)+"ms] "+getInfo().join(", ")+" / "+res.statusCode)
+				console.log("\x1b[34m["+(new Date()).toISOString()+"]\x1b[0m -> \x1b[32m["+(Date.now()-start)+"ms]\x1b[0m "+getInfo().join(", ")+" / "+res.statusCode)
 			});
-			setTimeout(function() { if (!finished) console.log("-> [WARNING] "+getInfo().join(", ")+" taking more than 3000ms to run") }, 3000);
+			setTimeout(function() { if (!finished) console.log("-> \x1b[31m[WARNING]\x1b[0m "+getInfo().join(", ")+" taking more than 3000ms to run") }, 3000);
 		}
 
 		// Only serves stremio endpoint - currently /stremio/v1
