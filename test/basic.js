@@ -94,7 +94,7 @@ tape("initialize server, basic call - stremioget", function(t) {
 });
 
 tape("test events", function(t) {
-	t.timeoutAfter(2000);
+	t.timeoutAfter(3000);
 
 	initServer({ 
 		"meta.get": function(args, cb, sess) {
@@ -115,6 +115,7 @@ tape("test events", function(t) {
 			t.ok(!err, "no err on call");
 			t.ok(ready && ready.url && ready.url == url, "addon-ready was called with proper url");
 			t.ok(picker && picker.addons && picker.addons.length == 1 && picker.method == "meta.get", "pick was called with 1 addon");
+			t.ok(res, "has res");
 			t.ok(!isNaN(res.now), "we have returned timestamp");
 			t.end();
 		});
