@@ -1,6 +1,6 @@
 {
   "name": "stremio-addons",
-  "version": "1.16.10",
+  "version": "1.16.11",
   "description": "Stremio Add-on Server / Client",
   "main": "index.js",
   "dependencies": {
