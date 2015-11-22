@@ -112,6 +112,8 @@ function Stremio(options)
 	var self = this;
 	require("events").EventEmitter.call(this);
 	
+	self.setMaxListeners(200); // something reasonable
+
 	Object.defineProperty(self, "supportedTypes", { enumerable: true, get: function() { 
 		return getTypes(self.get("meta.find"));
 	} });
