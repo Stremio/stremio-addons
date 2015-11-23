@@ -63,13 +63,13 @@ async.eachSeries(addons, function(url, ready) {
 	});
 
 	// Test if an add-on implements the Stremio protocol OK and responds
-	test("meta.find - get top 100 items", function(t) {
+	test("meta.find - get top 70 items", function(t) {
 		if (!s.get("meta.find").length) { t.skip("no meta.find in this add-on"); return t.end(); }
 
-		s.meta.find({ query: { type: "movie" }, limit: 100, sort: { popularity: -1 } }, function(err, meta) { 
+		s.meta.find({ query: { type: "movie" }, limit: 70, sort: { popularity: -1 } }, function(err, meta) { 
 			t.error(err);
 			t.ok(meta, "has results");
-			t.ok(meta && meta.length == 100, "100 items");
+			t.ok(meta && meta.length == 70, "70 items");
 			topitems = meta ? meta.filter(function(x) { 
 				return LID ? (x.popularities && x.popularities[LID]) : x.popularity 
 			}).slice(0, 15) : topitems;
