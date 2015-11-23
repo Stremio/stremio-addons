@@ -114,6 +114,8 @@ function Stremio(options)
 	var self = this;
 	require("events").EventEmitter.call(this);
 	
+	self.setMaxListeners(200); // something reasonable
+
 	Object.defineProperty(self, "supportedTypes", { enumerable: true, get: function() { 
 		return getTypes(self.get("meta.find"));
 	} });
@@ -236,11 +238,13 @@ function getTypes(services) {
 // 2) reduce number of dependencies
 function rpcClient(endpoint, options)
 {
+	var isGet = !!endpoint.match("stremioget");
+
 	var client = { };
 	client.request = function(method, params, callback) {
 		rpcRequest([{ callback: callback, params: params, method: method, id: utils.genID(), jsonrpc: "2.0" }]);
 	};
-	client.enqueue = function(handle, method, params, callback) {
+	if (!isGet) client.enqueue = function(handle, method, params, callback) {
 		if (! handle.flush) handle.flush = _.debounce(function() {
 			rpcRequest(handle.queue); handle.queue = [];
 		}, handle.time);
@@ -248,8 +252,6 @@ function rpcClient(endpoint, options)
 		handle.flush();
 	};
 	function rpcRequest(requests) { // supports batching
-		var isGet = !!endpoint.match("stremioget");
-
 		requests.forEach(function(x, i) { 
 			x.callback = _.once(x.callback);
 			if (isGet) x.params[0] = null; // get requests limited to noauth
