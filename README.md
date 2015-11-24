@@ -9,6 +9,18 @@ Stremio Add-ons are **loaded through HTTP**, so the Add-on has to have it's own 
 * **Add-on server library**: what we use to initialize an HTTP server that provides a Stremio add-on.
 * **Add-on client library**: a client library to use one or more Stremio add-ons
 
+## Using add-ons in Stremio
+```javascript
+// pass your add-on's HTTP endpoint to --services argument to Stremio
+// for example, if you're running an add-on locally at port 9008, do
+/Applications/Stremio.app/Contents/MacOS/Electron . --services=http://localhost:9008
+
+// Windows
+%LOCALAPPDATA%\Programs\LNV\Stremio\Stremio.exe .. --services=http://localhost:9008
+
+// this is the same for remote add-ons, for example --services=http://stremio-guidebox.herokuapp.com
+```
+
 
 ## Documentation
 1. [Creating a basic Add-on](documentation/basic-addon.md)
