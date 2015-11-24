@@ -3,6 +3,7 @@ An Add-ons system that works like an RPC system, however it allows to **use mult
 
 Stremio Add-ons are **loaded through HTTP**, so the Add-on has to have it's own server, provided by the Add-on provider. See "[Creating a basic Add-on](documentation/basic-addon.md)" for the reasons behind this approach.
 
+
 #### Provides
 
 * **Add-on server library**: what we use to initialize an HTTP server that provides a Stremio add-on.
