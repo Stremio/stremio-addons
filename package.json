@@ -1,6 +1,6 @@
 {
   "name": "stremio-addons",
-  "version": "1.17.4",
+  "version": "1.17.5",
   "description": "Stremio Add-on Server / Client",
   "main": "index.js",
   "dependencies": {
@@ -10,7 +10,6 @@
     "tape": "4.x.x"
   },
   "devDependencies": {
-    "tape": "4.x.x",
     "browserify": "*",
     "uglifyjs": "*"
   },
