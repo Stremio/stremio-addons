@@ -12,7 +12,7 @@ First thing to keep in mind here is that Stremio supports video streaming throug
 
 #### Response format
 
-``availability`` - 0-3 integer representing stream availability - 0 available, 1 barely available, 2 OK, 3 highly available
+``availability`` - 0-3 integer representing stream availability - 0 not available, 1 barely available, 2 OK, 3 highly available
 
 ``tag`` - array, optional tags of the stream; currently "hd" tag recognized
 
