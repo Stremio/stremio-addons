@@ -10,12 +10,13 @@ var TEST_SECRET = "51af8b26c364cb44d6e8b7b517ce06e39caf036a";
 var addons = process.argv.filter(function(x) { return x.match("^http") });
 if (! addons.length) throw "No add-ons specified";
 
-var slackPush, slackChannel, slackMessage, noStats;
+var slackPush, slackChannel, slackMessage, noStats, shortLog;
 process.argv.forEach(function(x) { 
 	if (x.match("--slack-push")) slackPush = x.split("=")[1];
 	if (x.match("--slack-channel")) slackChannel = x.split("=")[1];
 	if (x.match("--slack-message")) slackMessage = x.split("=")[1];
 	if (x.match("--no-stats")) noStats = true;
+	if (x.match("--short-log")) shortLog = true;
 });
 
 var hasErr = false, output = [];
@@ -148,7 +149,9 @@ async.eachSeries(addons, function(url, ready) {
 	}).on("end", function() {
 		if (! hasErr) return ready();
 		if (!slackPush) return ready();
-
+		
+		if (shortLog) output = output.slice(-5);
+		
 		var body = require("querystring").stringify({ payload: JSON.stringify({ 
 			channel: slackChannel || "#mon-stremio", username: "webhookbot",
 			text: "*WARNING: "+url+" failing "+(slackMessage || "")+" *\n```"+output.join("\n")+"```\n",
