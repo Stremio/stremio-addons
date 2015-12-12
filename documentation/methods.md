@@ -5,7 +5,8 @@ First thing to keep in mind here is that Stremio supports video streaming throug
 
 #### Request format
 ``query`` - an object containing ``imdb_id`` or ``yt_id`` (strings), and also ``season``, ``episode`` (numbers) if applicable
-**example**
+
+**Example**
 ```javascript
 { query: { imdb_id: "tt0032138" } }
 ```
@@ -16,7 +17,7 @@ First thing to keep in mind here is that Stremio supports video streaming throug
 
 ``tag`` - array, optional tags of the stream; currently "hd" tag recognized
 
-Additionally, one of these have to be passed to point to the stream itself
+Additionally, **one of the following** has to be passed to point to the stream itself
 
 ``infoHash`` and ``mapIdx`` - info hash of a torrent file, and mapIdx is the index of the video file within the torrent; **if mapIdx is not specified, the largest file in the torrent will be selected**
 
@@ -24,20 +25,23 @@ Additionally, one of these have to be passed to point to the stream itself
 
 ``externalUrl`` - URL to the video, which should be opened in a browser (webpage) 
 
-**NOTE** The .find methods return array of responses.
+``yt_id`` - youtube video ID
 
-Example
+**NOTE** The stream.find methods return array of responses.
+
+##### Example
 ```javascript
-{ 
+// Result from stremio.stream.find({ query: { imdb_id: "tt0032138" } })
+[{ 
   infoHash: "24c8802e2624e17d46cd555f364debd949f2c81e",
   mapIdx: 0, // The.Wizard.of.Oz.1939.1080p.BrRip.x264.BOKUTOX.YIFY.mp4 
   tag: ["mp4", "hd", "1080p", "yifi"],
   availability: 2, // good to calculate that based on seeders if we have them - 0 seeders - 0 avail, 0-20 - 1, 20-50 - 2, 50 - ... - 3 
-}
+}]
 // This would start streaming wizard of oz in HD in Stremio
 ```
 
-
+------------------------
 
 
 # Metadata
