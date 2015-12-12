@@ -1,6 +1,6 @@
 #### Warning: this is work in progress.
 
-# Streaming
+# stream.find
 First thing to keep in mind here is that Stremio supports video streaming through HTTP or BitTorrent-compatible descriptors. If you are interested in other protocols, contact us at [office@strem.io](mailto:office@strem.io).
 
 #### Request format
@@ -18,7 +18,7 @@ First thing to keep in mind here is that Stremio supports video streaming throug
 
 Additionally, one of these have to be passed to point to the stream itself
 
-``infoHash`` and ``mapIdx`` - info hash of a torrent file, and mapIdx is the index of the video file within the torrent
+``infoHash`` and ``mapIdx`` - info hash of a torrent file, and mapIdx is the index of the video file within the torrent; **if mapIdx is not specified, the largest file in the torrent will be selected**
 
 ``url`` - direct URL to a video stream - http, https, rtmp protocols supported
 
@@ -38,9 +38,6 @@ Example
 ```
 
 
-## stream.get
-
-## stream.find
 
 
 # Metadata
@@ -63,7 +60,8 @@ Stremio's metadata model is designed to support movies, series and video channel
 {
 	name: "",
 	year: "",
-	type: "", // currently accepted types are movie, serries, channel
+	type: "", // currently accepted types are movie, series, channel
+	poster: "http://...", // url to png of poster 
 	imdb_id: "", // or
 	yt_id: "",
 	description: "...",
