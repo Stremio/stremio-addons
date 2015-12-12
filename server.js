@@ -110,34 +110,38 @@ function Server(methods, options, manifest)
 		var isJson = req.headers["content-type"] && req.headers["content-type"].match("^application/json");
 		if (!(isGet || isJson)) return res.writeHead(415); // unsupported media type
 		res.setHeader("Access-Control-Allow-Origin", "*");
-
+		
 		function formatResp(id, err, body) {
 			var respBody = { jsonrpc: "2.0", id: id };
 			if (err) respBody.error = { message: err.message, code: err.code || -32603 };
 			else respBody.result = body;
 			return respBody;
 		};
-		function send(respBody) {
+		function send(respBody, ttl) {
 			respBody = JSON.stringify(respBody);
 			res.setHeader("Content-Type", "application/json");
 			res.setHeader("Content-Length", Buffer.byteLength(respBody, "utf8"));
-			res.setHeader("Cache-Control", "public, max-age="+(options.cacheTTL || CACHE_TTL ) ); // around 2 hours default
+			res.setHeader("Cache-Control", "public, max-age="+(ttl || CACHE_TTL) ); // around 2 hours default
 			res.end(respBody);
 		};
 
 		utils.receiveJSON(req, function(err, body) {
 			if (err) return send({ code: -32700, message: "parse error" }); // TODO: jsonrpc, id prop
-			
+
+			var ttl = CACHE_TTL;
+			if (!isNaN(options.cacheTTL)) ttl = options.cacheTTL;
+			if (options.cacheTTL && options.cacheTTL[body.method]) ttl = options.cacheTTL[body.method];
+				
 			if (Array.isArray(body)) {
 				async.map(body, function(b, cb) { 
 					// WARNING: same logic as -->
 					if (!b || !b.id || !b.method) return cb(null, formatResp(null, { code: -32700, message: "parse error" })); 
 					handle(b.method, b.params, function(err, bb) { cb(null, formatResp(b.id, err, bb)) });
-				}, function(err, bodies) { send(bodies) });
+				}, function(err, bodies) { send(bodies, ttl) });
 			} else { 
 				// --> THIS
 				if (!body || !body.id || !body.method) return send(formatResp(null, { code: -32700, message: "parse error" }));
-				handle(body.method, body.params, function(err, b) { send(formatResp(body.id, err, b)) });
+				handle(body.method, body.params, function(err, b) { send(formatResp(body.id, err, b), ttl) });
 			}
 		});
 	};
