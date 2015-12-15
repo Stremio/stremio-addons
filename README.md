@@ -13,6 +13,13 @@ An Add-ons system that works like an RPC system, however it allows to **use mult
 Stremio Add-ons are **loaded through HTTP**, so the Add-on has to have it's own server, provided by the Add-on provider. See "[Creating a basic Add-on](documentation/basic-addon.md)" for the reasons behind this approach.
 
 
+## Documentation
+1. [Creating a basic Add-on](documentation/basic-addon.md)
+2. [Enabling Add-on in Stremio](documentation/enabling-addon.md)
+3. [Methods](documentation/methods.md)
+4. [Using Cinemeta](documentation/using-cinemeta.md)
+
+
 #### Provides
 
 * **Add-on server library**: what we use to initialize an HTTP server that provides a Stremio add-on.
@@ -31,11 +38,6 @@ Stremio Add-ons are **loaded through HTTP**, so the Add-on has to have it's own 
 ```
 
 
-## Documentation
-1. [Creating a basic Add-on](documentation/basic-addon.md)
-2. [Enabling Add-on in Stremio](documentation/enabling-addon.md)
-3. [Methods](documentation/methods.md)
-4. [Using Cinemeta](documentation/using-cinemeta.md)
 
 ## Client
 ```javascript
@@ -84,6 +86,9 @@ new addons.Server({
 ##### For the methods you can implement, and their expected input and output, see [methods](documentation/methods.md).
 
 ## Authentication
+
+Authentication is optional - not all add-ons require it.
+
 To authenticate when using Stremio Addons as a client, one must call
 ```javascript
 client.setAuth(/* CENTRAL SERVER or null for default */, /* USER SESSION TOKEN (authToken) OR ADDON SECRET */);
