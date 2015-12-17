@@ -1,6 +1,31 @@
 #### Warning: this is work in progress.
 
-# stream.find
+## All Methods
+
+In your add-on, you can implement the following hooks/methods:
+
+* ``stream.find``
+* ``meta.find``
+* ``meta.get``
+* ``subtitles.get``
+* ``stats.get`` 
+
+To show a catalogue in Discover, you **must** implement ``meta.find``.
+
+To show detailed information about your content (detail page), you **must** implement ``meta.get``.
+
+To implement video streaming for your content, you **must** implement ``stream.find``.
+
+## Content types
+
+**Stremio supports the following content types as of Dec 2015:**
+
+* ``movie`` - movie type - has metadata like name, genre, description, director, actors, images, etc. 
+* ``series`` - series type - has all the metadata a movie has, plus an array of episodes
+* ``channel`` - chnanel type - created to cover YouTube channels; has name, description and an array of uploaded videos
+* ``tv`` - tv type - has name, description, genre; streams for ``tv`` should be endless
+
+## Method: ``stream.find``
 First thing to keep in mind here is that Stremio supports video streaming through HTTP or BitTorrent-compatible descriptors. If you are interested in other protocols, contact us at [office@strem.io](mailto:office@strem.io).
 
 #### Request format
@@ -48,7 +73,10 @@ Additionally, **one of the following** has to be passed to point to the stream i
 Stremio's metadata model is designed to support movies, series and video channels (like YouTube channels). All metadata-related modules must return compatible data.
 
 #### Request format: 
-``query`` - MongoDB-like query object, where all objects must be matched against; must support ``$in``, ``$exists``, ``$gt``, ``$lt`` operators; on ``meta.search`` method, this is a string
+
+#### ``Meta Request``
+
+``query`` - MongoDB-like query object, where all objects must be matched against; should support ``$in``, ``$exists``, ``$gt``, ``$lt`` operators; on ``meta.search`` method, this is a string
 
 ``projection`` - MongoDB-like projection object, also accepts string values - ``lean``, ``medium`` and ``full``; lean contains name, year, release date, cast, director; medium also includes episodes (if applicable) and the full projection also includes all images and full cast info
 
@@ -56,30 +84,37 @@ Stremio's metadata model is designed to support movies, series and video channel
 
 ``limit`` - limit to N results
 
-``skip`` - skip first N
+``skip`` - skip first N results
+
+_**TIP**: If you don't use MongoDB, you can use [sift](https://www.npmjs.com/package/sift) or [linvodb3](https://www.npmjs.com/package/linvodb3) to support to the query format._
 
 
 #### Response format
-```javascript
-{
-	name: "",
-	year: "",
-	type: "", // currently accepted types are movie, series, channel
-	poster: "http://...", // url to png of poster 
-	imdb_id: "", // or
-	yt_id: "",
-	description: "...",
 
-}
-```
-**NOTE** The .find methods return array of responses.
+The response is an array of Metadata objects. 
+
+##### Metadata object
+
+``id`` - **required** - universal identifier, formed like "DOMAIN_id:ID", for example "yt_id:UCrDkAvwZum-UTjHmzDI2iIw".
+
+``type`` - **required** - type of the content; e.g. `movie`, `series`, `channel`, `tv`
+
+``name`` - **required** - name of the content
+
+``poster`` - **required** - URL to png of poster; accepted aspect ratios: 1:0.675 (IMDb poster type) or 1:1 (square) ; you can use any resolution, as long as the file size is below 100kb; below 50kb is recommended
+
+``posterShape`` - _optional_ - can be `square` (1:1 aspect) or `regular` (1:0.675). If you don't pass this, `regular` is assumed
+
+``banner`` - _optional_ - the background shown on the stremio detail page ; heavily encouraged if you want your content to look good; URL to PNG, max file size 500kb
+
+``description`` - _optional_ - a few sentances describing your content
 
 ## meta.get
-Takes request, as described, returns an array of matched results in ``lean`` projection unless specified otherwise.
+Takes ``Meta Request``, as described, returns an array of matched results in ``lean`` projection unless specified otherwise.
 
 ## meta.find
-Takes request, as described, returns the first matched result in ``full`` projection unless specified otherwise.
+Takes ``Meta Request``, as described, returns the first matched result in ``full`` projection unless specified otherwise.
 
 ## meta.search
-Perform a text search. Arguments are exactly the same as the request format, except ``query`` is a string. Returns an array of matches.
+Perform a text search. Arguments are exactly the same as usual ``Meta Request``, except ``query`` is a string. Returns an array of matches.
 
