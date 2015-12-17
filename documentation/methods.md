@@ -1,5 +1,7 @@
 #### Warning: this is work in progress.
 
+
+
 ## All Methods
 
 In your add-on, you can implement the following hooks/methods:
@@ -16,6 +18,8 @@ To show detailed information about your content (detail page), you **must** impl
 
 To implement video streaming for your content, you **must** implement ``stream.find``.
 
+
+
 ## Content types
 
 **Stremio supports the following content types as of Dec 2015:**
@@ -24,6 +28,8 @@ To implement video streaming for your content, you **must** implement ``stream.f
 * ``series`` - series type - has all the metadata a movie has, plus an array of episodes
 * ``channel`` - chnanel type - created to cover YouTube channels; has name, description and an array of uploaded videos
 * ``tv`` - tv type - has name, description, genre; streams for ``tv`` should be endless
+
+
 
 ## Method: ``stream.find``
 First thing to keep in mind here is that Stremio supports video streaming through HTTP or BitTorrent-compatible descriptors. If you are interested in other protocols, contact us at [office@strem.io](mailto:office@strem.io).
@@ -38,21 +44,22 @@ First thing to keep in mind here is that Stremio supports video streaming throug
 
 #### Response format
 
-``availability`` - 0-3 integer representing stream availability - 0 not available, 1 barely available, 2 OK, 3 highly available
+Return an array of stream objects.
 
-``tag`` - array, optional tags of the stream; currently "hd" tag recognized
+##### Stream object
 
-Additionally, **one of the following** has to be passed to point to the stream itself
+``availability`` - **required** - 0-3 integer representing stream availability - 0 not available, 1 barely available, 2 OK, 3 highly available
 
-``infoHash`` and ``mapIdx`` - info hash of a torrent file, and mapIdx is the index of the video file within the torrent; **if mapIdx is not specified, the largest file in the torrent will be selected**
+``tag`` - _optional_ - array, optional tags of the stream; use ``"480p"``, ``"720p"``, ``"1080p"``/``"hd"`` or ``"2160p"`` to specify quality
 
-``url`` - direct URL to a video stream - http, https, rtmp protocols supported
+Additionally, **one of the following must be passed** to point to the stream itself
 
-``externalUrl`` - URL to the video, which should be opened in a browser (webpage) 
+* ``url`` - direct URL to a video stream - http, https, rtmp protocols supported
+* ``externalUrl`` - URL to the video, which should be opened in a browser (webpage), e.g. link to Netflix
+* ``yt_id`` - youtube video ID, plays using the built-in YouTube player
+* ``infoHash`` and ``mapIdx`` - info hash of a torrent file, and mapIdx is the index of the video file within the torrent; **if mapIdx is not specified, the largest file in the torrent will be selected**
 
-``yt_id`` - youtube video ID
-
-**NOTE** The stream.find methods return array of responses.
+_**Tip**: to provide several streams with varying qualities, return an array of Stream Objects with different quality tag in their tag array._
 
 ##### Example
 ```javascript
@@ -69,7 +76,7 @@ Additionally, **one of the following** has to be passed to point to the stream i
 ------------------------
 
 
-# Metadata
+## Metadata
 Stremio's metadata model is designed to support movies, series and video channels (like YouTube channels). All metadata-related modules must return compatible data.
 
 #### Request format: 
@@ -101,6 +108,8 @@ The response is an array of Metadata objects.
 
 ``name`` - **required** - name of the content
 
+``genre`` - **required**  - genre/categories of the content; array of strings, e.g. ``["Thriller", "Horror"]``
+
 ``poster`` - **required** - URL to png of poster; accepted aspect ratios: 1:0.675 (IMDb poster type) or 1:1 (square) ; you can use any resolution, as long as the file size is below 100kb; below 50kb is recommended
 
 ``posterShape`` - _optional_ - can be `square` (1:1 aspect) or `regular` (1:0.675). If you don't pass this, `regular` is assumed
@@ -109,12 +118,19 @@ The response is an array of Metadata objects.
 
 ``description`` - _optional_ - a few sentances describing your content
 
-## meta.get
+``year`` - _optional_ - string - year the content came out ; if it's ``series`` or ``channel``, use a start and end years split by a tide - e.g. ``"2000-2014"``. If it's still running, use a format like ``"2000-"``
+
+``director``, ``cast`` - _optional_  - directors and cast, both arrays of names
+
+``imdbRating`` -  _optional_ - IMDb rating, a number from 0 to 10 ; use if applicable
+
+
+#### meta.get
 Takes ``Meta Request``, as described, returns an array of matched results in ``lean`` projection unless specified otherwise.
 
-## meta.find
+#### meta.find
 Takes ``Meta Request``, as described, returns the first matched result in ``full`` projection unless specified otherwise.
 
-## meta.search
+#### meta.search
 Perform a text search. Arguments are exactly the same as usual ``Meta Request``, except ``query`` is a string. Returns an array of matches.
 
