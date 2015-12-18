@@ -147,6 +147,18 @@ The response is an array of Metadata objects.
 
 ``imdbRating`` -  _optional_ - IMDb rating, a number from 0 to 10 ; use if applicable
 
+``episodes`` - _optional_ - used for ``series``, array of Episode objects
+
+``uploads`` - _optional_ - used for ``channel``, array of Video objects
+
+##### Episode object
+
+
+** TODO **
+
+##### Video object
+
+** TODO **
 
 #### meta.get
 Takes ``Meta Request``, as described, returns an array of matched results in ``lean`` projection unless specified otherwise.
