@@ -12,12 +12,11 @@ In your add-on, you can implement the following hooks/methods:
 * ``subtitles.get``
 * ``stats.get`` 
 
-To show a catalogue in Discover, you **must** implement ``meta.find``.
+**To show a catalogue in Discover, you must implement ``meta.find``.**
 
-To show detailed information about your content (detail page), you **must** implement ``meta.get``.
+**To show detailed information about your content (detail page), you must implement ``meta.get``.**
 
-To implement video streaming for your content, you **must** implement ``stream.find``.
-
+**To implement video streaming for your content, you must implement ``stream.find``.**
 
 
 ## Content types
@@ -67,7 +66,7 @@ Additional properties in ``query`` are used for content that has multipe videos,
 
 #### Response format
 
-Returns an array of stream objects. Usually either from different sources (e.g. Netflix, Hulu, iTunes) or in different qualities (480p, 720p, 1080p).
+Returns an array of stream objects. Usually either from different sources (e.g. Netflix, Hulu, iTunes) or in different qualities (``480p``, ``720p``, ``1080p``).
 
 ##### Stream object
 
@@ -99,7 +98,8 @@ _**Tip**: to provide several streams with varying qualities, return an array of 
 ------------------------
 
 
-## Metadata
+## Metadata (``meta.find``, ``meta.get``, ``meta.search``)
+
 Stremio's metadata model is designed to support movies, series and video channels (like YouTube channels). All metadata-related modules must return compatible data.
 
 #### Request format: 
@@ -160,12 +160,18 @@ The response is an array of Metadata objects.
 
 ** TODO **
 
+#### meta.find
+Takes ``Meta Request``, as described, returns the first matched result in ``full`` projection unless specified otherwise. 
+
+This is used for loading full catalogue in Discover.
+
 #### meta.get
 Takes ``Meta Request``, as described, returns an array of matched results in ``lean`` projection unless specified otherwise.
 
-#### meta.find
-Takes ``Meta Request``, as described, returns the first matched result in ``full`` projection unless specified otherwise.
+This is used when double-clicking on items, when opening their detail page. The ``full`` projection returns properties like ``episodes`` and ``uploads``, so this will be especially useful to show ``series`` and ``channel`` types. 
 
 #### meta.search
 Perform a text search. Arguments are exactly the same as usual ``Meta Request``, except ``query`` is a string. Returns an array of matches.
+
+This is used for the Search functionality.
 
