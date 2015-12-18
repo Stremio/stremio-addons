@@ -9,6 +9,7 @@ Unlike regular software plugins, Stremio addons **do not run inside Stremio**, b
 
 
 ## Documentation
+1. [Basics (home)](documentation/home.md)
 1. [Creating a basic Add-on](documentation/basic-addon.md)
 2. [Enabling Add-on in Stremio](documentation/enabling-addon.md)
 3. [Methods](documentation/methods.md)
