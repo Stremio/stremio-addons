@@ -83,7 +83,7 @@ Additionally, **one of the following must be passed** to point to the stream its
 
 _**Tip**: to provide several streams with varying qualities, return an array of Stream Objects with different quality tag in their tag array._
 
-##### Example
+** Example **
 ```javascript
 // Result from stremio.stream.find({ query: { imdb_id: "tt0032138" } })
 [{ 
