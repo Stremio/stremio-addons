@@ -1,4 +1,4 @@
-#### Warning: this is work in progress.
+# Stremio V1 protocol 
 
 
 
@@ -35,16 +35,39 @@ To implement video streaming for your content, you **must** implement ``stream.f
 First thing to keep in mind here is that Stremio supports video streaming through HTTP or BitTorrent-compatible descriptors. If you are interested in other protocols, contact us at [office@strem.io](mailto:office@strem.io).
 
 #### Request format
-``query`` - an object containing ``imdb_id`` or ``yt_id`` (strings), and also ``season``, ``episode`` (numbers) if applicable
+``query`` - an object containing an ID property with a value to match, plus extra identifying properties.
 
-**Example**
+**The ID property is the first part of your metadata's `universal identifier`**, for example if your metadata ID is ``"yt_id:UCrDkAvwZum-UTjHmzDI2iIw"`` then the query object to `stream.find` is `{ yt_id: "UCrDkAvwZum-UTjHmzDI2iIw" }`.
+
+This is done to allow using properties to help decide which add-on to be called.
+
+Additional properties in ``query`` are used for content that has multipe videos, for example ``series`` or ``channel``.
+
+``query.season`` - _optional_ - the season number, required for ``series`` type
+
+``query.episode`` - _optional_ - the episode number, required for ``series`` type
+
+``query.video_id`` - _optional_ - the video ID, required for ``channel`` type
+
+
+**Examples**
 ```javascript
+// Request The Wizard of Oz
 { query: { imdb_id: "tt0032138" } }
 ```
+```javascript
+// Request pilot of Game of Thrones
+{ query: { imdb_id: "tt0944947", season: 1, episode: 1 } }
+```
+```javascript
+// Request Gangnam Style
+{ query: { yt_id: "UCrDkAvwZum-UTjHmzDI2iIw", video_id: "9bZkp7q19f0" } }
+```
+
 
 #### Response format
 
-Return an array of stream objects.
+Returns an array of stream objects. Usually either from different sources (e.g. Netflix, Hulu, iTunes) or in different qualities (480p, 720p, 1080p).
 
 ##### Stream object
 
@@ -57,7 +80,7 @@ Additionally, **one of the following must be passed** to point to the stream its
 * ``url`` - direct URL to a video stream - http, https, rtmp protocols supported
 * ``externalUrl`` - URL to the video, which should be opened in a browser (webpage), e.g. link to Netflix
 * ``yt_id`` - youtube video ID, plays using the built-in YouTube player
-* ``infoHash`` and ``mapIdx`` - info hash of a torrent file, and mapIdx is the index of the video file within the torrent; **if mapIdx is not specified, the largest file in the torrent will be selected**
+* ``infoHash`` and/or ``mapIdx`` - info hash of a torrent file, and mapIdx is the index of the video file within the torrent; **if mapIdx is not specified, the largest file in the torrent will be selected**
 
 _**Tip**: to provide several streams with varying qualities, return an array of Stream Objects with different quality tag in their tag array._
 
@@ -66,7 +89,7 @@ _**Tip**: to provide several streams with varying qualities, return an array of 
 // Result from stremio.stream.find({ query: { imdb_id: "tt0032138" } })
 [{ 
   infoHash: "24c8802e2624e17d46cd555f364debd949f2c81e",
-  mapIdx: 0, // The.Wizard.of.Oz.1939.1080p.BrRip.x264.BOKUTOX.YIFY.mp4 
+  mapIdx: 0, // optional, the file ID - The.Wizard.of.Oz.1939.1080p.BrRip.x264.BOKUTOX.YIFY.mp4 
   tag: ["mp4", "hd", "1080p", "yifi"],
   availability: 2, // good to calculate that based on seeders if we have them - 0 seeders - 0 avail, 0-20 - 1, 20-50 - 2, 50 - ... - 3 
 }]
