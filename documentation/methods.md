@@ -33,7 +33,7 @@ In your add-on, you can implement the following hooks/methods:
 ## Method: ``stream.find``
 First thing to keep in mind here is that Stremio supports video streaming through HTTP or BitTorrent-compatible descriptors. If you are interested in other protocols, contact us at [office@strem.io](mailto:office@strem.io).
 
-#### Request format
+### Request format
 ``query`` - an object containing an ID property with a value to match, plus extra identifying properties.
 
 **The ID property is the first part of your metadata's `universal identifier`**, for example if your metadata ID is ``"yt_id:UCrDkAvwZum-UTjHmzDI2iIw"`` then the query object to `stream.find` is `{ yt_id: "UCrDkAvwZum-UTjHmzDI2iIw" }`.
@@ -64,11 +64,11 @@ Additional properties in ``query`` are used for content that has multipe videos,
 ```
 
 
-#### Response format
+### Response format
 
 Returns an array of [``stream objects``](/documentation/methods.md#stream-object). Usually either from different sources (e.g. Netflix, Hulu, iTunes) or in different qualities (``480p``, ``720p``, ``1080p``).
 
-##### Stream object
+#### Stream object
 
 ``availability`` - **required** - 0-3 integer representing stream availability - 0 not available, 1 barely available, 2 OK, 3 highly available
 
@@ -102,9 +102,9 @@ _**Tip**: to provide several streams with varying qualities, return an array of 
 
 Stremio's metadata model is designed to support movies, series and video channels (like YouTube channels). All metadata-related modules must return compatible data.
 
-#### Request format: 
+### Request format: 
 
-#### ``Meta Request``
+### ``Meta Request``
 
 ``query`` - MongoDB-like query object, where all objects must be matched against; should support ``$in``, ``$exists``, ``$gt``, ``$lt`` operators; on ``meta.search`` method, this is a string
 
@@ -119,11 +119,11 @@ Stremio's metadata model is designed to support movies, series and video channel
 _**TIP**: If you don't use MongoDB, you can use [sift](https://www.npmjs.com/package/sift) or [linvodb3](https://www.npmjs.com/package/linvodb3) to support to the query format._
 
 
-#### Response format
+### Response format
 
 The response is an array of Metadata objects. 
 
-##### Metadata object
+#### Metadata object
 
 ``id`` - **required** - universal identifier, formed like "DOMAIN_id:ID", for example "yt_id:UCrDkAvwZum-UTjHmzDI2iIw".
 
@@ -151,7 +151,7 @@ The response is an array of Metadata objects.
 
 ``uploads`` - _optional_ - used for ``channel``, array of Video objects
 
-##### Episode object
+#### Episode object
 ``number`` - **required** - number of the episode
 
 ``season`` - **required** - season number of the episode
@@ -162,7 +162,7 @@ The response is an array of Metadata objects.
 
 ``trailer`` - _optional_ - YouTube ID of the trailer video for the episode
 
-##### Video object
+#### Video object
 
 ``title`` - **required** - title of the video
 
@@ -173,17 +173,17 @@ The response is an array of Metadata objects.
 ``thumbnail`` - **required** - URL to png of the video thumbnail, in the video's aspect ratio, max file size 5kb
 
 
-#### meta.find
+### meta.find
 Takes [``Meta Request``](/documentation/methods.md#meta-request), as described, returns the first matched result in ``full`` projection unless specified otherwise. 
 
 This is used for loading full catalogue in Discover.
 
-#### meta.get
+### meta.get
 Takes [``Meta Request``](/documentation/methods.md#meta-request), as described, returns an array of matched results in ``lean`` projection unless specified otherwise.
 
 This is used when double-clicking on items, when opening their detail page. The ``full`` projection returns properties like ``episodes`` and ``uploads``, so this will be especially useful to show ``series`` and ``channel`` types. 
 
-#### meta.search
+### meta.search
 Perform a text search. Arguments are exactly the same as usual [``Meta Request``](/documentation/methods.md#meta-request), except ``query`` is a string. Returns an array of [``Metadata Object``](/documentation/methods.md#metadata-object) matches.
 
 This is used for the Search functionality.
