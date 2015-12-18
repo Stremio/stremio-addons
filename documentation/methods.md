@@ -152,13 +152,26 @@ The response is an array of Metadata objects.
 ``uploads`` - _optional_ - used for ``channel``, array of Video objects
 
 ##### Episode object
+``number`` - **required** - number of the episode
 
+``season`` - **required** - season number of the episode
 
-**TODO**
+``name`` - **required** - name of the episode
+
+``firstAired`` - **required** - Date, air date of the episode
+
+``trailer`` - _optional_ - YouTube ID of the trailer video for the episode
 
 ##### Video object
 
-**TODO**
+``title`` - **required** - title of the video
+
+``publishedAt`` - **required** - Date, publish date of the video
+
+``id`` - **required** - YouTube ID of the video
+
+``thumbnail`` - **required** - URL to png of the video thumbnail, in the video's aspect ratio, max file size 5kb
+
 
 #### meta.find
 Takes [``Meta Request``](/documentation/methods.md#meta-request), as described, returns the first matched result in ``full`` projection unless specified otherwise. 
