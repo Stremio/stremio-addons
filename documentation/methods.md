@@ -172,18 +172,19 @@ The response is an array of Metadata objects.
 
 ``thumbnail`` - **required** - URL to png of the video thumbnail, in the video's aspect ratio, max file size 5kb
 
+### Methods
 
-### meta.find
+#### meta.find
 Takes [``Meta Request``](/documentation/methods.md#meta-request), as described, returns the first matched result in ``full`` projection unless specified otherwise. 
 
 This is used for loading full catalogue in Discover.
 
-### meta.get
+#### meta.get
 Takes [``Meta Request``](/documentation/methods.md#meta-request), as described, returns an array of matched results in ``lean`` projection unless specified otherwise.
 
 This is used when double-clicking on items, when opening their detail page. The ``full`` projection returns properties like ``episodes`` and ``uploads``, so this will be especially useful to show ``series`` and ``channel`` types. 
 
-### meta.search
+#### meta.search
 Perform a text search. Arguments are exactly the same as usual [``Meta Request``](/documentation/methods.md#meta-request), except ``query`` is a string. Returns an array of [``Metadata Object``](/documentation/methods.md#metadata-object) matches.
 
 This is used for the Search functionality.
