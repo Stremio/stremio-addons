@@ -7,17 +7,20 @@ That means either adding items to Discover or providing sources to stream conten
 
 Unlike regular software plugins, Stremio addons **do not run inside Stremio**, but instead are **accessed through HTTP over network**. You can think of them as **RSS on steroids**. Multiple addons can be activated, providing you more content, without any installation / security risks.
 
-## stremio-addons
-An Add-ons system that works like an RPC system, however it allows to **use multiple Add-ons through one interface** and it automatically **selects which add-on to handle the call**, depending the methods the Add-on provides (e.g. stream.get) and the priority of add-ons. You can also issue calls to all Add-ons and aggregate results (e.g. search metadata).
-
-Stremio Add-ons are **loaded through HTTP**, so the Add-on has to have it's own server, provided by the Add-on provider. See "[Creating a basic Add-on](documentation/basic-addon.md)" for the reasons behind this approach.
-
 
 ## Documentation
 1. [Creating a basic Add-on](documentation/basic-addon.md)
 2. [Enabling Add-on in Stremio](documentation/enabling-addon.md)
 3. [Methods](documentation/methods.md)
 4. [Using Cinemeta](documentation/using-cinemeta.md)
+
+
+-----------------
+
+# stremio-addons
+An Add-ons system that works like an RPC system, however it allows to **use multiple Add-ons through one interface** and it automatically **selects which add-on to handle the call**, depending the methods the Add-on provides (e.g. stream.get) and the priority of add-ons. You can also issue calls to all Add-ons and aggregate results (e.g. search metadata).
+
+Stremio Add-ons are **loaded through HTTP**, so the Add-on has to have it's own server, provided by the Add-on provider. See "[Creating a basic Add-on](documentation/basic-addon.md)" for the reasons behind this approach.
 
 
 #### Provides
