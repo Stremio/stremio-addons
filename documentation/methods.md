@@ -66,7 +66,7 @@ Additional properties in ``query`` are used for content that has multipe videos,
 
 #### Response format
 
-Returns an array of stream objects. Usually either from different sources (e.g. Netflix, Hulu, iTunes) or in different qualities (``480p``, ``720p``, ``1080p``).
+Returns an array of [``stream objects``](/documentation/methods.md#stream-object). Usually either from different sources (e.g. Netflix, Hulu, iTunes) or in different qualities (``480p``, ``720p``, ``1080p``).
 
 ##### Stream object
 
@@ -81,9 +81,9 @@ Additionally, **one of the following must be passed** to point to the stream its
 * ``yt_id`` - youtube video ID, plays using the built-in YouTube player
 * ``infoHash`` and/or ``mapIdx`` - info hash of a torrent file, and mapIdx is the index of the video file within the torrent; **if mapIdx is not specified, the largest file in the torrent will be selected**
 
-_**Tip**: to provide several streams with varying qualities, return an array of Stream Objects with different quality tag in their tag array._
+_**Tip**: to provide several streams with varying qualities, return an array of [``Stream Objects``](/documentation/methods.md#stream-object) with different quality tag in their tag array._
 
-** Example **
+**Example**
 ```javascript
 // Result from stremio.stream.find({ query: { imdb_id: "tt0032138" } })
 [{ 
@@ -154,24 +154,24 @@ The response is an array of Metadata objects.
 ##### Episode object
 
 
-** TODO **
+**TODO**
 
 ##### Video object
 
-** TODO **
+**TODO**
 
 #### meta.find
-Takes ``Meta Request``, as described, returns the first matched result in ``full`` projection unless specified otherwise. 
+Takes [``Meta Request``](/documentation/methods.md#meta-request), as described, returns the first matched result in ``full`` projection unless specified otherwise. 
 
 This is used for loading full catalogue in Discover.
 
 #### meta.get
-Takes ``Meta Request``, as described, returns an array of matched results in ``lean`` projection unless specified otherwise.
+Takes [``Meta Request``](/documentation/methods.md#meta-request), as described, returns an array of matched results in ``lean`` projection unless specified otherwise.
 
 This is used when double-clicking on items, when opening their detail page. The ``full`` projection returns properties like ``episodes`` and ``uploads``, so this will be especially useful to show ``series`` and ``channel`` types. 
 
 #### meta.search
-Perform a text search. Arguments are exactly the same as usual ``Meta Request``, except ``query`` is a string. Returns an array of matches.
+Perform a text search. Arguments are exactly the same as usual [``Meta Request``](/documentation/methods.md#meta-request), except ``query`` is a string. Returns an array of [``Metadata Object``](/documentation/methods.md#metadata-object) matches.
 
 This is used for the Search functionality.
 
