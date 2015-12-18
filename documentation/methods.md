@@ -102,7 +102,7 @@ _**Tip**: to provide several streams with varying qualities, return an array of 
 
 Stremio's metadata model is designed to support movies, series and video channels (like YouTube channels). All metadata-related modules must return compatible data.
 
-### Request format: 
+### Request format
 
 ### ``Meta Request``
 
