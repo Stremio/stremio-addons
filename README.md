@@ -19,7 +19,7 @@ Unlike regular software plugins, Stremio addons **do not run inside Stremio**, b
 -----------------
 
 # stremio-addons
-An Add-ons system that works like an RPC system, however it allows to **use multiple Add-ons through one interface** and it automatically **selects which add-on to handle the call**, depending the methods the Add-on provides (e.g. stream.get) and the priority of add-ons. You can also issue calls to all Add-ons and aggregate results (e.g. search metadata).
+An Add-ons system that works like an RPC system, however it allows to **use multiple Add-ons through one interface** and it automatically **selects which add-on to handle the call**, depending the methods the Add-on provides and the priority of add-ons. You can also issue calls to all Add-ons and aggregate results (e.g. search metadata).
 
 Stremio Add-ons are **loaded through HTTP**, so the Add-on has to have it's own server, provided by the Add-on provider. See "[Creating a basic Add-on](documentation/basic-addon.md)" for the reasons behind this approach.
 
