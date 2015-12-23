@@ -5,7 +5,7 @@
 
 That means either adding items to Discover or providing sources to stream content from.
 
-Unlike regular software plugins, Stremio addons **do not run inside Stremio**, but instead are **accessed through HTTP over network**. You can think of them as **RSS on steroids**. Multiple addons can be activated, providing you more content, without any installation / security risks.
+Unlike regular software plugins, Stremio addons **do not run inside Stremio**, but instead are **accessed through HTTP over network**. You can think of them as **RSS on steroids**. Multiple addons can be activated, providing you more content, without any installation process or security risks.
 
 
 ## Documentation
@@ -28,20 +28,6 @@ Stremio Add-ons are **loaded through HTTP**, so the Add-on has to have it's own 
 
 * **Add-on server library**: what we use to initialize an HTTP server that provides a Stremio add-on.
 * **Add-on client library**: a client library to use one or more Stremio add-ons
-
-## Using add-ons in Stremio
-```javascript
-// pass your add-on's HTTP endpoint to --services argument to Stremio
-// for example, if you're running an add-on locally at port 9008, do
-/Applications/Stremio.app/Contents/MacOS/Electron . --services=http://localhost:9008
-
-// Windows
-%LOCALAPPDATA%\Programs\LNV\Stremio\Stremio.exe .. --services=http://localhost:9008
-
-// this is the same for remote add-ons, for example --services=http://stremio-guidebox.herokuapp.com
-```
-
-
 
 ## Client
 ```javascript
@@ -88,6 +74,19 @@ new addons.Server({
 }, { secret: "SOME SECRET - or leave undefined for test secret" });
 ```
 ##### For the methods you can implement, and their expected input and output, see [methods](documentation/methods.md).
+
+
+## Using add-ons in Stremio
+```javascript
+// pass your add-on's HTTP endpoint to --services argument to Stremio
+// for example, if you're running an add-on locally at port 9008, do
+/Applications/Stremio.app/Contents/MacOS/Electron . --services=http://localhost:9008
+
+// Windows
+%LOCALAPPDATA%\Programs\LNV\Stremio\Stremio.exe .. --services=http://localhost:9008
+
+// this is the same for remote add-ons, for example --services=http://stremio-guidebox.herokuapp.com
+```
 
 ## Authentication
 
