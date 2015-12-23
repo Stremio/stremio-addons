@@ -7,8 +7,10 @@ The reasons for this are:
 * Security, no extra code running inside Stremio
 * Simpler overall architecture - if the data you're providing to Stremio lies on your servers, the Add-on server can reach it directly and give it to clients
 
-Potential issues
-* Offline use - this is handled in Stremio by caching the catalogue, your personal library and watched streams (limited cache set by the user); as an Add-on creator, you don't need to worry about this
+Potential limitations
+* Offline use - this is handled in Stremio itself by the needed requests; as an Add-on creator, you don't need to worry about this
+* Scalability - hosting an add-on that supports heavy traffic isn't easy indeed; however, the add-on protocol can work on top of HTTP GET, which means that CDN such as CloudFlare can be used, effectively eliminating the issue
+* Can only extend the product with content, not functionality - this is done intentionally, as we want to put all focus on content, which allows us to design a simpler system
 
 Creating a Stremio Add-on
 ========================
