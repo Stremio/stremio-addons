@@ -68,18 +68,25 @@ Additional properties in ``query`` are used for content that has multipe videos,
 
 Returns an array of [``stream objects``](/documentation/methods.md#stream-object). Usually either from different sources (e.g. Netflix, Hulu, iTunes) or in different qualities (``480p``, ``720p``, ``1080p``).
 
+
 #### Stream object
 
-``availability`` - **required** - 0-3 integer representing stream availability - 0 not available, 1 barely available, 2 OK, 3 highly available
-
-``tag`` - _optional_ - array, optional tags of the stream; use ``"480p"``, ``"720p"``, ``"1080p"``/``"hd"`` or ``"2160p"`` to specify quality
-
-Additionally, **one of the following must be passed** to point to the stream itself
+**One of the following must be passed** to point to the stream itself
 
 * ``url`` - direct URL to a video stream - http, https, rtmp protocols supported
 * ``externalUrl`` - URL to the video, which should be opened in a browser (webpage), e.g. link to Netflix
 * ``yt_id`` - youtube video ID, plays using the built-in YouTube player
 * ``infoHash`` and/or ``mapIdx`` - info hash of a torrent file, and mapIdx is the index of the video file within the torrent; **if mapIdx is not specified, the largest file in the torrent will be selected**
+
+**Additional properties to provide information / behaviour flags**
+
+``name``` - _optional_ - name of the source, e.g. "Netflix"
+
+``availability`` - _optional_ - 0-3 integer representing stream availability, in the context of P2P streams - 0 not available, 1 barely available, 2 OK, 3 highly available
+
+``tag`` - _optional_ - array, optional tags of the stream; use ``"480p"``, ``"720p"``, ``"1080p"``/``"hd"`` or ``"2160p"`` to specify quality
+
+``repeat`` - _optional_ - boolean, true if you want stremio to do ``stream.find`` again with the same arguments when the video ends, and play again
 
 _**Tip**: to provide several streams with varying qualities, return an array of [``Stream Objects``](/documentation/methods.md#stream-object) with different quality tag in their tag array._
 
