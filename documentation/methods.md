@@ -80,7 +80,7 @@ Returns an array of [``stream objects``](/documentation/methods.md#stream-object
 
 **Additional properties to provide information / behaviour flags**
 
-``name``` - _optional_ - name of the source, e.g. "Netflix"
+``name`` - _optional_ - name of the source, e.g. "Netflix"
 
 ``availability`` - _optional_ - 0-3 integer representing stream availability, in the context of P2P streams - 0 not available, 1 barely available, 2 OK, 3 highly available
 
