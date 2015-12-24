@@ -8,9 +8,21 @@ Unlike regular software plugins, Stremio addons **do not run inside Stremio**, b
 
 ## How to create a Stremio add-on
 
-First, decide what kind of add-on do you want to create. Should it add items to the Discover catalogue (metadata add-on), or allow streaming of certain content (streaming add-on), or both.
+Start by creating your repository from the Hello World add-on:
+```bash
+git --work-tree=my-addon clone http://github.com/Stremio/addon-helloworld
+cd my-addon
+git init
+git add * 
+git commit -a -m "first commit"
+npm install
+open stremio://localhost:7000/stremio/v1 & 
+PORT=7000 node index
+```
 
-After deciding these things, you can take a look at the [Hello World tutorial](documentation/home.md#hello-world) to get started.
+**Stremio should open, and you should see "Example Addon" in Settings.** Congrats! You've created your first add-on!
+
+After that, you can take a look at the [Hello World tutorial](documentation/home.md#hello-world) to learn more about the process.
 
 Once you've created your first Stremio add-on, we recommend you take a look at the entire [protocol documentation](documentation/methods.md), to get to know exactly what an add-on can do.
 
