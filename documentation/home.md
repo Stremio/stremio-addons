@@ -16,17 +16,17 @@ git init
 git add * 
 git commit -a -m "first commit"
 npm install
-open stremio://localhost:7000/stremio/v1 & 
-PORT=7000 node index
+open stremio://localhost:7000/stremio/v1 & # Load this add-on in Stremio
+PORT=7000 node index # Start the add-on server
 ```
 
-**Stremio should open, and you should see "Example Addon" in Settings.** Congrats! You've created your first add-on!
+**Stremio should open, and you should see "Example Addon" in Settings. Congrats! You've created your first add-on!**
 
-After that, you can take a look at the [Hello World tutorial](documentation/home.md#hello-world) to learn more about the process.
+After that, go to [Hello World tutorial](documentation/home.md#hello-world) to learn more about the process.
 
-Once you've created your first Stremio add-on, we recommend you take a look at the entire [protocol documentation](documentation/methods.md), to get to know exactly what an add-on can do.
+We recommend you take a look at the entire [protocol documentation](documentation/methods.md), to get to know exactly what an add-on can do.
 
-When you've taken a look at the protocol and created your first add-on, it's time to move on with the development of your add-on. You can test it with the [Stremio Desktop app](http://www.strem.io), but we recommend the open-source add-ons client: [stremio-addons-client](http://github.com/Stremio/stremio-addons-client).
+When you've taken a look at the protocol and created your first add-on, it's time to move on with the development. You can test it with the [Stremio Desktop app](http://www.strem.io), but we recommend the open-source add-ons client: [stremio-addons-client](http://github.com/Stremio/stremio-addons-client).
 
 
 ## Protocol documentation
