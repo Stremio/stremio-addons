@@ -32,7 +32,8 @@ To see it used in the real world, we recommend you check the [open-source stremi
 
 
 ## Tutorials
-## WIP
+
+[Hello World add-on](https://github.com/Ivshti/addon-helloworld)
 
 ## Open-source add-ons
 
