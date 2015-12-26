@@ -13,7 +13,7 @@ Valid properties are:
 
 ``description`` - **required** - human readable description
 
-``types`` - **required** - array of supported types, from all the Media Types
+``types`` - **required** - array of supported types, from all the [``Content Types``](/documentation/methods.md#content-types)
 
 ``contactEmail`` - **required** - contact email for add-on issues
 
@@ -34,6 +34,8 @@ Valid properties are:
   { prop: "popularities.moviedb", name: "SORT_TRENDING", types: ["movie", "series"] }
 ]
 ```
+
+``searchDebounce`` - _optional_ - how much to de-bounce after the user types before calling ``meta.search``; not all clients use this
 
 
 ## All Methods
