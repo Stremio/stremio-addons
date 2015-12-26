@@ -1,6 +1,40 @@
 # Stremio V1 protocol 
 
 
+## Manifest format
+
+The first thing to define for your add-on is the manifest, which describes it's name, purpose and some technical details.
+
+Valid properties are:
+
+``id`` - **required** - identifier, dot-separated, e.g. "com.stremio.filmon"
+
+``name`` - **required** - human readable name
+
+``description`` - **required** - human readable description
+
+``types`` - **required** - array of supported types, from all the Media Types
+
+``contactEmail`` - **required** - contact email for add-on issues
+
+``filter`` - _optional_ - object of conditions for query properties that, when matched, increase the priority of the add-on in the call order
+
+```javascript
+ "filter": {
+   "query.imdb_id": { "$exists": true },
+   "projection.imdb_id": { "$exists": true }
+  }
+// this wil prioritize our add-on for calls with arguments like { query: { imdb_id: ... }  }
+```
+
+``sorts`` - _optional_ - additional types of sorting in catalogues
+
+```javascript
+[
+  { prop: "popularities.moviedb", name: "SORT_TRENDING", types: ["movie", "series"] }
+]
+```
+
 
 ## All Methods
 
