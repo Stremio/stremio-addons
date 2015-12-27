@@ -11,7 +11,7 @@ Unlike regular software plugins, Stremio addons **do not run inside Stremio**, b
 ## Documentation
 1. [Basics (home)](documentation/home.md)
 2. [Enabling Add-on in Stremio](documentation/enabling-addon.md)
-3. [Protocol documentation](documentation/methods.md)
+3. [Protocol documentation](documentation/protocol.md)
 4. [Using Cinemeta](documentation/using-cinemeta.md)
 
 

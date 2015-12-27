@@ -13,7 +13,7 @@ Valid properties are:
 
 ``description`` - **required** - human readable description
 
-``types`` - **required** - array of supported types, from all the [``Content Types``](/documentation/methods.md#content-types)
+``types`` - **required** - array of supported types, from all the [``Content Types``](/documentation/protocol.md#content-types)
 
 ``contactEmail`` - **required** - contact email for add-on issues
 
@@ -102,7 +102,7 @@ Additional properties in ``query`` are used for content that has multipe videos,
 
 ### Response format
 
-Returns an array of [``stream objects``](/documentation/methods.md#stream-object). Usually either from different sources (e.g. Netflix, Hulu, iTunes) or in different qualities (``480p``, ``720p``, ``1080p``).
+Returns an array of [``stream objects``](/documentation/protocol.md#stream-object). Usually either from different sources (e.g. Netflix, Hulu, iTunes) or in different qualities (``480p``, ``720p``, ``1080p``).
 
 
 #### Stream object
@@ -124,7 +124,7 @@ Returns an array of [``stream objects``](/documentation/methods.md#stream-object
 
 ``repeat`` - _optional_ - boolean, true if you want stremio to do ``stream.find`` again with the same arguments when the video ends, and play again
 
-_**Tip**: to provide several streams with varying qualities, return an array of [``Stream Objects``](/documentation/methods.md#stream-object) with different quality tag in their tag array._
+_**Tip**: to provide several streams with varying qualities, return an array of [``Stream Objects``](/documentation/protocol.md#stream-object) with different quality tag in their tag array._
 
 **Example**
 ```javascript
@@ -218,17 +218,17 @@ The response is an array of Metadata objects.
 ### Methods
 
 #### meta.find
-Takes [``Meta Request``](/documentation/methods.md#meta-request), as described, returns the first matched result in ``full`` projection unless specified otherwise. 
+Takes [``Meta Request``](/documentation/protocol.md#meta-request), as described, returns the first matched result in ``full`` projection unless specified otherwise. 
 
 This is used for loading full catalogue in Discover.
 
 #### meta.get
-Takes [``Meta Request``](/documentation/methods.md#meta-request), as described, returns an array of matched results in ``lean`` projection unless specified otherwise.
+Takes [``Meta Request``](/documentation/protocol.md#meta-request), as described, returns an array of matched results in ``lean`` projection unless specified otherwise.
 
 This is used when double-clicking on items, when opening their detail page. The ``full`` projection returns properties like ``episodes`` and ``uploads``, so this will be especially useful to show ``series`` and ``channel`` types. 
 
 #### meta.search
-Perform a text search. Arguments are exactly the same as usual [``Meta Request``](/documentation/methods.md#meta-request), except ``query`` is a string. Returns an array of [``Metadata Object``](/documentation/methods.md#metadata-object) matches.
+Perform a text search. Arguments are exactly the same as usual [``Meta Request``](/documentation/protocol.md#meta-request), except ``query`` is a string. Returns an array of [``Metadata Object``](/documentation/protocol.md#metadata-object) matches.
 
 This is used for the Search functionality.
 

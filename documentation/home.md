@@ -24,7 +24,7 @@ PORT=7000 node index # Start the add-on server
 
 After that, go to [Hello World tutorial](documentation/home.md#hello-world) to learn more about the process.
 
-We recommend you take a look at the entire [protocol documentation](documentation/methods.md), to get to know exactly what an add-on can do.
+We recommend you take a look at the entire [protocol documentation](documentation/protocol.md), to get to know exactly what an add-on can do.
 
 When you've taken a look at the protocol and created your first add-on, it's time to move on with the development. You can test it with the [Stremio Desktop app](http://www.strem.io), but we recommend the open-source add-ons client: [stremio-addons-client](http://github.com/Stremio/stremio-addons-client).
 
@@ -35,10 +35,7 @@ When you've taken a look at the protocol and created your first add-on, it's tim
 
 **The methods implement the actual functionality** - for example for loading Discover, we use `meta.find` method, and for loading streams once the user clicks Play, we use `stream.find`.
 
-To learn all about the protocol, you can use the following documentation:
-
-1. [Manifest](documentation/manifest.md)
-2. [Methods](documentation/methods.md)
+[To learn all about the protocol, click here.](documentation/protocol.md)
 
 To see it used in the real world, we recommend you check the [open-source stremio client](http://github.com/Stremio/stremio-addons-client).
 
