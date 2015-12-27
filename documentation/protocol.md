@@ -15,7 +15,7 @@ Valid properties are:
 
 ``types`` - **required** - array of supported types, from all the [``Content Types``](/documentation/protocol.md#content-types)
 
-``contactEmail`` - **required** - contact email for add-on issues
+``contactEmail`` - **required** - contact email for add-on issues; used for the Report button in the app; also, the Stremio team may reach you on this email for anything relating your add-on
 
 ``filter`` - _optional_ - object of conditions for query properties that, when matched, increase the priority of the add-on in the call order
 
@@ -27,7 +27,7 @@ Valid properties are:
 // this wil prioritize our add-on for calls with arguments like { query: { imdb_id: ... }  }
 ```
 
-``sorts`` - _optional_ - additional types of sorting in catalogues
+``sorts`` - _optional_ - additional types of sorting in catalogues; array of sort objects
 
 ```javascript
 [
