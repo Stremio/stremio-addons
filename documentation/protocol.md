@@ -180,7 +180,7 @@ The response is an array of Metadata objects.
 
 ``posterShape`` - _optional_ - can be `square` (1:1 aspect) or `regular` (1:0.675). If you don't pass this, `regular` is assumed
 
-``banner`` - _optional_ - the background shown on the stremio detail page ; heavily encouraged if you want your content to look good; URL to PNG, max file size 500kb
+``background`` - _optional_ - the background shown on the stremio detail page ; heavily encouraged if you want your content to look good; URL to PNG, max file size 500kb
 
 ``description`` - _optional_ - a few sentances describing your content
 
