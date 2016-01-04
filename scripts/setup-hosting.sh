@@ -9,7 +9,7 @@ if [ "$NAME" == "" ] || [ "$PORT" == "" ]; then
 fi
 
 echo "Setting up a repo -> /var/repo/$NAME"
-mkdir -p /var/repo/$NAME
+mkdir -p /var/{repo,www}/$NAME
 ( cd /var/repo/$NAME ; git init --bare )
 echo -e '#!/bin/sh' "\ngit --work-tree=/var/www/$NAME --git-dir=/var/repo/$NAME checkout -f" "\n( cd /var/www/$NAME ; npm install . )" "\nservice supervisord restart" > /var/repo/$NAME/hooks/post-receive
 chmod +x /var/repo/$NAME/hooks/post-receive
