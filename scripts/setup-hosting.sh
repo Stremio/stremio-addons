@@ -24,6 +24,7 @@ echo -e "server {\n\
         proxy_read_timeout 15s;\n\
         proxy_connect_timeout 4s;\n\
     }\n\
+    location = / { return 301 /stremio/v1; }\n\
 }\
 " > /etc/nginx/conf.d/$NAME.conf
 
