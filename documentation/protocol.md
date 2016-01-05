@@ -124,6 +124,8 @@ Returns an array of [``stream objects``](/documentation/protocol.md#stream-objec
 
 ``repeat`` - _optional_ - boolean, true if you want stremio to do ``stream.find`` again with the same arguments when the video ends, and play again
 
+``geos`` - _optional_ - use if the stream is geo-restricted - array of ISO 3166-1 alpha-2 country codes in which the stream is accessible
+
 _**Tip**: to provide several streams with varying qualities, return an array of [``Stream Objects``](/documentation/protocol.md#stream-object) with different quality tag in their tag array._
 
 **Example**
