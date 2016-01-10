@@ -13,6 +13,10 @@ Valid properties are:
 
 ``description`` - **required** - human readable description
 
+``background`` - _optional_ - background image for the add-on; URL to png/jpg, at least 1024x786 resolution
+
+``logo`` - _optional_ - logo icon, URL to png, monochrome, 256x256
+
 ``types`` - **required** - array of supported types, from all the [``Content Types``](/documentation/protocol.md#content-types)
 
 ``contactEmail`` - **required** - contact email for add-on issues; used for the Report button in the app; also, the Stremio team may reach you on this email for anything relating your add-on
