@@ -5,12 +5,12 @@ Retrieving metadata and associating video files with IMDB ID are useful use case
 
 # Initializing a client
 ```javascript
-var CINEMETA_ENDPOINT = "http://stremio-cinemeta.herokuapp.com";
+var CINEMETA_ENDPOINT = "http://cinemeta.strem.io/stremioget";
 
 var Stremio = require("stremio-addons");
 var addons = new Stremio.Client();
 addons.add(CINEMETA_ENDPOINT);
-addons.setAuth("http://api8.herokuapp.com", "8417fe936f0374fbd16a699668e8f3c4aa405d9f"); // default stremio server, testing secret
+addons.setAuth("http://api9.strem.io", "8417fe936f0374fbd16a699668e8f3c4aa405d9f"); // default stremio server, testing secret
 ```
 
 # Using ``meta.*`` methods
