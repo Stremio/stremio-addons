@@ -97,7 +97,9 @@ function Server(methods, options, manifest)
 				methods[method](args, cb, session);
 			});
 		}); else if (req.method == "GET") { // unsupported by JSON-RPC, it uses post
-			utils.http.get(require("url").parse(module.parent.CENTRAL+"/stremio/addon/"+manifest.id+"?announce="+encodeURIComponent(manifest.endpoint+req.url)), function(resp) { resp.pipe(res) });
+			var u = module.parent.CENTRAL+"/stremio/addon/"+manifest.id;
+			if (manifest.endpoint) u = u+"?announce="+encodeURIComponent(manifest.endpoint+"/stremio/v1");
+			utils.http.get(require("url").parse(u), function(resp) { resp.pipe(res) });
 			return;
 		}
 
