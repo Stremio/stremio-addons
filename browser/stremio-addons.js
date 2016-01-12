@@ -135,11 +135,13 @@ function Stremio(options)
 	this.getAuth = function() { return auth };
 
 	// Adding services
-	this.add = function(url, opts) {
-		if (services[url]) return;
+	this.add = function(url, opts, cb) {
+		cb = cb || function() { };
+		if (services[url]) return cb();
 		services[url] = new Addon(url, opts || {}, self, function() { 
 			// callback for ready service
 			self.emit("addon-ready", services[url], url);
+			cb(null, services[url]);
 		});
 	};
 	
