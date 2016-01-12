@@ -38,7 +38,10 @@ tape("initialize server, basic call", function(t) {
 	},
 	function(url) {
 		var s = new addons.Client({ picker: function(addons) { t.ok("picker called with 1 addon", addons.length==1); return addons } });
-		s.add(url, null, function(err, addon) { t.ok(addon, "callback to .add") });
+		s.add(url, null, function(err, addon) {
+			t.ok(addon, "callback to .add"); 
+			s.add(url, null, function(err, addon) {  t.ok(addon, "callback to .add - second time") });
+		});
 		s.setAuth(null, TEST_SECRET);
 		s.call("meta.get", { query: { id: 1 } }, function(err, res)
 		{
