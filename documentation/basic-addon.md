@@ -69,4 +69,7 @@ var server = require("http").createServer(function (req, res) {
 ```
 
 
-#### You can see a real-world example of a Stremio Add-on here: https://github.com/Ivshti/multipass-torrent/blob/master/stremio-addon/addon.js
+#### You can see a real-world examples of a Stremio Add-ons here: 
+https://github.com/Ivshti/addon-helloworld
+https://github.com/Ivshti/stremio-filmon
+https://github.com/Ivshti/guidebox-stremio
