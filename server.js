@@ -1,6 +1,7 @@
 var _ = require("lodash");
 var url = require("url");
 var utils = require("./utils");
+var template = require("./addon-template");
 var async = require("async");
 
 var SESSION_LIVE = 10*60*60*1000; // 10 hrs
@@ -97,9 +98,11 @@ function Server(methods, options, manifest)
 				methods[method](args, cb, session);
 			});
 		}); else if (req.method == "GET") { // unsupported by JSON-RPC, it uses post
-			var u = module.parent.CENTRAL+"/stremio/addon/"+manifest.id;
-			if (manifest.endpoint) u = u+"?endpoint="+encodeURIComponent(manifest.endpoint);
-			utils.http.get(require("url").parse(u), function(resp) { resp.pipe(res) });
+			try {
+				res.writeHead(200);
+				res.end(template({ addon: { manifest: manifest }, endpoint: manifest.endpoint }));
+			} catch(e) { console.error(e); res.writeHead(500); res.end(); }
+
 			return;
 		}
 

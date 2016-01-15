@@ -20,6 +20,28 @@ function initServer(methods, callback, opts) {
 	return server;
 }
 
+tape("initialize server, landing page", function(t) {
+	t.timeoutAfter(3000);
+
+	initServer({ 
+		"meta.get": function(args, cb, sess) {
+			received = true;
+
+			t.ok(args.query.id == 1, "we are receiving arguments");
+			t.ok(!!sess, "we have session");
+			t.ok(sess.isAnotherService, "we are calling from another service"); 
+			return cb(null, { now: Date.now() });
+		}
+	},
+	function(url) {
+		http.get(url+"/stremio/v1", function(resp) {
+			t.ok(resp, "has resp");
+			t.ok(resp.statusCode === 200, "response finished with 200");
+			t.end();
+		})
+	});
+});
+
 
 tape("initialize server, basic call", function(t) {
 	t.timeoutAfter(5000); // 5s because of slow auth
