@@ -8,7 +8,7 @@ var SESSION_LIVE = 10*60*60*1000; // 10 hrs
 var CACHE_TTL = 2.5 * 60 * 60; // seconds to live for the cache
 
 function Server(methods, options, manifest)
-{	
+{
 	options = _.extend({ 
 		allow: [ module.parent.CENTRAL ], // default stremio central
 		secret: "8417fe936f0374fbd16a699668e8f3c4aa405d9f" // default secret for testing add-ons

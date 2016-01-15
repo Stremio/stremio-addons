@@ -6,7 +6,9 @@ var _ = require("lodash");
 var TEST_SECRET = "51af8b26c364cb44d6e8b7b517ce06e39caf036a";
 
 function initServer(methods, callback, opts) {
-	var server = new addons.Server(methods, _.extend({ secret: TEST_SECRET  }, opts), { 
+	var manifest;
+	var server = new addons.Server(methods, _.extend({ secret: TEST_SECRET  }, opts), manifest = { 
+	 name: "testing add-on", description: "add-on used for testing", version: "1.0.0",
 	 filter: { "query.id": { $exists: true }, "query.types": { $in: [ "foo", "bar" ] } }
 	});
 
@@ -14,6 +16,7 @@ function initServer(methods, callback, opts) {
   		server.middleware(req,res,function(){ res.end() });
 	}).listen().on("listening", function()
 	{
+		manifest.endpoint = "http://localhost:"+s.address().port+"/stremio/v1";
 		callback("http://localhost:"+s.address().port);
 	});
 
