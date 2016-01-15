@@ -1,0 +1,77 @@
+doctype html
+head
+    link(href="//fonts.googleapis.com/css?family=Lato:100,300,400,100italic,200italic,300italic",rel="stylesheet", type="text/css")
+
+    title #{addon.manifest.name} - Stremio Addon
+    style.
+        body,html{ 
+            margin: 0px; padding: 0px;
+            font-family: Lato,'Open Sans',OpenSans,arial,sans-serif;
+            font-weight: 300; color: white;
+            cursor: default;
+            width: 100%; height: 100%; 
+        }
+        h1, h2, h3, h4, h5, h6 { font-weight: 300; }
+        #addon {
+            width: 400px;
+            position: absolute;
+            left: 0px; right: 0px; top: 10%; bottom: auto;
+            margin: auto;
+        }
+        a {  text-decoration: none; }
+        button {
+            border: 0px; outline: 0px;
+            color: white;
+            background: rgba(125,79,158,0.85);
+            padding: 13px 22px;
+            text-align: center;
+            font-size: 17px;
+            font-weight: 300;
+            cursor: pointer;
+            opacity: 0.9;
+            display: block;
+        }
+        button:hover { opacity: 1; }
+        .logo { float: left; margin: 20px; }
+
+        //h2 { text-align: center; }
+        //button {  margin: 0px auto; }
+
+    if (addon.manifest.background)
+        style.
+            html { background-image: url(#{addon.manifest.background}); background-size: auto 100%; background-size: cover; background-repeat: no-repeat; }
+            body { background: rgba(0,0,0,0.65); }
+    else
+        style.
+            html { background-image: url('http://www.strem.io/3.0/background-1.jpg'); background-size: auto 100%; background-size: cover; background-repeat: no-repeat; }
+
+    body
+        #addon
+            if (addon.manifest.logo)
+                img.logo(src=addon.manifest.logo)
+            else 
+                h2 #{addon.manifest.name}
+            h3 !{addon.manifest.web_description || addon.manifest.description}
+            h3.provides
+            if endpoint
+                a.activate-link(href="#{endpoint ? endpoint.replace(/^http(s?)/, 'stremio') : null}")
+                    button(name="Activate") Activate Add-on
+            else
+                div No valid end-point for this add-on
+        script(src="https://code.jquery.com/jquery-2.1.4.min.js")
+        script(src="http://www.strem.io/js/stremio-addons.min.js")
+        if endpoint
+            script.
+                var stremio = require("stremio-addons");
+                var s = new stremio.Client();
+                s.add("#{endpoint.replace('/stremio/v1', '')}");
+                s.call("stats.get", {}, function(err, stats) {
+                    if (stats) $(".provides").text( (stats.statsLabel || "provides ") + stats.statsNum );
+                });
+                $.get("http://localhost:11470/manifest").success(function() {
+                    $("#addon").on("click", ".activate-link", function(e) { 
+                        e.preventDefault();
+                        $.get("http://localhost:11470/info/"+encodeURIComponent("#{endpoint.replace(new RegExp('^http(s?)://'), '')}"))
+                        return false;
+                    });
+                }).error(function(e) { /* ignore */ })
