@@ -1,0 +1,4 @@
+node_modules
+addon-template.js
+addon.js
+jade-runtime.js
