@@ -1,4 +1,378 @@
 require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+function addon(locals) {
+var jade_debug = [ new jade.DebugItem( 1, "addon.jade" ) ];
+try {
+var buf = [];
+var jade_mixins = {};
+var jade_interp;
+;var locals_for_with = (locals || {});(function (RegExp, addon, endpoint) {
+jade_debug.unshift(new jade.DebugItem( 0, "addon.jade" ));
+jade_debug.unshift(new jade.DebugItem( 1, "addon.jade" ));
+buf.push("<!DOCTYPE html>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 2, "addon.jade" ));
+buf.push("<head>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 3, "addon.jade" ));
+buf.push("<link href=\"//fonts.googleapis.com/css?family=Lato:100,300,400,100italic,200italic,300italic\" rel=\"stylesheet\" type=\"text/css\">");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 5, "addon.jade" ));
+buf.push("<title>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 5, jade_debug[0].filename ));
+buf.push("" + (jade.escape((jade_interp = addon.manifest.name) == null ? '' : jade_interp)) + " - Stremio Addon");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</title>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 6, "addon.jade" ));
+buf.push("<style>");
+jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
+buf.push("body,html{ ");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
+buf.push("    margin: 0px; padding: 0px;");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
+buf.push("    font-family: Lato,'Open Sans',OpenSans,arial,sans-serif;");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
+buf.push("    font-weight: 300; color: white;");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
+buf.push("    cursor: default;");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
+buf.push("    width: 100%; height: 100%; ");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
+buf.push("}");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
+buf.push("h1, h2, h3, h4, h5, h6 { font-weight: 300; }");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
+buf.push("#addon {");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
+buf.push("    width: 400px;");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
+buf.push("    position: absolute;");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
+buf.push("    left: 0px; right: 0px; top: 10%; bottom: auto;");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
+buf.push("    margin: auto;");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
+buf.push("}");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
+buf.push("a {  text-decoration: none; }");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
+buf.push("button {");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
+buf.push("    border: 0px; outline: 0px;");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
+buf.push("    color: white;");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
+buf.push("    background: rgba(125,79,158,0.85);");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
+buf.push("    padding: 13px 22px;");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
+buf.push("    text-align: center;");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
+buf.push("    font-size: 17px;");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
+buf.push("    font-weight: 300;");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
+buf.push("    cursor: pointer;");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
+buf.push("    opacity: 0.9;");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
+buf.push("    display: block;");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
+buf.push("}");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
+buf.push("button:hover { opacity: 1; }");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
+buf.push(".logo { float: left; margin: 20px; }");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
+buf.push("");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
+buf.push("//h2 { text-align: center; }");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
+buf.push("//button {  margin: 0px auto; }");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 39, jade_debug[0].filename ));
+buf.push("");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</style>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 40, "addon.jade" ));
+if ( (addon.manifest.background))
+{
+jade_debug.unshift(new jade.DebugItem( 41, "addon.jade" ));
+jade_debug.unshift(new jade.DebugItem( 41, "addon.jade" ));
+buf.push("<style>");
+jade_debug.unshift(new jade.DebugItem( 43, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 43, jade_debug[0].filename ));
+buf.push("html { background-image: url(" + (jade.escape((jade_interp = addon.manifest.background) == null ? '' : jade_interp)) + "); background-size: auto 100%; background-size: cover; background-repeat: no-repeat; }");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 43, jade_debug[0].filename ));
+buf.push("body { background: rgba(0,0,0,0.65); }");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</style>");
+jade_debug.shift();
+jade_debug.shift();
+}
+else
+{
+jade_debug.unshift(new jade.DebugItem( 45, "addon.jade" ));
+jade_debug.unshift(new jade.DebugItem( 45, "addon.jade" ));
+buf.push("<style>");
+jade_debug.unshift(new jade.DebugItem( 47, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 47, jade_debug[0].filename ));
+buf.push("html { background-image: url('http://www.strem.io/3.0/background-1.jpg'); background-size: auto 100%; background-size: cover; background-repeat: no-repeat; }");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 47, jade_debug[0].filename ));
+buf.push("");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</style>");
+jade_debug.shift();
+jade_debug.shift();
+}
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 48, "addon.jade" ));
+buf.push("<body>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 49, "addon.jade" ));
+buf.push("<div id=\"addon\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 50, "addon.jade" ));
+if ( (addon.manifest.logo))
+{
+jade_debug.unshift(new jade.DebugItem( 51, "addon.jade" ));
+jade_debug.unshift(new jade.DebugItem( 51, "addon.jade" ));
+buf.push("<img" + (jade.attr("src", addon.manifest.logo, true, true)) + " class=\"logo\">");
+jade_debug.shift();
+jade_debug.shift();
+}
+else
+{
+jade_debug.unshift(new jade.DebugItem( 53, "addon.jade" ));
+jade_debug.unshift(new jade.DebugItem( 53, "addon.jade" ));
+buf.push("<h2>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 53, jade_debug[0].filename ));
+buf.push("" + (jade.escape((jade_interp = addon.manifest.name) == null ? '' : jade_interp)) + "");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</h2>");
+jade_debug.shift();
+jade_debug.shift();
+}
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 54, "addon.jade" ));
+buf.push("<h3>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 54, jade_debug[0].filename ));
+buf.push("" + (((jade_interp = addon.manifest.web_description || addon.manifest.description) == null ? '' : jade_interp)) + "");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</h3>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 55, "addon.jade" ));
+buf.push("<h3 class=\"provides\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.shift();
+buf.push("</h3>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 56, "addon.jade" ));
+if ( endpoint)
+{
+jade_debug.unshift(new jade.DebugItem( 57, "addon.jade" ));
+jade_debug.unshift(new jade.DebugItem( 57, "addon.jade" ));
+buf.push("<a" + (jade.attr("href", "" + (endpoint ? endpoint.replace(/^http(s?)/, 'stremio') : null) + "", true, true)) + " class=\"activate-link\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 58, "addon.jade" ));
+buf.push("<button name=\"Activate\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 58, jade_debug[0].filename ));
+buf.push("Activate Add-on");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</button>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</a>");
+jade_debug.shift();
+jade_debug.shift();
+}
+else
+{
+jade_debug.unshift(new jade.DebugItem( 60, "addon.jade" ));
+jade_debug.unshift(new jade.DebugItem( 60, "addon.jade" ));
+buf.push("<div>");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 60, jade_debug[0].filename ));
+buf.push("No valid end-point for this add-on");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</div>");
+jade_debug.shift();
+jade_debug.shift();
+}
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</div>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 61, "addon.jade" ));
+buf.push("<script src=\"https://code.jquery.com/jquery-2.1.4.min.js\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.shift();
+buf.push("</script>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 62, "addon.jade" ));
+buf.push("<script src=\"http://www.strem.io/js/stremio-addons.min.js\">");
+jade_debug.unshift(new jade.DebugItem( undefined, jade_debug[0].filename ));
+jade_debug.shift();
+buf.push("</script>");
+jade_debug.shift();
+jade_debug.unshift(new jade.DebugItem( 63, "addon.jade" ));
+if ( endpoint)
+{
+jade_debug.unshift(new jade.DebugItem( 64, "addon.jade" ));
+jade_debug.unshift(new jade.DebugItem( 64, "addon.jade" ));
+buf.push("<script>");
+jade_debug.unshift(new jade.DebugItem( 78, jade_debug[0].filename ));
+jade_debug.unshift(new jade.DebugItem( 78, jade_debug[0].filename ));
+buf.push("var stremio = require(\"stremio-addons\");");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 78, jade_debug[0].filename ));
+buf.push("var s = new stremio.Client();");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 78, jade_debug[0].filename ));
+buf.push("s.add(\"" + (jade.escape((jade_interp = endpoint.replace('/stremio/v1', '')) == null ? '' : jade_interp)) + "\");");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 78, jade_debug[0].filename ));
+buf.push("s.call(\"stats.get\", {}, function(err, stats) {");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 78, jade_debug[0].filename ));
+buf.push("    if (stats) $(\".provides\").text( (stats.statsLabel || \"provides \") + stats.statsNum );");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 78, jade_debug[0].filename ));
+buf.push("});");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 78, jade_debug[0].filename ));
+buf.push("$.get(\"http://localhost:11470/manifest\").success(function() {");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 78, jade_debug[0].filename ));
+buf.push("    $(\"#addon\").on(\"click\", \".activate-link\", function(e) { ");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 78, jade_debug[0].filename ));
+buf.push("        e.preventDefault();");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 78, jade_debug[0].filename ));
+buf.push("        $.get(\"http://localhost:11470/info/\"+encodeURIComponent(\"" + (jade.escape((jade_interp = endpoint.replace(new RegExp('^http(s?)://'), '')) == null ? '' : jade_interp)) + "\"))");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 78, jade_debug[0].filename ));
+buf.push("        return false;");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 78, jade_debug[0].filename ));
+buf.push("    });");
+jade_debug.shift();
+buf.push("\n");
+jade_debug.unshift(new jade.DebugItem( 78, jade_debug[0].filename ));
+buf.push("}).error(function(e) { /* ignore */ })");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</script>");
+jade_debug.shift();
+jade_debug.shift();
+}
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</body>");
+jade_debug.shift();
+jade_debug.shift();
+buf.push("</head>");
+jade_debug.shift();
+jade_debug.shift();}.call(this,"RegExp" in locals_for_with?locals_for_with.RegExp:typeof RegExp!=="undefined"?RegExp:undefined,"addon" in locals_for_with?locals_for_with.addon:typeof addon!=="undefined"?addon:undefined,"endpoint" in locals_for_with?locals_for_with.endpoint:typeof endpoint!=="undefined"?endpoint:undefined));;return buf.join("");
+} catch (err) {
+  jade.rethrow(err, jade_debug[0].filename, jade_debug[0].lineno, "doctype html\nhead\n    link(href=\"//fonts.googleapis.com/css?family=Lato:100,300,400,100italic,200italic,300italic\",rel=\"stylesheet\", type=\"text/css\")\n\n    title #{addon.manifest.name} - Stremio Addon\n    style.\n        body,html{ \n            margin: 0px; padding: 0px;\n            font-family: Lato,'Open Sans',OpenSans,arial,sans-serif;\n            font-weight: 300; color: white;\n            cursor: default;\n            width: 100%; height: 100%; \n        }\n        h1, h2, h3, h4, h5, h6 { font-weight: 300; }\n        #addon {\n            width: 400px;\n            position: absolute;\n            left: 0px; right: 0px; top: 10%; bottom: auto;\n            margin: auto;\n        }\n        a {  text-decoration: none; }\n        button {\n            border: 0px; outline: 0px;\n            color: white;\n            background: rgba(125,79,158,0.85);\n            padding: 13px 22px;\n            text-align: center;\n            font-size: 17px;\n            font-weight: 300;\n            cursor: pointer;\n            opacity: 0.9;\n            display: block;\n        }\n        button:hover { opacity: 1; }\n        .logo { float: left; margin: 20px; }\n\n        //h2 { text-align: center; }\n        //button {  margin: 0px auto; }\n\n    if (addon.manifest.background)\n        style.\n            html { background-image: url(#{addon.manifest.background}); background-size: auto 100%; background-size: cover; background-repeat: no-repeat; }\n            body { background: rgba(0,0,0,0.65); }\n    else\n        style.\n            html { background-image: url('http://www.strem.io/3.0/background-1.jpg'); background-size: auto 100%; background-size: cover; background-repeat: no-repeat; }\n\n    body\n        #addon\n            if (addon.manifest.logo)\n                img.logo(src=addon.manifest.logo)\n            else \n                h2 #{addon.manifest.name}\n            h3 !{addon.manifest.web_description || addon.manifest.description}\n            h3.provides\n            if endpoint\n                a.activate-link(href=\"#{endpoint ? endpoint.replace(/^http(s?)/, 'stremio') : null}\")\n                    button(name=\"Activate\") Activate Add-on\n            else\n                div No valid end-point for this add-on\n        script(src=\"https://code.jquery.com/jquery-2.1.4.min.js\")\n        script(src=\"http://www.strem.io/js/stremio-addons.min.js\")\n        if endpoint\n            script.\n                var stremio = require(\"stremio-addons\");\n                var s = new stremio.Client();\n                s.add(\"#{endpoint.replace('/stremio/v1', '')}\");\n                s.call(\"stats.get\", {}, function(err, stats) {\n                    if (stats) $(\".provides\").text( (stats.statsLabel || \"provides \") + stats.statsNum );\n                });\n                $.get(\"http://localhost:11470/manifest\").success(function() {\n                    $(\"#addon\").on(\"click\", \".activate-link\", function(e) { \n                        e.preventDefault();\n                        $.get(\"http://localhost:11470/info/\"+encodeURIComponent(\"#{endpoint.replace(new RegExp('^http(s?)://'), '')}\"))\n                        return false;\n                    });\n                }).error(function(e) { /* ignore */ })\n");
+}
+}; module.exports = addon; var jade = require("./jade-runtime")
+
+},{"./jade-runtime":3}],2:[function(require,module,exports){
 (function (Buffer){
 var _ = require("lodash");
 var async = require("async");
@@ -298,7 +672,262 @@ function rpcClient(endpoint, options)
 module.exports = Stremio;
 
 }).call(this,require("buffer").Buffer)
-},{"./utils":49,"async":2,"buffer":4,"dot-object":35,"events":8,"lodash":36,"url":32,"util":34}],2:[function(require,module,exports){
+},{"./utils":52,"async":4,"buffer":7,"dot-object":38,"events":11,"lodash":39,"url":35,"util":37}],3:[function(require,module,exports){
+(function (global){
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.jade = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+'use strict';
+
+/**
+ * Merge two attribute objects giving precedence
+ * to values in object `b`. Classes are special-cased
+ * allowing for arrays and merging/joining appropriately
+ * resulting in a string.
+ *
+ * @param {Object} a
+ * @param {Object} b
+ * @return {Object} a
+ * @api private
+ */
+
+exports.merge = function merge(a, b) {
+  if (arguments.length === 1) {
+    var attrs = a[0];
+    for (var i = 1; i < a.length; i++) {
+      attrs = merge(attrs, a[i]);
+    }
+    return attrs;
+  }
+  var ac = a['class'];
+  var bc = b['class'];
+
+  if (ac || bc) {
+    ac = ac || [];
+    bc = bc || [];
+    if (!Array.isArray(ac)) ac = [ac];
+    if (!Array.isArray(bc)) bc = [bc];
+    a['class'] = ac.concat(bc).filter(nulls);
+  }
+
+  for (var key in b) {
+    if (key != 'class') {
+      a[key] = b[key];
+    }
+  }
+
+  return a;
+};
+
+/**
+ * Filter null `val`s.
+ *
+ * @param {*} val
+ * @return {Boolean}
+ * @api private
+ */
+
+function nulls(val) {
+  return val != null && val !== '';
+}
+
+/**
+ * join array as classes.
+ *
+ * @param {*} val
+ * @return {String}
+ */
+exports.joinClasses = joinClasses;
+function joinClasses(val) {
+  return (Array.isArray(val) ? val.map(joinClasses) :
+    (val && typeof val === 'object') ? Object.keys(val).filter(function (key) { return val[key]; }) :
+    [val]).filter(nulls).join(' ');
+}
+
+/**
+ * Render the given classes.
+ *
+ * @param {Array} classes
+ * @param {Array.<Boolean>} escaped
+ * @return {String}
+ */
+exports.cls = function cls(classes, escaped) {
+  var buf = [];
+  for (var i = 0; i < classes.length; i++) {
+    if (escaped && escaped[i]) {
+      buf.push(exports.escape(joinClasses([classes[i]])));
+    } else {
+      buf.push(joinClasses(classes[i]));
+    }
+  }
+  var text = joinClasses(buf);
+  if (text.length) {
+    return ' class="' + text + '"';
+  } else {
+    return '';
+  }
+};
+
+
+exports.style = function (val) {
+  if (val && typeof val === 'object') {
+    return Object.keys(val).map(function (style) {
+      return style + ':' + val[style];
+    }).join(';');
+  } else {
+    return val;
+  }
+};
+/**
+ * Render the given attribute.
+ *
+ * @param {String} key
+ * @param {String} val
+ * @param {Boolean} escaped
+ * @param {Boolean} terse
+ * @return {String}
+ */
+exports.attr = function attr(key, val, escaped, terse) {
+  if (key === 'style') {
+    val = exports.style(val);
+  }
+  if ('boolean' == typeof val || null == val) {
+    if (val) {
+      return ' ' + (terse ? key : key + '="' + key + '"');
+    } else {
+      return '';
+    }
+  } else if (0 == key.indexOf('data') && 'string' != typeof val) {
+    if (JSON.stringify(val).indexOf('&') !== -1) {
+      console.warn('Since Jade 2.0.0, ampersands (`&`) in data attributes ' +
+                   'will be escaped to `&amp;`');
+    };
+    if (val && typeof val.toISOString === 'function') {
+      console.warn('Jade will eliminate the double quotes around dates in ' +
+                   'ISO form after 2.0.0');
+    }
+    return ' ' + key + "='" + JSON.stringify(val).replace(/'/g, '&apos;') + "'";
+  } else if (escaped) {
+    if (val && typeof val.toISOString === 'function') {
+      console.warn('Jade will stringify dates in ISO form after 2.0.0');
+    }
+    return ' ' + key + '="' + exports.escape(val) + '"';
+  } else {
+    if (val && typeof val.toISOString === 'function') {
+      console.warn('Jade will stringify dates in ISO form after 2.0.0');
+    }
+    return ' ' + key + '="' + val + '"';
+  }
+};
+
+/**
+ * Render the given attributes object.
+ *
+ * @param {Object} obj
+ * @param {Object} escaped
+ * @return {String}
+ */
+exports.attrs = function attrs(obj, terse){
+  var buf = [];
+
+  var keys = Object.keys(obj);
+
+  if (keys.length) {
+    for (var i = 0; i < keys.length; ++i) {
+      var key = keys[i]
+        , val = obj[key];
+
+      if ('class' == key) {
+        if (val = joinClasses(val)) {
+          buf.push(' ' + key + '="' + val + '"');
+        }
+      } else {
+        buf.push(exports.attr(key, val, false, terse));
+      }
+    }
+  }
+
+  return buf.join('');
+};
+
+/**
+ * Escape the given string of `html`.
+ *
+ * @param {String} html
+ * @return {String}
+ * @api private
+ */
+
+var jade_encode_html_rules = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;'
+};
+var jade_match_html = /[&<>"]/g;
+
+function jade_encode_char(c) {
+  return jade_encode_html_rules[c] || c;
+}
+
+exports.escape = jade_escape;
+function jade_escape(html){
+  var result = String(html).replace(jade_match_html, jade_encode_char);
+  if (result === '' + html) return html;
+  else return result;
+};
+
+/**
+ * Re-throw the given `err` in context to the
+ * the jade in `filename` at the given `lineno`.
+ *
+ * @param {Error} err
+ * @param {String} filename
+ * @param {String} lineno
+ * @api private
+ */
+
+exports.rethrow = function rethrow(err, filename, lineno, str){
+  if (!(err instanceof Error)) throw err;
+  if ((typeof window != 'undefined' || !filename) && !str) {
+    err.message += ' on line ' + lineno;
+    throw err;
+  }
+  try {
+    str = str || require('fs').readFileSync(filename, 'utf8')
+  } catch (ex) {
+    rethrow(err, null, lineno)
+  }
+  var context = 3
+    , lines = str.split('\n')
+    , start = Math.max(lineno - context, 0)
+    , end = Math.min(lines.length, lineno + context);
+
+  // Error context
+  var context = lines.slice(start, end).map(function(line, i){
+    var curr = i + start + 1;
+    return (curr == lineno ? '  > ' : '    ')
+      + curr
+      + '| '
+      + line;
+  }).join('\n');
+
+  // Alter exception message
+  err.path = filename;
+  err.message = (filename || 'Jade') + ':' + lineno
+    + '\n' + context + '\n\n' + err.message;
+  throw err;
+};
+
+exports.DebugItem = function DebugItem(lineno, filename) {
+  this.lineno = lineno;
+  this.filename = filename;
+}
+
+},{"fs":2}],2:[function(require,module,exports){
+
+},{}]},{},[1])(1)
+});
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"fs":5}],4:[function(require,module,exports){
 (function (process){
 /*!
  * async
@@ -1425,9 +2054,11 @@ module.exports = Stremio;
 }());
 
 }).call(this,require('_process'))
-},{"_process":12}],3:[function(require,module,exports){
+},{"_process":15}],5:[function(require,module,exports){
 
-},{}],4:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
+arguments[4][5][0].apply(exports,arguments)
+},{"dup":5}],7:[function(require,module,exports){
 (function (global){
 /*!
  * The buffer module from node.js, for the browser.
@@ -2975,7 +3606,7 @@ function blitBuffer (src, dst, offset, length) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"base64-js":5,"ieee754":6,"is-array":7}],5:[function(require,module,exports){
+},{"base64-js":8,"ieee754":9,"is-array":10}],8:[function(require,module,exports){
 var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 
 ;(function (exports) {
@@ -3101,7 +3732,7 @@ var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 	exports.fromByteArray = uint8ToBase64
 }(typeof exports === 'undefined' ? (this.base64js = {}) : exports))
 
-},{}],6:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
   var eLen = nBytes * 8 - mLen - 1
@@ -3187,7 +3818,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
-},{}],7:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 
 /**
  * isArray
@@ -3222,7 +3853,7 @@ module.exports = isArray || function (val) {
   return !! val && '[object Array]' == str.call(val);
 };
 
-},{}],8:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -3525,7 +4156,7 @@ function isUndefined(arg) {
   return arg === void 0;
 }
 
-},{}],9:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -3550,7 +4181,7 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],10:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 /**
  * Determine if an object is Buffer
  *
@@ -3569,12 +4200,12 @@ module.exports = function (obj) {
     ))
 }
 
-},{}],11:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 module.exports = Array.isArray || function (arr) {
   return Object.prototype.toString.call(arr) == '[object Array]';
 };
 
-},{}],12:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -3667,7 +4298,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],13:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 (function (global){
 /*! https://mths.be/punycode v1.3.2 by @mathias */
 ;(function(root) {
@@ -4201,7 +4832,7 @@ process.umask = function() { return 0; };
 }(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],14:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -4287,7 +4918,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],15:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -4374,16 +5005,16 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],16:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":14,"./encode":15}],17:[function(require,module,exports){
+},{"./decode":17,"./encode":18}],20:[function(require,module,exports){
 module.exports = require("./lib/_stream_duplex.js")
 
-},{"./lib/_stream_duplex.js":18}],18:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":21}],21:[function(require,module,exports){
 // a duplex stream is just a stream that is both readable and writable.
 // Since JS doesn't have multiple prototypal inheritance, this class
 // prototypally inherits from Readable, and then parasitically from
@@ -4467,7 +5098,7 @@ function forEach (xs, f) {
   }
 }
 
-},{"./_stream_readable":20,"./_stream_writable":22,"core-util-is":23,"inherits":9,"process-nextick-args":24}],19:[function(require,module,exports){
+},{"./_stream_readable":23,"./_stream_writable":25,"core-util-is":26,"inherits":12,"process-nextick-args":27}],22:[function(require,module,exports){
 // a passthrough stream.
 // basically just the most minimal sort of Transform stream.
 // Every written chunk gets output as-is.
@@ -4496,7 +5127,7 @@ PassThrough.prototype._transform = function(chunk, encoding, cb) {
   cb(null, chunk);
 };
 
-},{"./_stream_transform":21,"core-util-is":23,"inherits":9}],20:[function(require,module,exports){
+},{"./_stream_transform":24,"core-util-is":26,"inherits":12}],23:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -5461,7 +6092,7 @@ function indexOf (xs, x) {
 }
 
 }).call(this,require('_process'))
-},{"./_stream_duplex":18,"_process":12,"buffer":4,"core-util-is":23,"events":8,"inherits":9,"isarray":11,"process-nextick-args":24,"string_decoder/":31,"util":3}],21:[function(require,module,exports){
+},{"./_stream_duplex":21,"_process":15,"buffer":7,"core-util-is":26,"events":11,"inherits":12,"isarray":14,"process-nextick-args":27,"string_decoder/":34,"util":6}],24:[function(require,module,exports){
 // a transform stream is a readable/writable stream where you do
 // something with the data.  Sometimes it's called a "filter",
 // but that's not a great name for it, since that implies a thing where
@@ -5660,7 +6291,7 @@ function done(stream, er) {
   return stream.push(null);
 }
 
-},{"./_stream_duplex":18,"core-util-is":23,"inherits":9}],22:[function(require,module,exports){
+},{"./_stream_duplex":21,"core-util-is":26,"inherits":12}],25:[function(require,module,exports){
 // A bit simpler than readable streams.
 // Implement an async ._write(chunk, cb), and it'll handle all
 // the drain event emission and buffering.
@@ -6189,7 +6820,7 @@ function endWritable(stream, state, cb) {
   state.ended = true;
 }
 
-},{"./_stream_duplex":18,"buffer":4,"core-util-is":23,"events":8,"inherits":9,"process-nextick-args":24,"util-deprecate":25}],23:[function(require,module,exports){
+},{"./_stream_duplex":21,"buffer":7,"core-util-is":26,"events":11,"inherits":12,"process-nextick-args":27,"util-deprecate":28}],26:[function(require,module,exports){
 (function (Buffer){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -6299,7 +6930,7 @@ function objectToString(o) {
   return Object.prototype.toString.call(o);
 }
 }).call(this,{"isBuffer":require("../../../../insert-module-globals/node_modules/is-buffer/index.js")})
-},{"../../../../insert-module-globals/node_modules/is-buffer/index.js":10}],24:[function(require,module,exports){
+},{"../../../../insert-module-globals/node_modules/is-buffer/index.js":13}],27:[function(require,module,exports){
 (function (process){
 'use strict';
 module.exports = nextTick;
@@ -6316,7 +6947,7 @@ function nextTick(fn) {
 }
 
 }).call(this,require('_process'))
-},{"_process":12}],25:[function(require,module,exports){
+},{"_process":15}],28:[function(require,module,exports){
 (function (global){
 
 /**
@@ -6387,10 +7018,10 @@ function config (name) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],26:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 module.exports = require("./lib/_stream_passthrough.js")
 
-},{"./lib/_stream_passthrough.js":19}],27:[function(require,module,exports){
+},{"./lib/_stream_passthrough.js":22}],30:[function(require,module,exports){
 var Stream = (function (){
   try {
     return require('st' + 'ream'); // hack to fix a circular dependency issue when used with browserify
@@ -6404,13 +7035,13 @@ exports.Duplex = require('./lib/_stream_duplex.js');
 exports.Transform = require('./lib/_stream_transform.js');
 exports.PassThrough = require('./lib/_stream_passthrough.js');
 
-},{"./lib/_stream_duplex.js":18,"./lib/_stream_passthrough.js":19,"./lib/_stream_readable.js":20,"./lib/_stream_transform.js":21,"./lib/_stream_writable.js":22}],28:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":21,"./lib/_stream_passthrough.js":22,"./lib/_stream_readable.js":23,"./lib/_stream_transform.js":24,"./lib/_stream_writable.js":25}],31:[function(require,module,exports){
 module.exports = require("./lib/_stream_transform.js")
 
-},{"./lib/_stream_transform.js":21}],29:[function(require,module,exports){
+},{"./lib/_stream_transform.js":24}],32:[function(require,module,exports){
 module.exports = require("./lib/_stream_writable.js")
 
-},{"./lib/_stream_writable.js":22}],30:[function(require,module,exports){
+},{"./lib/_stream_writable.js":25}],33:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -6539,7 +7170,7 @@ Stream.prototype.pipe = function(dest, options) {
   return dest;
 };
 
-},{"events":8,"inherits":9,"readable-stream/duplex.js":17,"readable-stream/passthrough.js":26,"readable-stream/readable.js":27,"readable-stream/transform.js":28,"readable-stream/writable.js":29}],31:[function(require,module,exports){
+},{"events":11,"inherits":12,"readable-stream/duplex.js":20,"readable-stream/passthrough.js":29,"readable-stream/readable.js":30,"readable-stream/transform.js":31,"readable-stream/writable.js":32}],34:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -6762,7 +7393,7 @@ function base64DetectIncompleteChar(buffer) {
   this.charLength = this.charReceived ? 3 : 0;
 }
 
-},{"buffer":4}],32:[function(require,module,exports){
+},{"buffer":7}],35:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -7471,14 +8102,14 @@ function isNullOrUndefined(arg) {
   return  arg == null;
 }
 
-},{"punycode":13,"querystring":16}],33:[function(require,module,exports){
+},{"punycode":16,"querystring":19}],36:[function(require,module,exports){
 module.exports = function isBuffer(arg) {
   return arg && typeof arg === 'object'
     && typeof arg.copy === 'function'
     && typeof arg.fill === 'function'
     && typeof arg.readUInt8 === 'function';
 }
-},{}],34:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -8068,7 +8699,7 @@ function hasOwnProperty(obj, prop) {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":33,"_process":12,"inherits":9}],35:[function(require,module,exports){
+},{"./support/isBuffer":36,"_process":15,"inherits":12}],38:[function(require,module,exports){
 'use strict';
 
 function _process(v, mod) {
@@ -8529,7 +9160,7 @@ DotObject._process = _process;
 
 module.exports = DotObject;
 
-},{}],36:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 (function (global){
 /**
  * @license
@@ -19960,7 +20591,7 @@ module.exports = DotObject;
 }.call(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],37:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 var ClientRequest = require('./lib/request')
 var extend = require('xtend')
 var statusCodes = require('builtin-status-codes')
@@ -20035,7 +20666,7 @@ http.METHODS = [
 	'UNLOCK',
 	'UNSUBSCRIBE'
 ]
-},{"./lib/request":39,"builtin-status-codes":41,"url":32,"xtend":47}],38:[function(require,module,exports){
+},{"./lib/request":42,"builtin-status-codes":44,"url":35,"xtend":50}],41:[function(require,module,exports){
 exports.fetch = isFunction(window.fetch) && isFunction(window.ReadableByteStream)
 
 exports.blobConstructor = false
@@ -20075,7 +20706,7 @@ function isFunction (value) {
 
 xhr = null // Help gc
 
-},{}],39:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 (function (process,Buffer){
 // var Base64 = require('Base64')
 var capability = require('./capability')
@@ -20358,7 +20989,7 @@ var unsafeHeaders = [
 ]
 
 }).call(this,require('_process'),require("buffer").Buffer)
-},{"./capability":38,"./response":40,"_process":12,"buffer":4,"foreach":42,"indexof":43,"inherits":44,"object-keys":45,"stream":30}],40:[function(require,module,exports){
+},{"./capability":41,"./response":43,"_process":15,"buffer":7,"foreach":45,"indexof":46,"inherits":47,"object-keys":48,"stream":33}],43:[function(require,module,exports){
 (function (process,Buffer){
 var capability = require('./capability')
 var foreach = require('foreach')
@@ -20535,7 +21166,7 @@ IncomingMessage.prototype._onXHRProgress = function () {
 }
 
 }).call(this,require('_process'),require("buffer").Buffer)
-},{"./capability":38,"_process":12,"buffer":4,"foreach":42,"inherits":44,"stream":30}],41:[function(require,module,exports){
+},{"./capability":41,"_process":15,"buffer":7,"foreach":45,"inherits":47,"stream":33}],44:[function(require,module,exports){
 module.exports = {
   "100": "Continue",
   "101": "Switching Protocols",
@@ -20596,7 +21227,7 @@ module.exports = {
   "511": "Network Authentication Required"
 }
 
-},{}],42:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 
 var hasOwn = Object.prototype.hasOwnProperty;
 var toString = Object.prototype.toString;
@@ -20620,7 +21251,7 @@ module.exports = function forEach (obj, fn, ctx) {
 };
 
 
-},{}],43:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 
 var indexOf = [].indexOf;
 
@@ -20631,9 +21262,9 @@ module.exports = function(arr, obj){
   }
   return -1;
 };
-},{}],44:[function(require,module,exports){
-arguments[4][9][0].apply(exports,arguments)
-},{"dup":9}],45:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
+arguments[4][12][0].apply(exports,arguments)
+},{"dup":12}],48:[function(require,module,exports){
 'use strict';
 
 // modified from https://github.com/es-shims/es5-shim
@@ -20720,7 +21351,7 @@ keysShim.shim = function shimObjectKeys() {
 
 module.exports = keysShim;
 
-},{"./isArguments":46}],46:[function(require,module,exports){
+},{"./isArguments":49}],49:[function(require,module,exports){
 'use strict';
 
 var toStr = Object.prototype.toString;
@@ -20739,7 +21370,7 @@ module.exports = function isArguments(value) {
 	return isArgs;
 };
 
-},{}],47:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 module.exports = extend
 
 function extend() {
@@ -20758,18 +21389,19 @@ function extend() {
     return target
 }
 
-},{}],48:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 (function (process,Buffer){
 var _ = require("lodash");
 var url = require("url");
 var utils = require("./utils");
+var template = require("./addon-template");
 var async = require("async");
 
 var SESSION_LIVE = 10*60*60*1000; // 10 hrs
 var CACHE_TTL = 2.5 * 60 * 60; // seconds to live for the cache
 
 function Server(methods, options, manifest)
-{	
+{
 	options = _.extend({ 
 		allow: [ module.parent.CENTRAL ], // default stremio central
 		secret: "8417fe936f0374fbd16a699668e8f3c4aa405d9f" // default secret for testing add-ons
@@ -20859,9 +21491,11 @@ function Server(methods, options, manifest)
 				methods[method](args, cb, session);
 			});
 		}); else if (req.method == "GET") { // unsupported by JSON-RPC, it uses post
-			var u = module.parent.CENTRAL+"/stremio/addon/"+manifest.id;
-			if (manifest.endpoint) u = u+"?endpoint="+encodeURIComponent(manifest.endpoint);
-			utils.http.get(require("url").parse(u), function(resp) { resp.pipe(res) });
+			try {
+				res.writeHead(200);
+				res.end(template({ addon: { manifest: manifest }, endpoint: manifest.endpoint }));
+			} catch(e) { console.error(e); res.writeHead(500); res.end(); }
+
 			return;
 		}
 
@@ -20914,7 +21548,7 @@ function Server(methods, options, manifest)
 module.exports = Server;
 
 }).call(this,require('_process'),require("buffer").Buffer)
-},{"./utils":49,"_process":12,"async":2,"buffer":4,"lodash":36,"url":32}],49:[function(require,module,exports){
+},{"./addon-template":1,"./utils":52,"_process":15,"async":4,"buffer":7,"lodash":39,"url":35}],52:[function(require,module,exports){
 (function (Buffer){
 module.exports.http = require("http");
 var url = require("url");
@@ -20939,11 +21573,11 @@ module.exports.genID = function() {
 };
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":4,"http":37,"url":32}],"stremio-addons":[function(require,module,exports){
+},{"buffer":7,"http":40,"url":35}],"stremio-addons":[function(require,module,exports){
 module.STREMIO_PATH = "/stremio/v1";
 module.CENTRAL = "http://api9.strem.io";
 
 module.exports.Client = require("./client");
 module.exports.Server = require("./server");
 
-},{"./client":1,"./server":48}]},{},[]);
+},{"./client":2,"./server":51}]},{},[]);
