@@ -6,7 +6,7 @@ var dot = require("dot-object");
 
 var MAX_RETRIES = 3;
 var SERVICE_RETRY_TIMEOUT = 30*1000;
-var FALLTHROUGH_TRY_NEXT = 2*1000;
+var FALLTHROUGH_TRY_NEXT = 3.5*1000;
 
 var LENGTH_TO_FORCE_POST=8192;
 
