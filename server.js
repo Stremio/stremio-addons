@@ -86,7 +86,7 @@ function Server(methods, options, manifest)
 		};
 		
 		if (req.method == "POST" || ( req.method == "GET" && parsed.pathname.match("q.json$") ) ) return serveRPC(req, res, function(method, params, cb) {
-			req._statsNotes.push(req.method);
+			req._statsNotes.push(method);
 
 			if (method == "meta") return meta(cb);
 			if (! methods[method]) return cb({ message: "method not supported", code: -32601 }, null);
