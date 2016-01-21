@@ -71,6 +71,8 @@ function Server(methods, options, manifest)
 		var parsed = url.parse(req.url);
 		if (! parsed.pathname.match(module.parent.STREMIO_PATH)) return next(); 
 		
+		req._statsNotes.push(req.method);
+
 		if (req.method === "OPTIONS") {
 			var headers = {};
 			headers["Access-Control-Allow-Origin"] = "*";
@@ -84,6 +86,8 @@ function Server(methods, options, manifest)
 		};
 		
 		if (req.method == "POST" || ( req.method == "GET" && parsed.pathname.match("q.json$") ) ) return serveRPC(req, res, function(method, params, cb) {
+			req._statsNotes.push(req.method);
+
 			if (method == "meta") return meta(cb);
 			if (! methods[method]) return cb({ message: "method not supported", code: -32601 }, null);
 
