@@ -279,6 +279,7 @@ function rpcClient(endpoint, options)
 				(Array.isArray(body) ? body : [body]).forEach(function(body, i) {
 					var callback = (byId[body.id] && byId[body.id].callback) || requests[i] && requests[i].callback || _.noop; // WARNING with noop
 					if (body.error) return callback(null, body.error);
+					if (!body.result) return callback(body);
 					callback(null, null, body.result);
 				});
 			});
