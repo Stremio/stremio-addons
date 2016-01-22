@@ -278,9 +278,10 @@ function rpcClient(endpoint, options)
 			utils.receiveJSON(res, function(err, body) {
 				if (err) return callbackAll(err);
 				//console.log(res.headers["cf-cache-status"]);
-				(Array.isArray(body) ? body : [body]).forEach(function(body) {
-					var callback = (byId[body.id] && byId[body.id].callback) || _.noop;
+				(Array.isArray(body) ? body : [body]).forEach(function(body, i) {
+					var callback = (byId[body.id] && byId[body.id].callback) || requests[i] && requests[i].callback || _.noop; // WARNING with noop
 					if (body.error) return callback(null, body.error);
+					if (!body.result) return callback(body);
 					callback(null, null, body.result);
 				});
 			});
