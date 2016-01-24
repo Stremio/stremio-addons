@@ -1,6 +1,5 @@
 var _ = require("lodash");
 var async = require("async");
-var util = require("util");
 var utils = require("./utils");
 var dot = require("dot-object");
 var url = require("url");
