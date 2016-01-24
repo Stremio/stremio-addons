@@ -138,7 +138,7 @@ function Stremio(options)
 	this.add = function(url, opts, cb) {
 		cb = (typeof(cb) == "function") ? cb : function() { };
 		if (services[url]) return cb(null, services[url]);
-		services[url] = new Addon(url, opts || {}, self, function() { 
+		services[url] = new Addon(url, _.extend({}, options, opts || {}), self, function() { 
 			// callback for ready service
 			self.emit("addon-ready", services[url], url);
 			cb(null, services[url]);
