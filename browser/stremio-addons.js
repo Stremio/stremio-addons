@@ -6,7 +6,7 @@ var utils = require("./utils");
 var dot = require("dot-object");
 var url = require("url");
 var emitter = require("tiny-emitter");
-var inherits = require("inherits");
+var inherits = require("inherits/inherits_browser");
 
 var MAX_RETRIES = 3;
 var SERVICE_RETRY_TIMEOUT = 30*1000;
@@ -301,7 +301,7 @@ function rpcClient(endpoint, options)
 module.exports = Stremio;
 
 }).call(this,require("buffer").Buffer)
-},{"./utils":46,"async":2,"buffer":4,"dot-object":42,"inherits":43,"lodash":44,"tiny-emitter":45,"url":40}],2:[function(require,module,exports){
+},{"./utils":46,"async":2,"buffer":4,"dot-object":42,"inherits/inherits_browser":43,"lodash":44,"tiny-emitter":45,"url":40}],2:[function(require,module,exports){
 (function (process){
 /*!
  * async
