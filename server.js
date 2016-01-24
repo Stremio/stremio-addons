@@ -1,6 +1,6 @@
 var _ = require("lodash");
 var url = require("url");
-var utils = require("./utils");
+var rpc = require("./rpc");
 var template = require("./addon-template");
 var async = require("async");
 
@@ -20,7 +20,7 @@ function Server(methods, options, manifest)
 
 	// Announce to central
 	var body = JSON.stringify({ id: manifest.id, manifest: _.omit(manifest, "filter") });
-	var req = utils.http.request(_.extend(url.parse(module.parent.CENTRAL+"/stremio/announce/"+options.secret), { 
+	var req = rpc.http.request(_.extend(url.parse(module.parent.CENTRAL+"/stremio/announce/"+options.secret), { 
 		method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } 
 	}), function(res) { /* console.log(res.statusCode); currently we don't care */ });
 	req.end(body);
@@ -40,8 +40,8 @@ function Server(methods, options, manifest)
 
 		if (sessions[auth[1]]) return cb(null, sessions[auth[1]]);
 
-		var req = utils.http.get(require("url").parse(auth[0]+"/stremio/service/"+options.secret+"/"+encodeURIComponent(auth[1])), function(resp) {
-			utils.receiveJSON(resp, function(err, body) {
+		var req = rpc.http.get(require("url").parse(auth[0]+"/stremio/service/"+options.secret+"/"+encodeURIComponent(auth[1])), function(resp) {
+			rpc.receiveJSON(resp, function(err, body) {
 				if (resp.statusCode==200 && body) {
 					sessions[auth[1]] = body;
 					setTimeout(function() { delete sessions[auth[1]] }, SESSION_LIVE);
@@ -134,7 +134,7 @@ function Server(methods, options, manifest)
 			res.end(respBody);
 		};
 
-		utils.receiveJSON(req, function(err, body) {
+		rpc.receiveJSON(req, function(err, body) {
 			if (err) return send({ code: -32700, message: "parse error" }); // TODO: jsonrpc, id prop
 
 			var ttl = CACHE_TTL;
