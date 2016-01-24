@@ -3,6 +3,9 @@ var async = require("async");
 var util = require("util");
 var utils = require("./utils");
 var dot = require("dot-object");
+var url = require("url");
+var emitter = require("tiny-emitter");
+var inherits = require("inherits");
 
 var MAX_RETRIES = 3;
 var SERVICE_RETRY_TIMEOUT = 30*1000;
@@ -112,9 +115,9 @@ function Addon(url, options, stremio, ready)
 function Stremio(options)
 {
 	var self = this;
-	require("events").EventEmitter.call(this);
+	emitter.call(this);
 	
-	self.setMaxListeners(200); // something reasonable
+	//self.setMaxListeners(200); // something reasonable
 
 	Object.defineProperty(self, "supportedTypes", { enumerable: true, get: function() { 
 		return getTypes(self.get("meta.find"));
@@ -221,7 +224,7 @@ function Stremio(options)
 	_.extend(this, bindDefaults(call));
 
 };
-util.inherits(Stremio, require("events").EventEmitter);
+inherits(Stremio, emitter);
 
 // Utility to get supported types for this client
 function getTypes(services) {
@@ -267,8 +270,8 @@ function rpcClient(endpoint, options)
 		if (body.length>=LENGTH_TO_FORCE_POST) isGet = false;
 
 		var reqObj = { };
-		if (!isGet) _.extend(reqObj, require("url").parse(endpoint), { method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } });
-		else _.extend(reqObj, require("url").parse(endpoint+"/q.json?b="+new Buffer(body, "binary").toString("base64")));
+		if (!isGet) _.extend(reqObj, url.parse(endpoint), { method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } });
+		else _.extend(reqObj, url.parse(endpoint+"/q.json?b="+new Buffer(body, "binary").toString("base64")));
 		
 		var req = utils.http.request(reqObj, function(res) {
 			if (options.respTimeout && res.setTimeout) res.setTimeout(options.respTimeout);
