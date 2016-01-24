@@ -4,7 +4,7 @@ var utils = require("./utils");
 var dot = require("dot-object");
 var url = require("url");
 var emitter = require("tiny-emitter");
-var inherits = require("inherits");
+var inherits = require("inherits/inherits_browser");
 
 var MAX_RETRIES = 3;
 var SERVICE_RETRY_TIMEOUT = 30*1000;
