@@ -2,7 +2,7 @@ var _ = require("lodash");
 var async = require("async");
 var dot = require("dot-object");
 var url = require("url");
-var emitter = require("tiny-emitter");
+var emitter = require("events").EventEmitter;
 var inherits = require("inherits/inherits_browser");
 
 var MAX_RETRIES = 3;
