@@ -180,7 +180,7 @@ function Stremio(options)
 				
 				networkErr = err;
 				// err, error are respectively HTTP error / JSON-RPC error; we need to implement fallback based on that (do a skip)
-				if (skip || err || (method.match("get$") && res === null) ) return next(); // Go to the next service
+				if (skip || err) return next(); // Go to the next service
 
 				cb(error, res, service);
 				next(1); // Stop
