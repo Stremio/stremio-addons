@@ -19,10 +19,6 @@ var receiveJSON = function(resp, callback) {
 	});
 };
 
-var genID = function() { 
-	return Math.round(Math.random() * Math.pow(2, 24)) 
-};
-
 // Utility for JSON-RPC
 // Rationales in our own client
 // 1) have more control over the process, be able to implement debounced batching
@@ -32,26 +28,8 @@ function rpcClient(endpoint, options)
 	var isGet = !!endpoint.match("stremioget");
 
 	var client = { };
-	client.request = function(method, params, callback) {
-		rpcRequest([{ callback: callback, params: params, method: method, id: genID(), jsonrpc: "2.0" }]);
-	};
-	if (!isGet) client.enqueue = function(handle, method, params, callback) {
-		if (! handle.flush) handle.flush = _.debounce(function() {
-			rpcRequest(handle.queue); handle.queue = [];
-		}, handle.time);
-		handle.queue.push({ callback: callback, params: params, method: method, id: genID(), jsonrpc: "2.0" });
-		handle.flush();
-	};
-	function rpcRequest(requests) { // supports batching
-		requests.forEach(function(x, i) { 
-			x.callback = _.once(x.callback);
-			if (isGet) x.params[0] = null; // get requests limited to noauth
-			if (isGet) x.id = i+1; // unify ids
-		});
-
-		var body = JSON.stringify(requests.length == 1 ? requests[0] : requests);
-		var byId = _.indexBy(requests, "id");
-		var callbackAll = function() { var args = arguments; requests.forEach(function(x) { x.callback && x.callback.apply(null, args) }) };
+	client.request = function(method, params, callback) { 
+		var body = JSON.stringify({ params: params, method: method, id: 1, jsonrpc: "2.0" });
 
 		if (body.length>=LENGTH_TO_FORCE_POST) isGet = false;
 
@@ -63,20 +41,16 @@ function rpcClient(endpoint, options)
 			if (options.respTimeout && res.setTimeout) res.setTimeout(options.respTimeout);
 
 			receiveJSON(res, function(err, body) {
-				if (err) return callbackAll(err);
-				//console.log(res.headers["cf-cache-status"]);
-				(Array.isArray(body) ? body : [body]).forEach(function(body, i) {
-					var callback = (byId[body.id] && byId[body.id].callback) || (requests[i] && requests[i].callback) || _.noop; // WARNING with noop
-					if (body.error) return callback(null, body.error);
-					if (!body.result) return callback(body);
-					callback(null, null, body.result);
-				});
+				if (err) return callback(err);
+				if (body.error) return callback(null, body.error);
+				if (!body.result) return callback(body);
+				callback(null, null, body.result);
 			});
 		});
 
 		if (options.timeout && req.setTimeout) req.setTimeout(options.timeout);
-		req.on("error", callbackAll);
-		req.on("timeout", function() { callbackAll(new Error("rpc request timed out")) });
+		req.on("error", callback);
+		req.on("timeout", function() { callback(new Error("rpc request timed out")) });
 		if (! isGet) req.write(body);
 		req.end();
 	};
@@ -84,6 +58,5 @@ function rpcClient(endpoint, options)
 };
 
 module.exports = rpcClient;
-module.exports.genID = genID;
 module.exports.receiveJSON = receiveJSON;
 module.exports.http = http;
