@@ -57,10 +57,10 @@ function Addon(url, options, stremio, ready)
 		});
 		this.url = url;
 	} else {
-		this.client = url;
+		this.client = { request: function(method, args, cb) { url.request(method, args, function(err, res) { cb(null, err, res) }) } };
 		this.url = url.toString();
 	}
-	
+
 	this.priority = options.priority || 0;
 	this.initialized = false;
 	this.manifest = { };

@@ -121,6 +121,50 @@ tape("initialize server, basic call - stremioget", function(t) {
 
 });
 
+
+tape("local basic call", function(t) {
+	t.timeoutAfter(5000); // 5s because of slow auth
+
+	var received = false;
+
+	var methods = {
+		"meta.get": function(args, cb, sess) {
+			received = true;
+
+			t.ok(args.query.id == 1, "we are receiving arguments");
+			t.ok(!!sess, "we have session");
+			t.ok(sess.isAnotherService, "we are calling from another service"); 
+			return cb(null, { now: Date.now() });
+		}
+	};
+	var server = new addons.Server(methods, { }, { 
+	 id: "org.test",
+	 name: "testing add-on", description: "add-on used for testing", version: "1.0.0",
+	 filter: { "query.id": { $exists: true }, "query.types": { $in: [ "foo", "bar" ] } }
+	});
+
+	var s = new addons.Client({ picker: function(addons) { t.ok("picker called with 1 addon", addons.length==1); return addons } });
+	s.add(server, null, function(err, addon) {
+		t.ok(addon, "callback to .add"); 
+		s.add(server, null, function(err, addon) {  t.ok(addon, "callback to .add - second time") });
+	});
+	s.setAuth(null, TEST_SECRET);
+	s.call("meta.get", { query: { id: 1 } }, function(err, res)
+	{
+		t.error(err, "no err on first call");
+		t.ok(!isNaN(res.now), "we have returned timestamp");			
+		t.ok(received, "call was received");
+
+		// two calls because first will wait for central server authentication
+		s.call("meta.get", { query: { id: 1 } }, function(err, res)
+		{
+			t.ok(!err, "no err on second call");
+			t.ok(!isNaN(res.now), "we have returned timestamp");
+			t.end();
+		});
+	});
+});
+
 tape("test events", function(t) {
 	t.timeoutAfter(3000);
 
