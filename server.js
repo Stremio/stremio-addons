@@ -61,6 +61,11 @@ function Server(methods, options, manifest)
 		req.on("error", function(e) { cb({ message: "failed to connect to center", code: 5 }) });
 	}, 1);
 
+	// In case we use this in place of endpoint URL
+	this.toString = function() {
+		return self.manifest.id;
+	};
+
 	// Direct interface
 	this.request = function(method, params, cb) {
 		if (method == "meta") return meta(cb);
@@ -111,7 +116,7 @@ function Server(methods, options, manifest)
 		
 		if (req.method == "POST" || ( req.method == "GET" && parsed.pathname.match("q.json$") ) ) return serveRPC(req, res, function(method, params, cb) {
 			req._statsNotes.push(method);
-			
+
 			if (options.stremioget && req.method == "GET") params[0] = { stremioget: true }; // replace auth object
 			self.request(method, params, cb);
 		}); else if (req.method == "GET") { // unsupported by JSON-RPC, it uses post

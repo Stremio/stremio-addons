@@ -49,11 +49,18 @@ function Addon(url, options, stremio, ready)
 	var self = this;
 
 	var client = options.client || require("./rpc");
-	this.client = client(url+(module.parent ? module.parent.STREMIO_PATH : "/stremio/v1") , { 
-		timeout: options.timeout || stremio.options.timeout || 10000,
-		respTimeout: options.respTimeout || stremio.options.respTimeout //|| 10000,
-	});
-	this.url = url;
+
+	if (typeof(url) == "string") {
+		this.client = client(url+(module.parent ? module.parent.STREMIO_PATH : "/stremio/v1") , { 
+			timeout: options.timeout || stremio.options.timeout || 10000,
+			respTimeout: options.respTimeout || stremio.options.respTimeout //|| 10000,
+		});
+		this.url = url;
+	} else {
+		this.client = url;
+		this.url = url.toString();
+	}
+	
 	this.priority = options.priority || 0;
 	this.initialized = false;
 	this.manifest = { };
