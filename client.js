@@ -67,8 +67,6 @@ function Addon(url, options, stremio, ready)
 	this.methods = [];
 	this.retries = 0;
 
-	var debounced = { }; // fill from stremio.debounced, but addon specific
-
 	var q = async.queue(function(task, done) {
 		if (self.initialized) return done();
 
@@ -98,13 +96,10 @@ function Addon(url, options, stremio, ready)
 		//if (method.match("^stream")) [args[1]].forEach(function(args) { err =  err || validation.stream_args(args) });
 		if (err) return cb(0, null, err);
 
-		if (stremio.debounced[method]) _.extend(debounced[method] = debounced[method] || { queue: [] }, { time: stremio.debounced[method] });
-
 		if (cb) cb = _.once(cb);
 		q.push({ }, function() {
 			if (self.methods.indexOf(method) == -1) return cb(1);
-			var m = (debounced[method] && self.client.enqueue) ? self.client.enqueue.bind(null, debounced[method]) : self.client.request;
-			m(method, args, function(err, error, res) { cb(0, err, error, res) });
+			self.client.request(method, args, function(err, error, res) { cb(0, err, error, res) });
 		});
 	};
 
@@ -132,7 +127,6 @@ function Stremio(options)
 
 	var auth;
 	var services = {};
-	self.debounced = { };
 
 	// Set the authentication
 	this.setAuth = function(url, token) {
@@ -166,12 +160,6 @@ function Stremio(options)
 		if (forMethod && !noPicker) res = picker(res, forMethod); // apply the picker for a method
 		if (forArgs) res = _.sortBy(res, function(x) { return -checkArgs(forArgs, x.manifest.filter) });
 		return _.sortBy(res, function(x) { return -(x.initialized && !x.networkErr) });
-	};
-
-	// Set de-bounced batching
-	this.setBatchingDebounce = function(method, ms) {
-		if (self.manifest && self.methods.indexOf(method) == -1) return;
-		self.debounced[method] = ms;
 	};
 
 	function fallthrough(s, method, args, cb) {
