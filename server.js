@@ -14,6 +14,9 @@ function Server(methods, options, manifest)
 		secret: "8417fe936f0374fbd16a699668e8f3c4aa405d9f" // default secret for testing add-ons
 	}, options || { });
 
+	this.manifest = manifest;
+	this.methods = methods;
+
 	Object.keys(methods).forEach(function(key) {
 		if (typeof(methods[key]) != "function") throw Error(key+" should be a function");
 	});
@@ -33,6 +36,7 @@ function Server(methods, options, manifest)
 		});
 	};
 
+	// Authentication
 	var sessions = { };
 	var checkSession = async.queue(function(task, cb) {
 		var auth = task.auth;
@@ -55,6 +59,8 @@ function Server(methods, options, manifest)
 		req.on("error", function(e) { cb({ message: "failed to connect to center", code: 5 }) });
 	}, 1);
 
+
+	// HTTP middleware
 	this.middleware = function(req, res, next) {
 		var start = Date.now(), finished = false;
 		req._statsNotes = [];
