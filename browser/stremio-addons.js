@@ -68,8 +68,6 @@ function Addon(url, options, stremio, ready)
 	this.methods = [];
 	this.retries = 0;
 
-	var debounced = { }; // fill from stremio.debounced, but addon specific
-
 	var q = async.queue(function(task, done) {
 		if (self.initialized) return done();
 
@@ -99,13 +97,10 @@ function Addon(url, options, stremio, ready)
 		//if (method.match("^stream")) [args[1]].forEach(function(args) { err =  err || validation.stream_args(args) });
 		if (err) return cb(0, null, err);
 
-		if (stremio.debounced[method]) _.extend(debounced[method] = debounced[method] || { queue: [] }, { time: stremio.debounced[method] });
-
 		if (cb) cb = _.once(cb);
 		q.push({ }, function() {
 			if (self.methods.indexOf(method) == -1) return cb(1);
-			var m = (debounced[method] && self.client.enqueue) ? self.client.enqueue.bind(null, debounced[method]) : self.client.request;
-			m(method, args, function(err, error, res) { cb(0, err, error, res) });
+			self.client.request(method, args, function(err, error, res) { cb(0, err, error, res) });
 		});
 	};
 
@@ -133,7 +128,6 @@ function Stremio(options)
 
 	var auth;
 	var services = {};
-	self.debounced = { };
 
 	// Set the authentication
 	this.setAuth = function(url, token) {
@@ -167,12 +161,6 @@ function Stremio(options)
 		if (forMethod && !noPicker) res = picker(res, forMethod); // apply the picker for a method
 		if (forArgs) res = _.sortBy(res, function(x) { return -checkArgs(forArgs, x.manifest.filter) });
 		return _.sortBy(res, function(x) { return -(x.initialized && !x.networkErr) });
-	};
-
-	// Set de-bounced batching
-	this.setBatchingDebounce = function(method, ms) {
-		if (self.manifest && self.methods.indexOf(method) == -1) return;
-		self.debounced[method] = ms;
 	};
 
 	function fallthrough(s, method, args, cb) {
@@ -20086,10 +20074,6 @@ var receiveJSON = function(resp, callback) {
 	});
 };
 
-var genID = function() { 
-	return Math.round(Math.random() * Math.pow(2, 24)) 
-};
-
 // Utility for JSON-RPC
 // Rationales in our own client
 // 1) have more control over the process, be able to implement debounced batching
@@ -20099,26 +20083,8 @@ function rpcClient(endpoint, options)
 	var isGet = !!endpoint.match("stremioget");
 
 	var client = { };
-	client.request = function(method, params, callback) {
-		rpcRequest([{ callback: callback, params: params, method: method, id: genID(), jsonrpc: "2.0" }]);
-	};
-	if (!isGet) client.enqueue = function(handle, method, params, callback) {
-		if (! handle.flush) handle.flush = _.debounce(function() {
-			rpcRequest(handle.queue); handle.queue = [];
-		}, handle.time);
-		handle.queue.push({ callback: callback, params: params, method: method, id: genID(), jsonrpc: "2.0" });
-		handle.flush();
-	};
-	function rpcRequest(requests) { // supports batching
-		requests.forEach(function(x, i) { 
-			x.callback = _.once(x.callback);
-			if (isGet) x.params[0] = null; // get requests limited to noauth
-			if (isGet) x.id = i+1; // unify ids
-		});
-
-		var body = JSON.stringify(requests.length == 1 ? requests[0] : requests);
-		var byId = _.indexBy(requests, "id");
-		var callbackAll = function() { var args = arguments; requests.forEach(function(x) { x.callback && x.callback.apply(null, args) }) };
+	client.request = function(method, params, callback) { 
+		var body = JSON.stringify({ params: params, method: method, id: 1, jsonrpc: "2.0" });
 
 		if (body.length>=LENGTH_TO_FORCE_POST) isGet = false;
 
@@ -20130,20 +20096,16 @@ function rpcClient(endpoint, options)
 			if (options.respTimeout && res.setTimeout) res.setTimeout(options.respTimeout);
 
 			receiveJSON(res, function(err, body) {
-				if (err) return callbackAll(err);
-				//console.log(res.headers["cf-cache-status"]);
-				(Array.isArray(body) ? body : [body]).forEach(function(body, i) {
-					var callback = (byId[body.id] && byId[body.id].callback) || (requests[i] && requests[i].callback) || _.noop; // WARNING with noop
-					if (body.error) return callback(null, body.error);
-					if (!body.result) return callback(body);
-					callback(null, null, body.result);
-				});
+				if (err) return callback(err);
+				if (body.error) return callback(null, body.error);
+				if (!body.result) return callback(body);
+				callback(null, null, body.result);
 			});
 		});
 
 		if (options.timeout && req.setTimeout) req.setTimeout(options.timeout);
-		req.on("error", callbackAll);
-		req.on("timeout", function() { callbackAll(new Error("rpc request timed out")) });
+		req.on("error", callback);
+		req.on("timeout", function() { callback(new Error("rpc request timed out")) });
 		if (! isGet) req.write(body);
 		req.end();
 	};
@@ -20151,7 +20113,6 @@ function rpcClient(endpoint, options)
 };
 
 module.exports = rpcClient;
-module.exports.genID = genID;
 module.exports.receiveJSON = receiveJSON;
 module.exports.http = http;
 
