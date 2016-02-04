@@ -8,7 +8,6 @@ var inherits = require("inherits/inherits_browser");
 
 var MAX_RETRIES = 3;
 var SERVICE_RETRY_TIMEOUT = 30*1000;
-var FALLTHROUGH_TRY_NEXT = 3.5*1000;
 
 var LENGTH_TO_FORCE_POST=8192;
 
@@ -169,11 +168,7 @@ function Stremio(options)
 			var service = s.shift(), next = _.once(next);
 			if (! service) return next(true); // end the loop
 
-			var t;
-			if (s.length && args.stremio_rushed) t = setTimeout(next, FALLTHROUGH_TRY_NEXT); // request the next one too (request in parallel) if we don't get anything for a few secs
-			service.call(method, [auth, args], function(skip, err, error, res) {
-				if (t) clearTimeout(t);
-				
+			service.call(method, [auth, args], function(skip, err, error, res) {				
 				networkErr = err;
 				// err, error are respectively HTTP error / JSON-RPC error; we need to implement fallback based on that (do a skip)
 				if (skip || err) return next(); // Go to the next service
