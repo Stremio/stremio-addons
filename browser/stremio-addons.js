@@ -119,8 +119,12 @@ function Stremio(options)
 	
 	//self.setMaxListeners(200); // something reasonable
 
-	Object.defineProperty(self, "supportedTypes", { enumerable: true, get: function() { 
-		return getTypes(self.get("meta.find"));
+	Object.defineProperty(self, "supportedTypes", { enumerable: true, get: function() {
+		var types = {};
+		self.get("meta.find").forEach(function(service) { 
+			if (service.manifest.types) service.manifest.types.forEach(function(t) { types[t] = true });
+		});
+		return types;
 	} });
 
 	options = self.options = options || {};
@@ -214,18 +218,6 @@ function Stremio(options)
 
 };
 inherits(Stremio, emitter);
-
-// Utility to get supported types for this client
-function getTypes(services) {
-	var types = {};
-	services
-	.forEach(function(service) { 
-		if (service.manifest.types) service.manifest.types.forEach(function(t) { types[t] = true });
-	});
-	
-	return types;
-};
-
 
 module.exports = Stremio;
 
