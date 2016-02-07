@@ -49,14 +49,10 @@ var dataset = {
 };
 
 var addon = new Stremio.Server({
-    "stream.get": function(args, callback, user) {
-        if (! args.query) return callback();
-        return callback(null, dataset[args.query.imdb_id] || null);
-    },
     "stream.find": function(args, callback, user) {
         // only "availability" is required for stream.find, but we can return the whole object
         if (! args.query) return callback();
-        callback(null, dataset[args.query.imdb_id] || null);
+        callback(null, [dataset[args.query.imdb_id] || null]);
     }
 }, { stremioget: true }, manifest);
 
