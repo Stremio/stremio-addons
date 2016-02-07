@@ -50,4 +50,4 @@ To see it used in the real world, we recommend you check the [open-source stremi
 
 [Filmon.tv add-on](http://github.com/Stremio/filmon-stremio)
 
-[Local Files add-on](http://github.com/Ivshti/stremio-local-files)
+[Local Files add-on](http://github.com/Stremio/stremio-local-files)
