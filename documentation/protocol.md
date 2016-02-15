@@ -90,6 +90,7 @@ Additional properties in ``query`` are used for content that has multipe videos,
 
 ``query.video_id`` - _optional_ - the video ID, required for ``channel`` type
 
+``prev`` - _optional_ - the previous [``Stream object's``](/documentation/protocol.md#stream-object) ID that the player played; will be ``undefined`` if there isn't any
 
 **Examples**
 ```javascript
@@ -129,6 +130,8 @@ Returns an array of [``stream objects``](/documentation/protocol.md#stream-objec
 ``tag`` - _optional_ - array, optional tags of the stream; use ``"480p"``, ``"720p"``, ``"1080p"``/``"hd"`` or ``"2160p"`` to specify quality
 
 ``repeat`` - _optional_ - boolean, true if you want stremio to do ``stream.find`` again with the same arguments when the video ends, and play again
+
+``live`` - _optional_ - boolean, specify if this is a live stream; this will be auto-detected if you're using HLS
 
 ``geos`` - _optional_ - use if the stream is geo-restricted - array of ISO 3166-1 alpha-2 country codes in which the stream is accessible
 
