@@ -89,7 +89,7 @@ new addons.Server({
 
 ## Authentication
 
-Authentication is optional - not all add-ons require it.
+**Authentication is optional - not all add-ons require it.** The third-party add-ons **should not** require authentication.
 
 To authenticate when using Stremio Addons as a client, one must call
 ```javascript
