@@ -18,7 +18,6 @@
   },
   "scripts": {
     "templates": "jade -c addon-template.jade -n addon ; echo '; module.exports = addon; var jade = require(\"jade/runtime.js\")' >> addon-template.js",
-    "postinstall": "npm run templates",
     "prepublish": "npm run templates; browserify -r ./index-browser.js:stremio-addons > browser/stremio-addons.js ; uglifyjs browser/stremio-addons.js > browser/stremio-addons.min.js ; git commit --allow-empty browser/stremio-addons.js browser/stremio-addons.min.js -m 'stremio-addons.js update'",
     "test": "npm run templates; node test/basic.js"
   },
