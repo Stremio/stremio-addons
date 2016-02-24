@@ -73,7 +73,9 @@ In your add-on, you can implement the following hooks/methods:
 
 
 ## Method: ``stream.find``
-First thing to keep in mind here is that Stremio supports video streaming through HTTP or BitTorrent-compatible descriptors. If you are interested in other protocols, contact us at [office@strem.io](mailto:office@strem.io).
+First thing to keep in mind here is that Stremio supports video streaming through HTTP, BitTorrent and IPFS. 
+
+If you are interested in other protocols, contact us at [office@strem.io](mailto:office@strem.io).
 
 ### Request format
 ``query`` - an object containing an ID property with a value to match, plus extra identifying properties.
