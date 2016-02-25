@@ -13,6 +13,8 @@ Valid properties are:
 
 ``description`` - **required** - human readable description
 
+``webDescription`` - _optional_ - human readable description for the auto-generated add-on HTML page ; HTML allowed
+
 ``endpoint`` - _optional_ - http endpoint to the hosted version of this add-on; should end in standard stremio URL path, such as ``/stremio/v1`` for the v1 version of the protocol; example: ``http://cinemeta.strem.io/stremioget/stremio/v1``
 
 ``background`` - _optional_ - background image for the add-on; URL to png/jpg, at least 1024x786 resolution
