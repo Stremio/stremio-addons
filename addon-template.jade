@@ -54,16 +54,19 @@ head
             h3 <i>#{addon.manifest.version}</i>
             h3 !{addon.manifest.web_description || addon.manifest.description}
             h3.provides
+            
+            h2 This add-on will give you: 
+            ul
+                if addon.methods['meta.find']
+                    li More #{addon.manifest.types.join(", ")} in Discover
+                if addon.methods['stream.find']
+                    li #{addon.manifest.isFree ? 'Free streaming' : 'Streaming'} of #{addon.manifest.types.join(", ")}
+
             if endpoint
                 a.activate-link(href="#{endpoint ? endpoint.replace(/^http(s?)/, 'stremio') : null}")
                     button(name="Activate") Activate Add-on
             else
                 div No valid end-point for this add-on
-            ul
-                if addon.methods['meta.find']
-                    li Catalogue
-                if addon.methods['stream.find']
-                    li Streaming
 
         script(src="https://code.jquery.com/jquery-2.1.4.min.js")
         script(src="http://www.strem.io/js/stremio-addons.min.js")
