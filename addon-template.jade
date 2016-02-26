@@ -56,13 +56,13 @@ head
             h3.provides
             
             - var mapType = function(t) { return ({ movie: "Movies", series: "Series", tv: "TV Channels", channel: "Channels" })[t] || t };
-            
+
             h2 This add-on will give you:
             ul
                 if addon.methods['meta.find']
                     li More #{addon.manifest.types.map(mapType).join(", ")} in Discover
                 if addon.methods['stream.find']
-                    li #{addon.manifest.isFree ? 'Free streaming' : 'Streaming'} of #{addon.manifest.types.map(mapType).join(", ")}
+                    li Watch #{addon.manifest.types.map(mapType).join(", ")} #{addon.manifest.isFree ? 'for FREE' : ''}
                 if addon.methods['subtitles.get']
                     li Subtitles for #{addon.manifest.types.map(mapType).join(", ")}
 
