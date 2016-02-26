@@ -55,14 +55,16 @@ head
             h3 !{addon.manifest.webDescription || addon.manifest.description}
             h3.provides
             
-            h2 This add-on will give you: 
+            - var mapType = function(t) { return ({ movie: "Movies", series: "Series", tv: "TV Channels", channel: "Channels" })[t] || t };
+            
+            h2 This add-on will give you:
             ul
                 if addon.methods['meta.find']
-                    li More #{addon.manifest.types.join(", ")} in Discover
+                    li More #{addon.manifest.types.map(mapType).join(", ")} in Discover
                 if addon.methods['stream.find']
-                    li #{addon.manifest.isFree ? 'Free streaming' : 'Streaming'} of #{addon.manifest.types.join(", ")}
+                    li #{addon.manifest.isFree ? 'Free streaming' : 'Streaming'} of #{addon.manifest.types.map(mapType).join(", ")}
                 if addon.methods['subtitles.get']
-                    li Subtitles for #{addon.manifest.types.join(", ")}
+                    li Subtitles for #{addon.manifest.types.map(mapType).join(", ")}
 
             if endpoint
                 a.activate-link(href="#{endpoint ? endpoint.replace(/^http(s?)/, 'stremio') : null}")
