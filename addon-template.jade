@@ -61,6 +61,8 @@ head
                     li More #{addon.manifest.types.join(", ")} in Discover
                 if addon.methods['stream.find']
                     li #{addon.manifest.isFree ? 'Free streaming' : 'Streaming'} of #{addon.manifest.types.join(", ")}
+                if addon.methods['subtitles.get']
+                    li Subtitles for #{addon.manifest.types.join(", ")}
 
             if endpoint
                 a.activate-link(href="#{endpoint ? endpoint.replace(/^http(s?)/, 'stremio') : null}")
@@ -76,7 +78,7 @@ head
                 var s = new stremio.Client();
                 s.add("#{endpoint.replace('/stremio/v1', '')}");
                 s.call("stats.get", {}, function(err, stats) {
-                    if (stats) $(".provides").text( (stats.statsLabel || "provides ") + stats.statsNum );
+                    if (stats) $(".provides").text( (stats.statsLabel || "") + stats.statsNum );
                 });
                 $.get("http://localhost:11470/manifest").success(function() {
                     $("#addon").on("click", ".activate-link", function(e) { 
