@@ -1,6 +1,11 @@
 
 # Using Cinemeta
-**Cinemeta** is the most important of the offical Stremio Add-ons - it provides metadata for most movies / TV series in IMDB, as well an indexing mechanism (through ``index.get``) method that automatically identifies an IMDB ID from a filename. 
+**Cinemeta** is the first offical Stremio Add-on - it provides metadata for most movies / TV series in IMDB.
+
+It can be seen as an alternative of APIs like OMDb, TheMovieDB and TheTVDB.
+
+It also provides an indexing mechanism (through ``index.get``) method that automatically identifies an IMDB ID from a filename.
+
 Retrieving metadata and associating video files with IMDB ID are useful use cases both for Stremio itself, and for building new Add-ons. 
 
 # Initializing a client
