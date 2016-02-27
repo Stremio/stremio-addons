@@ -15,14 +15,18 @@ addons.setAuth("http://api9.strem.io", "8417fe936f0374fbd16a699668e8f3c4aa405d9f
 
 # Using ``meta.*`` methods
 ```javascript
+// get all the detailed data on a movie/series
 addons.meta.get({ query: { imdb_id: "tt0032138" } }, function(err, meta) {
 	console.log(meta);
 });
 
-addons.meta.find({ query: { imdb_id: "tt0032138" } }, function(err, res) { 
-	console.log(res);
+// get top 50 series
+addons.meta.find({ query: { type: "series" }, limit: 50 }, function(err, res) { 
+	console.log(res); // array of 50 series
 });
 ```
+
+For documentation on the ``meta.get`` or ``meta.find`` interface, see [Meta Request](https://github.com/Ivshti/stremio-addons/blob/master/documentation/protocol.md#meta-request)
 
 # Using ``index.get``
 ```javascript
