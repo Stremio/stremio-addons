@@ -26,7 +26,7 @@ addons.meta.find({ query: { type: "series" }, limit: 50 }, function(err, res) {
 });
 ```
 
-For documentation on the ``meta.get`` or ``meta.find`` interface, see [Meta Request](https://github.com/Ivshti/stremio-addons/blob/master/documentation/protocol.md#meta-request)
+For documentation on the ``meta.get`` or ``meta.find`` interface, see [Meta Request](https://github.com/Ivshti/stremio-addons/blob/master/documentation/protocol.md#meta-request) and [Meta Response](https://github.com/Ivshti/stremio-addons/blob/master/documentation/protocol.md#response-format-1).
 
 # Using ``index.get``
 ```javascript
