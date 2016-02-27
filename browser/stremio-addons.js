@@ -20103,11 +20103,10 @@ var receiveJSON = function(resp, callback) {
 
 	var body = [];
 	resp.on("data", function(b) { body.push(b) });
-	// Do the _.once just in case, as it seems to happen
-	resp.on("end", _.once(function() {
+	resp.on("end", function() {
 		try { body = JSON.parse(Buffer.concat(body).toString()) } catch(e) { return callback(e) }
 		callback(null, body);
-	}));
+	});
 };
 
 // Utility for JSON-RPC
@@ -20121,6 +20120,7 @@ function rpcClient(endpoint, options)
 	var client = { };
 	client.request = function(method, params, callback) { 
 		var body = JSON.stringify({ params: params, method: method, id: 1, jsonrpc: "2.0" });
+		callback = _.once(callback);
 
 		if (body.length>=LENGTH_TO_FORCE_POST) isGet = false;
 
@@ -20140,7 +20140,7 @@ function rpcClient(endpoint, options)
 		});
 
 		if (options.timeout && req.setTimeout) req.setTimeout(options.timeout);
-		req.on("error", callback);
+		req.on("error", function(err) { callback(err) });
 		req.on("timeout", function() { callback(new Error("rpc request timed out")) });
 		if (! isGet) req.write(body);
 		req.end();
