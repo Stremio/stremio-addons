@@ -13,10 +13,11 @@ var receiveJSON = function(resp, callback) {
 
 	var body = [];
 	resp.on("data", function(b) { body.push(b) });
-	resp.on("end", function() {
+	// Do the _.once just in case, as it seems to happen
+	resp.on("end", _.once(function() {
 		try { body = JSON.parse(Buffer.concat(body).toString()) } catch(e) { return callback(e) }
 		callback(null, body);
-	});
+	}));
 };
 
 // Utility for JSON-RPC
