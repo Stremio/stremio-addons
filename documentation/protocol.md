@@ -214,6 +214,8 @@ The response is an array of Metadata objects.
 
 ``imdbRating`` -  _optional_ - IMDb rating, a number from 0 to 10 ; use if applicable
 
+``dvdRelease`` - _optional_ - DVD release date
+
 ``episodes`` - _optional_ - used for ``series``, array of Episode objects
 
 ``uploads`` - _optional_ - used for ``channel``, array of Video objects
@@ -226,7 +228,9 @@ The response is an array of Metadata objects.
 
 ``country`` - _optional_ - official country of origin
 
+``awards`` - _optional_ - human-readable string that describes all the significant awards
 
+``website`` - _optional_ - URL to official website
 
 #### Episode object
 ``number`` - **required** - number of the episode
