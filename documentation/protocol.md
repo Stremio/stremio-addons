@@ -218,6 +218,16 @@ The response is an array of Metadata objects.
 
 ``uploads`` - _optional_ - used for ``channel``, array of Video objects
 
+``certification`` - _optional_ - [MPAA rating](http://www.mpaa.org/film-ratings/) - can be "G", "PG", "PG-13", "R", "NC-17"
+
+``runtime`` - _optional_ - human-readable expected runtime - e.g. "120m"
+
+``language`` - _optional_ - spoken language
+
+``country`` - _optional_ - official country of origin
+
+
+
 #### Episode object
 ``number`` - **required** - number of the episode
 
