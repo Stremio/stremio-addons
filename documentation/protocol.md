@@ -222,6 +222,8 @@ The response is an array of Metadata objects.
 
 ``trailer`` - _optional_ - YouTube ID of the trailer video for the episode
 
+``overview`` - _optional_ - episode overview/summary
+
 #### Video object
 
 ``title`` - **required** - title of the video
