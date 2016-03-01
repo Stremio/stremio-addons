@@ -36,7 +36,8 @@ head
 
         .name { float: left; }
         .version { float: right; }
-        .provides, .description { clear: both; }
+        .provides, .gives, .description { clear: both; }
+        .best { margin-bottom: 30px; }
         //h2 { text-align: center; }
         //button {  margin: 0px auto; }
 
@@ -62,7 +63,7 @@ head
             
             - var mapType = function(t) { return ({ movie: "Movies", series: "Series", tv: "TV Channels", channel: "Channels" })[t] || t };
 
-            h2.provides This add-on will give you:
+            h2.gives This add-on will give you:
             ul
                 if addon.methods['meta.find']
                     li More #{addon.manifest.types.map(mapType).join(", ")} in Discover
@@ -87,12 +88,16 @@ head
             script.
                 var stremio = require("stremio-addons");
                 var s = new stremio.Client();
+                s.setAuth("http://api9.strem.io", "2a240788ce82492744cdd42ca434fc26848ec616"); // stremio-addons-client open-source auth
                 s.add("#{endpoint.replace('/stremio/v1', '')}");
                 s.call("stats.get", {}, function(err, stats) {
                     if (stats) $(".provides").text( (stats.statsLabel || "") + stats.statsNum );
                 });
                 s.call("meta.find", { query: { }, limit: 5 }, function(err, res) {
-                    if (res) res.forEach(function(r) { $(".best .posters").append("<img src='"+r.poster+"'/>"); });
+                    if (res) res.forEach(function(r) { 
+                        var n = r.name+" ("+r.year+")";
+                        if (r.poster) $(".best .posters").append("<img alt='"+n+"' title='"+n+"' src='"+r.poster+"'/>"); 
+                    });
                     if (res) $(".best").show();
                 });
                 $.get("http://localhost:11470/manifest").success(function() {
