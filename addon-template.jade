@@ -34,6 +34,9 @@ head
         button:hover { opacity: 1; }
         .logo { float: left; margin: 20px; }
 
+        .name { float: left; }
+        .version { float: right; }
+        .provides, .description { clear: both; }
         //h2 { text-align: center; }
         //button {  margin: 0px auto; }
 
@@ -50,14 +53,14 @@ head
             if (addon.manifest.logo)
                 img.logo(src=addon.manifest.logo)
             else 
-                h2 #{addon.manifest.name}
-            h3 <i>#{addon.manifest.version}</i>
-            h3 !{addon.manifest.webDescription || addon.manifest.description}
+                h2.name #{addon.manifest.name}
+            h3.version <i>#{addon.manifest.version}</i>
+            h3.description !{addon.manifest.webDescription || addon.manifest.description}
             h3.provides
             
             - var mapType = function(t) { return ({ movie: "Movies", series: "Series", tv: "TV Channels", channel: "Channels" })[t] || t };
 
-            h2 This add-on will give you:
+            h2.provides This add-on will give you:
             ul
                 if addon.methods['meta.find']
                     li More #{addon.manifest.types.map(mapType).join(", ")} in Discover
