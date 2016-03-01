@@ -40,6 +40,8 @@ head
         //h2 { text-align: center; }
         //button {  margin: 0px auto; }
 
+        .best img { width: 60px; }
+
     if (addon.manifest.background)
         style.
             html { background-image: url(#{addon.manifest.background}); background-size: auto 100%; background-size: cover; background-repeat: no-repeat; }
@@ -69,6 +71,10 @@ head
                 if addon.methods['subtitles.get']
                     li Subtitles for #{addon.manifest.types.map(mapType).join(", ")}
 
+            .best(style="display: none;")
+                h2 Best from this add-on: 
+                .posters
+
             if endpoint
                 a.activate-link(href="#{endpoint ? endpoint.replace(/^http(s?)/, 'stremio') : null}")
                     button(name="Activate") Activate Add-on
@@ -84,6 +90,10 @@ head
                 s.add("#{endpoint.replace('/stremio/v1', '')}");
                 s.call("stats.get", {}, function(err, stats) {
                     if (stats) $(".provides").text( (stats.statsLabel || "") + stats.statsNum );
+                });
+                s.call("meta.find", { query: { }, limit: 5 }, function(err, res) {
+                    if (res) res.forEach(function(r) { $(".best .posters").append("<img src='"+r.poster+"'/>"); });
+                    if (res) $(".best").show();
                 });
                 $.get("http://localhost:11470/manifest").success(function() {
                     $("#addon").on("click", ".activate-link", function(e) { 
