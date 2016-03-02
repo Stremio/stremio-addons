@@ -25,7 +25,8 @@ function Server(methods, options, manifest)
 
 	// Announce to central
 	var body = JSON.stringify({ id: manifest.id, manifest: _.omit(manifest, "filter") });
-	var req = rpc.http.request(_.extend(url.parse(module.parent.CENTRAL+"/stremio/announce/"+options.secret), { 
+        var parsed = url.parse(module.parent.CENTRAL+"/stremio/announce/"+options.secret);
+	var req = (parsed.protocol.match("https") ? require("https") : require("http")).request(_.extend(parsed, { 
 		method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } 
 	}), function(res) { /* console.log(res.statusCode); currently we don't care */ });
 	req.end(body);
@@ -46,7 +47,8 @@ function Server(methods, options, manifest)
 
 		if (sessions[auth[1]]) return cb(null, sessions[auth[1]]);
 
-		var req = rpc.http.get(require("url").parse(auth[0]+"/stremio/service/"+options.secret+"/"+encodeURIComponent(auth[1])), function(resp) {
+		var parsed = require("url").parse(auth[0]+"/stremio/service/"+options.secret+"/"+encodeURIComponent(auth[1]));
+		var req = (parsed.protocol.match("https") ? require("https") : require("http")).get(parsed, function(resp) {
 			rpc.receiveJSON(resp, function(err, body) {
 				if (resp.statusCode==200 && body) {
 					sessions[auth[1]] = body;
@@ -120,12 +122,7 @@ function Server(methods, options, manifest)
 			if (options.stremioget && req.method == "GET") params[0] = { stremioget: true }; // replace auth object
 			self.request(method, params, cb);
 		}); else if (req.method == "GET") { // unsupported by JSON-RPC, it uses post
-			try {
-				res.writeHead(200);
-				res.end(template({ addon: { manifest: manifest, methods: methods }, endpoint: manifest.endpoint || (req.url.match('/stremio/v1') && req.url) }));
-			} catch(e) { console.error(e); res.writeHead(500); res.end(); }
-
-			return;
+			return landingPage(req, res);
 		}
 
 		res.writeHead(405); // method not allowed
@@ -172,6 +169,39 @@ function Server(methods, options, manifest)
 			}
 		});
 	};
+
+	function landingPage(req, res) {
+		var endpoint = manifest.endpoint || (req.url.match('/stremio/v1') && ("http://"+req.headers.host+req.url));
+		var stats = { }, top = [];
+
+		// TODO: cache at least stats.get for some time
+		self.request("stats.get", [{ stremioget: true }], function(err, s) {
+			if (err) return error(err);
+			stats = s;
+			self.request("meta.find", [{stremioget: true}, { query: {}, limit: 10 }], function(err, t) {
+				if (err) return error(err);
+				top = t;
+				respond();
+			});
+		});
+
+		function error(e) {
+			console.error(e);
+			res.writeHead(500); res.end();
+		}
+
+		function respond() {
+			try { 
+				var body = template({ 
+					addon: { manifest: manifest, methods: methods }, 
+					endpoint: endpoint, 
+					stats: stats, top: top 
+				});
+				res.writeHead(200);
+				res.end(body);
+			} catch(e) { error(e) }
+		}
+	}
 };
 
 module.exports = Server;
