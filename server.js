@@ -25,7 +25,8 @@ function Server(methods, options, manifest)
 
 	// Announce to central
 	var body = JSON.stringify({ id: manifest.id, manifest: _.omit(manifest, "filter") });
-	var req = rpc.http.request(_.extend(url.parse(module.parent.CENTRAL+"/stremio/announce/"+options.secret), { 
+        var parsed = url.parse(module.parent.CENTRAL+"/stremio/announce/"+options.secret);
+	var req = (parsed.protocol.match("https") ? require("https") : require("http")).request(_.extend(parsed, { 
 		method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } 
 	}), function(res) { /* console.log(res.statusCode); currently we don't care */ });
 	req.end(body);
