@@ -122,7 +122,7 @@ function Server(methods, options, manifest)
 		}); else if (req.method == "GET") { // unsupported by JSON-RPC, it uses post
 			try {
 				res.writeHead(200);
-				res.end(template({ addon: { manifest: manifest, methods: methods }, endpoint: manifest.endpoint || (req.url.match('/stremio/v1') && req.url) }));
+				res.end(template({ addon: { manifest: manifest, methods: methods }, endpoint: manifest.endpoint || (req.url.match('/stremio/v1') && ("http://"+req.headers.host+req.url)) }));
 			} catch(e) { console.error(e); res.writeHead(500); res.end(); }
 
 			return;
