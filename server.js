@@ -47,7 +47,8 @@ function Server(methods, options, manifest)
 
 		if (sessions[auth[1]]) return cb(null, sessions[auth[1]]);
 
-		var req = rpc.http.get(require("url").parse(auth[0]+"/stremio/service/"+options.secret+"/"+encodeURIComponent(auth[1])), function(resp) {
+		var parsed = require("url").parse(auth[0]+"/stremio/service/"+options.secret+"/"+encodeURIComponent(auth[1]));
+		var req = (parsed.protocol.match("https") ? require("https") : require("http")).get(parsed, function(resp) {
 			rpc.receiveJSON(resp, function(err, body) {
 				if (resp.statusCode==200 && body) {
 					sessions[auth[1]] = body;
