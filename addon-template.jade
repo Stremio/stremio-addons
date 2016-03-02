@@ -59,7 +59,7 @@ head
                 h2.name #{addon.manifest.name}
             h3.version <i>#{addon.manifest.version}</i>
             h3.description !{addon.manifest.webDescription || addon.manifest.description}
-            h3.provides
+            h3.provides #{(stats.statsLabel || "") + stats.statsNum}
             
             - var mapType = function(t) { return ({ movie: "Movies", series: "Series", tv: "TV Channels", channel: "Channels" })[t] || t };
 
@@ -72,9 +72,12 @@ head
                 if addon.methods['subtitles.get']
                     li Subtitles for #{addon.manifest.types.map(mapType).join(", ")}
 
-            .best(style="display: none;")
+            .best(style="#{top.length ? '' : 'display: none;'}")
                 h2 Best from this add-on: 
                 .posters
+                - top.filter(function(x) { return x.poster }).slice(0,5).forEach(function(item) {
+                    img(src=item.poster, title=item.name+" ("+item.year+")", alt=item.name+" ("+item.year+")")
+                - });
 
             if endpoint
                 a.activate-link(href="#{endpoint ? endpoint.replace(/^http(s?)/, 'stremio') : null}")
@@ -83,23 +86,8 @@ head
                 div No valid end-point for this add-on
 
         script(src="https://code.jquery.com/jquery-2.1.4.min.js")
-        script(src="http://www.strem.io/js/stremio-addons.min.js")
         if endpoint
             script.
-                var stremio = require("stremio-addons");
-                var s = new stremio.Client();
-                s.setAuth("http://api9.strem.io", "2a240788ce82492744cdd42ca434fc26848ec616"); // stremio-addons-client open-source auth
-                s.add("#{endpoint.replace('/stremio/v1', '')}");
-                s.call("stats.get", {}, function(err, stats) {
-                    if (stats) $(".provides").text( (stats.statsLabel || "") + stats.statsNum );
-                });
-                s.call("meta.find", { query: { }, limit: 5 }, function(err, res) {
-                    if (res) res.forEach(function(r) { 
-                        var n = r.name+" ("+r.year+")";
-                        if (r.poster) $(".best .posters").append("<img alt='"+n+"' title='"+n+"' src='"+r.poster+"'/>"); 
-                    });
-                    if (res) $(".best").show();
-                });
                 $.get("http://localhost:11470/manifest").success(function() {
                     $("#addon").on("click", ".activate-link", function(e) { 
                         e.preventDefault();

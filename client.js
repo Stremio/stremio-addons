@@ -56,7 +56,10 @@ function Addon(url, options, stremio, ready)
 		});
 		this.url = url;
 	} else {
-		this.client = { request: function(method, args, cb) { url.request(method, args, function(err, res) { cb(null, err, res) }) } };
+		// Locally required add-on, emulate .client
+		this.client = { request: function(method, args, cb) { 
+			url.request(method, args, function(err, res) { cb(null, err, res) }) 
+		} };
 		this.url = url.toString();
 	}
 

@@ -121,12 +121,7 @@ function Server(methods, options, manifest)
 			if (options.stremioget && req.method == "GET") params[0] = { stremioget: true }; // replace auth object
 			self.request(method, params, cb);
 		}); else if (req.method == "GET") { // unsupported by JSON-RPC, it uses post
-			try {
-				res.writeHead(200);
-				res.end(template({ addon: { manifest: manifest, methods: methods }, endpoint: manifest.endpoint || (req.url.match('/stremio/v1') && ("http://"+req.headers.host+req.url)) }));
-			} catch(e) { console.error(e); res.writeHead(500); res.end(); }
-
-			return;
+			return landingPage(req, res);
 		}
 
 		res.writeHead(405); // method not allowed
@@ -173,6 +168,39 @@ function Server(methods, options, manifest)
 			}
 		});
 	};
+
+	function landingPage(req, res) {
+		var endpoint = manifest.endpoint || (req.url.match('/stremio/v1') && ("http://"+req.headers.host+req.url));
+		var stats = { }, top = [];
+
+		// TODO: cache at least stats.get for some time
+		self.request("stats.get", [{ stremioget: true }], function(err, s) {
+			if (err) return error(err);
+			stats = s;
+			self.request("meta.find", [{stremioget: true}, { query: {}, limit: 10 }], function(err, t) {
+				if (err) return error(err);
+				top = t;
+				respond();
+			});
+		});
+
+		function error(e) {
+			console.error(e);
+			res.writeHead(500); res.end();
+		}
+
+		function respond() {
+			try { 
+				var body = template({ 
+					addon: { manifest: manifest, methods: methods }, 
+					endpoint: endpoint, 
+					stats: stats, top: top 
+				});
+				res.writeHead(200);
+				res.end(body);
+			} catch(e) { error(e) }
+		}
+	}
 };
 
 module.exports = Server;
