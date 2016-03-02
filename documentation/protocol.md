@@ -232,6 +232,10 @@ The response is an array of Metadata objects.
 
 ``website`` - _optional_ - URL to official website
 
+``isPeered`` - _optional_ - set this property if you know whether that item can be streamed with peering by the same add-on which is serving the meta
+
+
+
 #### Episode object
 ``number`` - **required** - number of the episode
 
