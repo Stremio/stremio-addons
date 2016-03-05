@@ -135,7 +135,7 @@ Returns an array of [``stream objects``](/documentation/protocol.md#stream-objec
 
 ``tag`` - _optional_ - array, optional tags of the stream; use ``"480p"``, ``"720p"``, ``"1080p"``/``"hd"`` or ``"2160p"`` to specify quality
 
-``subtitles`` - _optional_ - Subtitles Object
+``subtitles`` - _optional_ - [``Subtitles Objects``](/documentation/protocol.md#subtitles-object) representing subtitles for this stream
 
 ``repeat`` - _optional_ - boolean, true if you want stremio to do ``stream.find`` again with the same arguments when the video ends, and play again
 
@@ -163,6 +163,15 @@ _**Tip**: to provide several streams with varying qualities, return an array of 
 }]
 // This would start streaming wizard of oz in HD in Stremio
 ```
+
+#### Subtitles object
+
+``id`` - **required** - identifier of the subtitles object - could be any string - serves to identify the set of subtitles for a specific video; example of this is the OpenSubtitles MovieHash - if taking subtitles from there, the MovieHash can be used as an ``id``
+
+``itemHash`` - metadata item hash, which is defined as a combination of the [``Metadata object``](/documentation/protocol.md#metadata-object)'s ``id`` followed by ``season`` / ``episode`` or ``video_id``, separated by a white space; example of this is ``tt0898266 9 17``
+
+``subtitles`` - array of ``{ id: "string identifier", url: "url to srt file", lang: "language code in ISO 639-1" }``
+
 
 ------------------------
 
