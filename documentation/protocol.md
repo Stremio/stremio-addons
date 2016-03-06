@@ -170,7 +170,7 @@ _**Tip**: to provide several streams with varying qualities, return an array of 
 
 ``itemHash`` - _optional_  - metadata item hash, which is defined as a combination of the [``Metadata object``](/documentation/protocol.md#metadata-object)'s ``id`` followed by ``season`` / ``episode`` or ``video_id``, separated by a white space; example of this is ``tt0898266 9 17``
 
-``subtitles`` - **required** - array of 
+``all`` - **required** - all of the subtitle variants for this ``id`` - array of 
 ```javascript
 { id: "string identifier", url: "url to srt file", lang: "language code in ISO 639-1" }
 ```
