@@ -186,7 +186,7 @@ function Server(methods, options, manifest)
 		});
 
 		function error(e) {
-			console.error(e);
+			console.error("LANDING PAGE ERROR",e);
 			res.writeHead(500); res.end();
 		}
 
