@@ -310,4 +310,6 @@ For channels, this is the YouTube ID of the channel and the YouTube ID of the vi
 
 ``query.videoSize`` - _optional_ - Number - byte size of the video
 
+``query.videoName`` - _optional_ - filename of the original video
+
 ``supportsZip`` - _optional_ - boolean, true if your client supports ``.zip`` files for subtitles; in this case, the client should use the first ``.srt`` file inside the provided ``.zip`` file
