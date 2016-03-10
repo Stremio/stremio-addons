@@ -26,7 +26,8 @@ function bindDefaults(call) {
 			find: call.bind(null, "stream.find")
 		},
 		subtitles: {
-			get: call.bind(null, "subtitles.get")
+			get: call.bind(null, "subtitles.get"),
+			find: call.bind(null, "subtitles.find")
 		}
 	}
 };
