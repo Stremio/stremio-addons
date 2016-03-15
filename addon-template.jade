@@ -33,7 +33,8 @@ head
         }
         button:hover { opacity: 1; }
         .logo { float: left; margin: 20px; }
-
+        .icon { float: left; width: 40px; height: 40px; margin: 20px; -webkit-mask-repeat: no-repeat; -moz-mask-repeat: no-repeat; -webkit-mask-position: center; -moz-mask-position: center; }
+ 
         .name { float: left; }
         .version { float: right; }
         .provides, .gives, .description { clear: both; }
@@ -55,6 +56,8 @@ head
         #addon
             if (addon.manifest.logo)
                 img.logo(src=addon.manifest.logo)
+            else if (addon.manifest.icon)
+                div.icon(style="-webkit-mask-image: url(#{addon.manifest.icon}); -moz-mask-image: url(#{addon.manifest.icon}); mask-image: url(#{addon.manifest.icon})")
             else 
                 h2.name #{addon.manifest.name}
             h3.version <i>#{addon.manifest.version}</i>
