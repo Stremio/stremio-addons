@@ -45,7 +45,13 @@ Valid properties are:
 ]
 ```
 
+***Tip* - use different sorts to provide different catalogues for your users, e.g. separate "popular movies" and "new movies"**
+
 ``searchDebounce`` - _optional_ - how much to de-bounce after the user types before calling ``meta.search``; not all clients use this
+
+``countrySpecific`` - _optional_ - boolean - if true, the stremio client must pass ``countryCode`` of the user along with ``stream.find`` and ``meta.find``. *Example*: add-on for service where the streams are georestricted, e.g. Netflix
+
+``zipSpecific`` - _optional_ - boolean - if true, the stremio client must pass ``zip`` of the user along with ``stream.find`` and ``meta.find``. *Example*: cinema showtimes guide add-on
 
 
 ## All Methods
