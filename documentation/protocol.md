@@ -155,6 +155,13 @@ Returns an array of [``stream objects``](/documentation/protocol.md#stream-objec
 
 ``isPeered`` - _optional_ - set this to ``true`` if this stream is peered locally and therefore delivered with a high speed; useful for areas with slow internet connections, such as India
 
+``widgetSidebar`` - _optional_ - URL to a page that will be shown in the Player sidebar instead of usual contents; the page will be rendered in a restricted web view, appending "?item_hash=" at the end with Item Hash
+
+``widgetPostPlay`` - _optional_ - URL to a page that will be shown after the playback ends; the page will be rendered in a restricted web view, appending "?item_hash=" at the end with Item Hash
+
+``widgetPrePlay`` - _optional_ - URL to a page that will be shown before the playback begins, instead of the loading page; the page will be rendered in a restricted web view, appending "?item_hash=" at the end with Item Hash
+
+
 
 _**Tip**: to provide several streams with varying qualities, return an array of [``Stream Objects``](/documentation/protocol.md#stream-object) with different quality tag in their tag array._
 
