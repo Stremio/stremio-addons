@@ -5,7 +5,7 @@ var url = require("url");
 var emitter = require("events").EventEmitter;
 var inherits = require("inherits/inherits_browser");
 
-var MAX_RETRIES = 3;
+var MAX_RETRIES = 4;
 var SERVICE_RETRY_TIMEOUT = 30*1000;
 
 var LENGTH_TO_FORCE_POST=8192;
