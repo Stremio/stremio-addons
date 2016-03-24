@@ -83,6 +83,7 @@ function Addon(url, options, stremio, ready)
 				if (self.retries++ < MAX_RETRIES) setTimeout(function() { self.initialized = false }, SERVICE_RETRY_TIMEOUT); 
 			} // service error. mark initialized, can re-try after 30 sec
 			self.initialized = true;
+			self.retries = 0; // return retries back to 0
 			if (res && res.methods) self.methods = self.methods.concat(res.methods);
 			if (res && res.manifest) self.manifest = res.manifest;
 			if (ready) ready();
