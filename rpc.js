@@ -29,6 +29,8 @@ function rpcClient(endpoint, options)
 
 	var client = { };
 	client.request = function(method, params, callback) { 
+		if (isGet) params[0] = null; // noauth request for GET
+
 		var body = JSON.stringify({ params: params, method: method, id: 1, jsonrpc: "2.0" });
 		callback = _.once(callback);
 
