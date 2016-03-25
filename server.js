@@ -1,7 +1,6 @@
 var _ = require("lodash");
 var url = require("url");
 var rpc = require("./rpc");
-var template = require("./addon-template");
 var async = require("async");
 
 var SESSION_LIVE = 10*60*60*1000; // 10 hrs
@@ -192,6 +191,7 @@ function Server(methods, options, manifest)
 
 		function respond() {
 			try { 
+				var template = require("./addon-template");
 				var body = template({ 
 					addon: { manifest: manifest, methods: methods }, 
 					endpoint: endpoint, 
