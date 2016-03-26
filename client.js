@@ -73,7 +73,7 @@ function Addon(url, options, stremio, ready)
 	var q = async.queue(function(task, done) {
 		if (self.initialized) return done();
 
-		self.client.request("meta", [], function(err, error, res) {
+		self.client.request("meta", [], function(err, error, res) {.
 			self.networkErr = err;
 			if (err) { stremio.emit("network-error", err, self, self.url); return done(); } // network error. just ignore
 			
@@ -84,7 +84,7 @@ function Addon(url, options, stremio, ready)
 			} // service error. mark initialized, can re-try after 30 sec
 			self.initialized = true;
 			self.retries = 0; // return retries back to 0
-			if (res && res.methods) self.methods = self.methods.concat(res.methods);
+			if (res && res.methods) self.methods = [].concat(res.methods);
 			if (res && res.manifest) self.manifest = res.manifest;
 			if (ready) ready();
 			done();
