@@ -73,7 +73,7 @@ function Addon(url, options, stremio, ready)
 	var q = async.queue(function(task, done) {
 		if (self.initialized) return done();
 
-		self.client.request("meta", [], function(err, error, res) {.
+		self.client.request("meta", [], function(err, error, res) {
 			self.networkErr = err;
 			if (err) { stremio.emit("network-error", err, self, self.url); return done(); } // network error. just ignore
 			
