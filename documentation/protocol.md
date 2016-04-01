@@ -245,7 +245,9 @@ The response is an array of Metadata objects.
 
 ``episodes`` - _optional_ - used for ``series``, array of Episode objects
 
-``uploads`` - _optional_ - used for ``channel``, array of Video objects
+``videos`` - _optional_ - used for ``channel``, array of Video objects
+
+``uploads`` - _optional_ - used for ``channel``, array of Video objects; same as ``videos`` but **obsolete**
 
 ``certification`` - _optional_ - [MPAA rating](http://www.mpaa.org/film-ratings/) - can be "G", "PG", "PG-13", "R", "NC-17"
 
