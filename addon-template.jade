@@ -62,7 +62,8 @@ head
                 h2.name #{addon.manifest.name}
             h3.version <i>#{addon.manifest.version}</i>
             h3.description !{addon.manifest.webDescription || addon.manifest.description}
-            h3.provides #{(stats.statsLabel || "") + stats.statsNum}
+            if (stats.statsLabel)
+               h3.provides #{(stats.statsLabel || "") + stats.statsNum}
             
             - var mapType = function(t) { return ({ movie: "Movies", series: "Series", tv: "TV Channels", channel: "Channels" })[t] || t };
 
