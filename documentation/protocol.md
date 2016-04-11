@@ -147,7 +147,7 @@ Returns an array of [``stream objects``](/documentation/protocol.md#stream-objec
 
 ``live`` - _optional_ - boolean, specify if this is a live stream; this will be auto-detected if you're using HLS
 
-``geos`` - _optional_ - use if the stream is geo-restricted - array of ISO 3166-1 alpha-2 country codes in which the stream is accessible
+``geos`` - _optional_ - use if the stream is geo-restricted - array of ISO 3166-1 alpha-2 country codes **in lowercase** in which the stream is accessible
 
 ``isFree`` - _optional_ - set this to ``true`` if the stream si free of charge
 
