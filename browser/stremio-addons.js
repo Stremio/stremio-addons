@@ -226,7 +226,7 @@ inherits(Stremio, emitter);
 
 module.exports = Stremio;
 
-},{"./rpc":47,"async":2,"dot-object":33,"events":8,"inherits/inherits_browser":34,"lodash":35,"url":32}],2:[function(require,module,exports){
+},{"./rpc":48,"async":2,"dot-object":34,"events":8,"inherits/inherits_browser":35,"lodash":36,"url":33}],2:[function(require,module,exports){
 (function (process){
 /*!
  * async
@@ -1353,7 +1353,7 @@ module.exports = Stremio;
 }());
 
 }).call(this,require('_process'))
-},{"_process":12}],3:[function(require,module,exports){
+},{"_process":13}],3:[function(require,module,exports){
 
 },{}],4:[function(require,module,exports){
 (function (global){
@@ -3454,6 +3454,22 @@ function isUndefined(arg) {
 }
 
 },{}],9:[function(require,module,exports){
+var http = require('http');
+
+var https = module.exports;
+
+for (var key in http) {
+    if (http.hasOwnProperty(key)) https[key] = http[key];
+};
+
+https.request = function (params, cb) {
+    if (!params) params = {};
+    params.scheme = 'https';
+    params.protocol = 'https:';
+    return http.request.call(this, params, cb);
+}
+
+},{"http":37}],10:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -3478,7 +3494,7 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 /**
  * Determine if an object is Buffer
  *
@@ -3497,12 +3513,12 @@ module.exports = function (obj) {
     ))
 }
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 module.exports = Array.isArray || function (arr) {
   return Object.prototype.toString.call(arr) == '[object Array]';
 };
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -3595,7 +3611,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 (function (global){
 /*! https://mths.be/punycode v1.3.2 by @mathias */
 ;(function(root) {
@@ -4129,7 +4145,7 @@ process.umask = function() { return 0; };
 }(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -4215,7 +4231,7 @@ var isArray = Array.isArray || function (xs) {
   return Object.prototype.toString.call(xs) === '[object Array]';
 };
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -4302,16 +4318,16 @@ var objectKeys = Object.keys || function (obj) {
   return res;
 };
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 'use strict';
 
 exports.decode = exports.parse = require('./decode');
 exports.encode = exports.stringify = require('./encode');
 
-},{"./decode":14,"./encode":15}],17:[function(require,module,exports){
+},{"./decode":15,"./encode":16}],18:[function(require,module,exports){
 module.exports = require("./lib/_stream_duplex.js")
 
-},{"./lib/_stream_duplex.js":18}],18:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":19}],19:[function(require,module,exports){
 // a duplex stream is just a stream that is both readable and writable.
 // Since JS doesn't have multiple prototypal inheritance, this class
 // prototypally inherits from Readable, and then parasitically from
@@ -4395,7 +4411,7 @@ function forEach (xs, f) {
   }
 }
 
-},{"./_stream_readable":20,"./_stream_writable":22,"core-util-is":23,"inherits":9,"process-nextick-args":24}],19:[function(require,module,exports){
+},{"./_stream_readable":21,"./_stream_writable":23,"core-util-is":24,"inherits":10,"process-nextick-args":25}],20:[function(require,module,exports){
 // a passthrough stream.
 // basically just the most minimal sort of Transform stream.
 // Every written chunk gets output as-is.
@@ -4424,7 +4440,7 @@ PassThrough.prototype._transform = function(chunk, encoding, cb) {
   cb(null, chunk);
 };
 
-},{"./_stream_transform":21,"core-util-is":23,"inherits":9}],20:[function(require,module,exports){
+},{"./_stream_transform":22,"core-util-is":24,"inherits":10}],21:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -5389,7 +5405,7 @@ function indexOf (xs, x) {
 }
 
 }).call(this,require('_process'))
-},{"./_stream_duplex":18,"_process":12,"buffer":4,"core-util-is":23,"events":8,"inherits":9,"isarray":11,"process-nextick-args":24,"string_decoder/":31,"util":3}],21:[function(require,module,exports){
+},{"./_stream_duplex":19,"_process":13,"buffer":4,"core-util-is":24,"events":8,"inherits":10,"isarray":12,"process-nextick-args":25,"string_decoder/":32,"util":3}],22:[function(require,module,exports){
 // a transform stream is a readable/writable stream where you do
 // something with the data.  Sometimes it's called a "filter",
 // but that's not a great name for it, since that implies a thing where
@@ -5588,7 +5604,7 @@ function done(stream, er) {
   return stream.push(null);
 }
 
-},{"./_stream_duplex":18,"core-util-is":23,"inherits":9}],22:[function(require,module,exports){
+},{"./_stream_duplex":19,"core-util-is":24,"inherits":10}],23:[function(require,module,exports){
 // A bit simpler than readable streams.
 // Implement an async ._write(chunk, cb), and it'll handle all
 // the drain event emission and buffering.
@@ -6117,7 +6133,7 @@ function endWritable(stream, state, cb) {
   state.ended = true;
 }
 
-},{"./_stream_duplex":18,"buffer":4,"core-util-is":23,"events":8,"inherits":9,"process-nextick-args":24,"util-deprecate":25}],23:[function(require,module,exports){
+},{"./_stream_duplex":19,"buffer":4,"core-util-is":24,"events":8,"inherits":10,"process-nextick-args":25,"util-deprecate":26}],24:[function(require,module,exports){
 (function (Buffer){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -6227,7 +6243,7 @@ function objectToString(o) {
   return Object.prototype.toString.call(o);
 }
 }).call(this,{"isBuffer":require("../../../../insert-module-globals/node_modules/is-buffer/index.js")})
-},{"../../../../insert-module-globals/node_modules/is-buffer/index.js":10}],24:[function(require,module,exports){
+},{"../../../../insert-module-globals/node_modules/is-buffer/index.js":11}],25:[function(require,module,exports){
 (function (process){
 'use strict';
 module.exports = nextTick;
@@ -6244,7 +6260,7 @@ function nextTick(fn) {
 }
 
 }).call(this,require('_process'))
-},{"_process":12}],25:[function(require,module,exports){
+},{"_process":13}],26:[function(require,module,exports){
 (function (global){
 
 /**
@@ -6315,10 +6331,10 @@ function config (name) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 module.exports = require("./lib/_stream_passthrough.js")
 
-},{"./lib/_stream_passthrough.js":19}],27:[function(require,module,exports){
+},{"./lib/_stream_passthrough.js":20}],28:[function(require,module,exports){
 var Stream = (function (){
   try {
     return require('st' + 'ream'); // hack to fix a circular dependency issue when used with browserify
@@ -6332,13 +6348,13 @@ exports.Duplex = require('./lib/_stream_duplex.js');
 exports.Transform = require('./lib/_stream_transform.js');
 exports.PassThrough = require('./lib/_stream_passthrough.js');
 
-},{"./lib/_stream_duplex.js":18,"./lib/_stream_passthrough.js":19,"./lib/_stream_readable.js":20,"./lib/_stream_transform.js":21,"./lib/_stream_writable.js":22}],28:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":19,"./lib/_stream_passthrough.js":20,"./lib/_stream_readable.js":21,"./lib/_stream_transform.js":22,"./lib/_stream_writable.js":23}],29:[function(require,module,exports){
 module.exports = require("./lib/_stream_transform.js")
 
-},{"./lib/_stream_transform.js":21}],29:[function(require,module,exports){
+},{"./lib/_stream_transform.js":22}],30:[function(require,module,exports){
 module.exports = require("./lib/_stream_writable.js")
 
-},{"./lib/_stream_writable.js":22}],30:[function(require,module,exports){
+},{"./lib/_stream_writable.js":23}],31:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -6467,7 +6483,7 @@ Stream.prototype.pipe = function(dest, options) {
   return dest;
 };
 
-},{"events":8,"inherits":9,"readable-stream/duplex.js":17,"readable-stream/passthrough.js":26,"readable-stream/readable.js":27,"readable-stream/transform.js":28,"readable-stream/writable.js":29}],31:[function(require,module,exports){
+},{"events":8,"inherits":10,"readable-stream/duplex.js":18,"readable-stream/passthrough.js":27,"readable-stream/readable.js":28,"readable-stream/transform.js":29,"readable-stream/writable.js":30}],32:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -6690,7 +6706,7 @@ function base64DetectIncompleteChar(buffer) {
   this.charLength = this.charReceived ? 3 : 0;
 }
 
-},{"buffer":4}],32:[function(require,module,exports){
+},{"buffer":4}],33:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -7399,7 +7415,7 @@ function isNullOrUndefined(arg) {
   return  arg == null;
 }
 
-},{"punycode":13,"querystring":16}],33:[function(require,module,exports){
+},{"punycode":14,"querystring":17}],34:[function(require,module,exports){
 'use strict';
 
 function _process(v, mod) {
@@ -7860,9 +7876,9 @@ DotObject._process = _process;
 
 module.exports = DotObject;
 
-},{}],34:[function(require,module,exports){
-arguments[4][9][0].apply(exports,arguments)
-},{"dup":9}],35:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
+arguments[4][10][0].apply(exports,arguments)
+},{"dup":10}],36:[function(require,module,exports){
 (function (global){
 /**
  * @license
@@ -19293,7 +19309,7 @@ arguments[4][9][0].apply(exports,arguments)
 }.call(this));
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 var ClientRequest = require('./lib/request')
 var extend = require('xtend')
 var statusCodes = require('builtin-status-codes')
@@ -19368,7 +19384,7 @@ http.METHODS = [
 	'UNLOCK',
 	'UNSUBSCRIBE'
 ]
-},{"./lib/request":38,"builtin-status-codes":40,"url":32,"xtend":46}],37:[function(require,module,exports){
+},{"./lib/request":39,"builtin-status-codes":41,"url":33,"xtend":47}],38:[function(require,module,exports){
 exports.fetch = isFunction(window.fetch) && isFunction(window.ReadableByteStream)
 
 exports.blobConstructor = false
@@ -19408,7 +19424,7 @@ function isFunction (value) {
 
 xhr = null // Help gc
 
-},{}],38:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 (function (process,Buffer){
 // var Base64 = require('Base64')
 var capability = require('./capability')
@@ -19691,7 +19707,7 @@ var unsafeHeaders = [
 ]
 
 }).call(this,require('_process'),require("buffer").Buffer)
-},{"./capability":37,"./response":39,"_process":12,"buffer":4,"foreach":41,"indexof":42,"inherits":43,"object-keys":44,"stream":30}],39:[function(require,module,exports){
+},{"./capability":38,"./response":40,"_process":13,"buffer":4,"foreach":42,"indexof":43,"inherits":44,"object-keys":45,"stream":31}],40:[function(require,module,exports){
 (function (process,Buffer){
 var capability = require('./capability')
 var foreach = require('foreach')
@@ -19868,7 +19884,7 @@ IncomingMessage.prototype._onXHRProgress = function () {
 }
 
 }).call(this,require('_process'),require("buffer").Buffer)
-},{"./capability":37,"_process":12,"buffer":4,"foreach":41,"inherits":43,"stream":30}],40:[function(require,module,exports){
+},{"./capability":38,"_process":13,"buffer":4,"foreach":42,"inherits":44,"stream":31}],41:[function(require,module,exports){
 module.exports = {
   "100": "Continue",
   "101": "Switching Protocols",
@@ -19929,7 +19945,7 @@ module.exports = {
   "511": "Network Authentication Required"
 }
 
-},{}],41:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 
 var hasOwn = Object.prototype.hasOwnProperty;
 var toString = Object.prototype.toString;
@@ -19953,7 +19969,7 @@ module.exports = function forEach (obj, fn, ctx) {
 };
 
 
-},{}],42:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 
 var indexOf = [].indexOf;
 
@@ -19964,9 +19980,9 @@ module.exports = function(arr, obj){
   }
   return -1;
 };
-},{}],43:[function(require,module,exports){
-arguments[4][9][0].apply(exports,arguments)
-},{"dup":9}],44:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
+arguments[4][10][0].apply(exports,arguments)
+},{"dup":10}],45:[function(require,module,exports){
 'use strict';
 
 // modified from https://github.com/es-shims/es5-shim
@@ -20053,7 +20069,7 @@ keysShim.shim = function shimObjectKeys() {
 
 module.exports = keysShim;
 
-},{"./isArguments":45}],45:[function(require,module,exports){
+},{"./isArguments":46}],46:[function(require,module,exports){
 'use strict';
 
 var toStr = Object.prototype.toString;
@@ -20072,7 +20088,7 @@ module.exports = function isArguments(value) {
 	return isArgs;
 };
 
-},{}],46:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 module.exports = extend
 
 function extend() {
@@ -20091,9 +20107,10 @@ function extend() {
     return target
 }
 
-},{}],47:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 (function (Buffer){
 var http = require("http");
+var https = require("https");
 var url = require("url");
 var _ = require("lodash");
 
@@ -20135,7 +20152,7 @@ function rpcClient(endpoint, options)
 		if (!isGet) _.extend(reqObj, url.parse(endpoint), { method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } });
 		else _.extend(reqObj, url.parse(endpoint+"/q.json?b="+new Buffer(body, "binary").toString("base64")));
 		
-		var req = http.request(reqObj, function(res) {
+		var req = (endpoint.match('^https') ?  https : http).request(reqObj, function(res) {
 			if (options.respTimeout && res.setTimeout) res.setTimeout(options.respTimeout);
 
 			receiveJSON(res, function(err, body) {
@@ -20160,7 +20177,7 @@ module.exports.receiveJSON = receiveJSON;
 module.exports.http = http;
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":4,"http":36,"lodash":35,"url":32}],"stremio-addons":[function(require,module,exports){
+},{"buffer":4,"http":37,"https":9,"lodash":36,"url":33}],"stremio-addons":[function(require,module,exports){
 module.STREMIO_PATH = "/stremio/v1";
 module.CENTRAL = "http://api9.strem.io";
 module.exports.Client = require("./client");
