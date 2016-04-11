@@ -161,6 +161,8 @@ Returns an array of [``stream objects``](/documentation/protocol.md#stream-objec
 
 ``widgetPrePlay`` - _optional_ - URL to a page that will be shown before the playback begins, instead of the loading page; the page will be rendered in a restricted web view, appending "?item_hash=" at the end with Item Hash
 
+``widgetPlayer`` - _optional_ - URL to a page that will replace the entire Player; the page will be rendered in a restricted web view, appending "?item_hash=" at the end with Item Hash; useful for things like YouTube/Vimeo embeds
+
 
 
 _**Tip**: to provide several streams with varying qualities, return an array of [``Stream Objects``](/documentation/protocol.md#stream-object) with different quality tag in their tag array._
