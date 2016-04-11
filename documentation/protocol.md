@@ -49,9 +49,11 @@ Valid properties are:
 
 ``searchDebounce`` - _optional_ - how much to de-bounce after the user types before calling ``meta.search``; not all clients use this
 
-``countrySpecific`` - _optional_ - boolean - if true, the stremio client must pass ``countryCode`` of the user along with ``stream.find`` and ``meta.find``. *Example*: add-on for service where the streams are georestricted, e.g. Netflix
+``countrySpecific`` - _optional_ - boolean - if true, the stremio client must pass ``countryCode`` of the user along with ``meta.find``. *Example*: add-on for service where the streams are georestricted, e.g. Netflix
 
-``zipSpecific`` - _optional_ - boolean - if true, the stremio client must pass ``zip`` of the user along with ``stream.find`` and ``meta.find``. *Example*: cinema showtimes guide add-on
+``zipSpecific`` - _optional_ - boolean - if true, the stremio client must pass ``zip`` of the user along with  ``meta.find``. *Example*: cinema showtimes guide add-on
+
+***Tip* - to implement sources where streams are geo-restricted (stream.find), see [``Stream object's``](/documentation/protocol.md#stream-object) `geos`**
 
 
 ## All Methods
