@@ -23,9 +23,11 @@ Valid properties are:
 
 ``types`` - **required** - array of supported types, from all the [``Content Types``](/documentation/protocol.md#content-types)
 
-``isFree`` - _optional_ - set this to ``true`` if you want to specify that all of the content in this add-on is free of charge
+``isFree`` - _optional_ - set this to ``true`` if you want to specify that all of the content in this add-on is free of charge; this is used when auto-generating a landing page for that add-on
 
 ``contactEmail`` - **required** - contact email for add-on issues; used for the Report button in the app; also, the Stremio team may reach you on this email for anything relating your add-on
+
+``suggested`` - _optional_ - array of IDs of other add-ons that should be suggested when installing this add-on
 
 ``filter`` - _optional_ - object of conditions for query properties that, when matched, increase the priority of the add-on in the call order
 
