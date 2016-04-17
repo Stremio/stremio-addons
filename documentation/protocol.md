@@ -137,7 +137,8 @@ Returns an array of [``stream objects``](/documentation/protocol.md#stream-objec
 * ``url`` - direct URL to a video stream - http, https, rtmp protocols supported
 * ``externalUrl`` - URL to the video, which should be opened in a browser (webpage), e.g. link to Netflix
 * ``yt_id`` - youtube video ID, plays using the built-in YouTube player
-* ``infoHash`` and/or ``mapIdx`` - info hash of a torrent file, and mapIdx is the index of the video file within the torrent; **if mapIdx is not specified, the largest file in the torrent will be selected**
+* ``infoHash`` and/or ``fileIdx`` - info hash of a torrent file, and mapIdx is the index of the video file within the torrent; **if fileIdx is not specified, the largest file in the torrent will be selected**
+* ``mapIdx`` - alias to ``fileIdx``, specifies index of file in case of BitTorrent
 
 **Additional properties to provide information / behaviour flags**
 
