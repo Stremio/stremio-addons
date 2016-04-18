@@ -293,9 +293,11 @@ The response is an array of Metadata objects.
 
 ``publishedAt`` - **required** - Date, publish date of the video
 
-``id`` - **required** - YouTube ID of the video
-
 ``thumbnail`` - **required** - URL to png of the video thumbnail, in the video's aspect ratio, max file size 5kb
+
+``id`` - _optional_ - YouTube ID of the video
+
+_Alternatively of using only a YouTube ID, **you can inherit the [``Stream Object``](/documentation/protocol.md#stream-object)** to point the video to an HTTP URL, BitTorrent, YouTube or any other stremio-supported transport protocol._
 
 ### Methods
 
