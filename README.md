@@ -35,6 +35,7 @@ var stremio = new addons.Client({ /* options; picker: function(addons) { return 
 // specify a picker function to filter / sort the addons we'll use
 // timeout: specify a request timeout
 // respTimeout: specify response timeout
+// disableHttps: use HTTP instead of HTTPS
 
 stremio.setAuth(url, authKey); // Set the authentication for addons that require auth
 // URL is the URL to the central authentication server - some addons only permit certain servers

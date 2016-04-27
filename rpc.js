@@ -38,10 +38,10 @@ function rpcClient(endpoint, options)
 		if (body.length>=LENGTH_TO_FORCE_POST) isGet = false;
 
 		var reqObj = { };
-		if (!isGet) _.extend(reqObj, url.parse(endpoint), { method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } });
+		if (!isGet) _.extend(reqObj, url.parse(endpoint), { protocol: null, method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } });
 		else _.extend(reqObj, url.parse(endpoint+"/q.json?b="+new Buffer(body, "binary").toString("base64")));
 		
-		var req = (endpoint.match('^https') ?  https : http).request(reqObj, function(res) {
+		var req = ( ( endpoint.match('^https') && !options.disableHttps ) ?  https : http).request(reqObj, function(res) {
 			if (options.respTimeout && res.setTimeout) res.setTimeout(options.respTimeout);
 
 			receiveJSON(res, function(err, body) {
