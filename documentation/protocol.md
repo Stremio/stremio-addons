@@ -170,19 +170,13 @@ Returns an array of [``stream objects``](/documentation/protocol.md#stream-objec
 
   Possible states are:
   
-  ``buffering`` - while the video is buffering
-  
-  ``loading`` - white the video is initially loading
-  
-  ``paused`` - while the video is paused
-  
-  ``postplay`` - after the video has finished playing
-  
-  ``error`` - upon player error
-  
-  ``device`` - when casting to a device
-  
-  ``replaceplayer`` - entirely replaces the default player with the widget
+  * ``buffering`` - while the video is buffering
+  * ``loading`` - white the video is initially loading
+  * ``paused`` - while the video is paused
+  * ``postplay`` - after the video has finished playing
+  * ``error`` - upon player error
+  * ``device`` - when casting to a device
+  * ``replaceplayer`` - entirely replaces the default player with the widget
 
 
 
