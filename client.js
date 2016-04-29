@@ -54,7 +54,7 @@ function Addon(url, options, stremio, ready)
 		this.client = client(url+(module.parent ? module.parent.STREMIO_PATH : "/stremio/v1") , { 
 			timeout: options.timeout || stremio.options.timeout || 10000,
 			respTimeout: options.respTimeout || stremio.options.respTimeout //|| 10000,
-		});
+		}, stremio.options);
 		this.url = url;
 	} else {
 		// Locally required add-on, emulate .client

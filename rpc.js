@@ -24,7 +24,7 @@ var receiveJSON = function(resp, callback) {
 // Rationales in our own client
 // 1) have more control over the process, be able to implement debounced batching
 // 2) reduce number of dependencies
-function rpcClient(endpoint, options)
+function rpcClient(endpoint, options, globalOpts)
 {
 	var isGet = !!endpoint.match("stremioget");
 
@@ -41,7 +41,7 @@ function rpcClient(endpoint, options)
 		if (!isGet) _.extend(reqObj, url.parse(endpoint), { protocol: null, method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } });
 		else _.extend(reqObj, url.parse(endpoint+"/q.json?b="+new Buffer(body, "binary").toString("base64")));
 		
-		var req = ( ( endpoint.match('^https') && !options.disableHttps ) ?  https : http).request(reqObj, function(res) {
+		var req = ( ( endpoint.match('^https') && !globalOpts.disableHttps ) ?  https : http).request(reqObj, function(res) {
 			if (options.respTimeout && res.setTimeout) res.setTimeout(options.respTimeout);
 
 			receiveJSON(res, function(err, body) {
