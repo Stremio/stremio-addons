@@ -41,7 +41,9 @@ function rpcClient(endpoint, options, globalOpts)
 		if (!isGet) _.extend(reqObj, url.parse(endpoint), { protocol: null, method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } });
 		else _.extend(reqObj, url.parse(endpoint+"/q.json?b="+new Buffer(body, "binary").toString("base64")));
 		
-		var req = ( ( endpoint.match('^https') && !globalOpts.disableHttps ) ?  https : http).request(reqObj, function(res) {
+		if (globalOpts.disableHttps) reqObj.protocol = "http:";
+
+		var req = ( reqObj.protocol==="https:" ?  https : http).request(reqObj, function(res) {
 			if (options.respTimeout && res.setTimeout) res.setTimeout(options.respTimeout);
 
 			receiveJSON(res, function(err, body) {
