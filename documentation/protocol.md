@@ -164,11 +164,19 @@ Returns an array of [``stream objects``](/documentation/protocol.md#stream-objec
 
 ``widgetSidebar`` - _optional_ - URL to a page that will be shown in the Player sidebar instead of usual contents; the page will be rendered in a restricted web view, appending "?item_hash=" at the end with Item Hash
 
-``widgetPostPlay`` - _optional_ - URL to a page that will be shown after the playback ends; the page will be rendered in a restricted web view, appending "?item_hash=" at the end with Item Hash
+``widgetPlayer`` - _optional_ - URL to a page that will replace the sit on top of the entire Player; the page will be rendered in a restricted web view, appending "?item_hash=" at the end with Item Hash; useful for things like YouTube/Vimeo embeds, as well as showing additional information/functionality when player is paused
 
-``widgetPrePlay`` - _optional_ - URL to a page that will be shown before the playback begins, instead of the loading page; the page will be rendered in a restricted web view, appending "?item_hash=" at the end with Item Hash
+``widgetPlayerStates`` - _optional_ - array of the states in which the ``widgetPlayer`` is shown; default is ``["buffering", "loading"]``, which means it will be shown during loading
 
-``widgetPlayer`` - _optional_ - URL to a page that will replace the entire Player; the page will be rendered in a restricted web view, appending "?item_hash=" at the end with Item Hash; useful for things like YouTube/Vimeo embeds
+  Possible states are:
+  
+  * ``buffering`` - while the video is buffering
+  * ``loading`` - white the video is initially loading
+  * ``paused`` - while the video is paused
+  * ``postplay`` - after the video has finished playing
+  * ``error`` - upon player error
+  * ``device`` - when casting to a device
+  * ``replaceplayer`` - entirely replaces the default player with the widget
 
 
 
