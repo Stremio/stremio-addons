@@ -150,17 +150,17 @@ Returns an array of [``stream objects``](/documentation/protocol.md#stream-objec
 
 ``subtitles`` - _optional_ - [``Subtitles Objects``](/documentation/protocol.md#subtitles-object) representing subtitles for this stream
 
-``repeat`` - _optional_ - boolean, true if you want stremio to do ``stream.find`` again with the same arguments when the video ends, and play again
-
 ``live`` - _optional_ - boolean, specify if this is a live stream; this will be auto-detected if you're using HLS
 
-``geos`` - _optional_ - use if the stream is geo-restricted - array of ISO 3166-1 alpha-2 country codes **in lowercase** in which the stream is accessible
+``repeat`` - _optional_ - boolean, true if you want stremio to do ``stream.find`` again with the same arguments when the video ends, and play the result
 
 ``isFree`` - _optional_ - set this to ``true`` if the stream si free of charge
 
 ``isSubscription`` - _optional_ - set this to ``true`` if this stream requires a subscription (e.g. Netflix)
 
 ``isPeered`` - _optional_ - set this to ``true`` if this stream is peered locally and therefore delivered with a high speed; useful for areas with slow internet connections, such as India
+
+``geos`` - _optional_ - use if the stream is geo-restricted - array of ISO 3166-1 alpha-2 country codes **in lowercase** in which the stream is accessible
 
 ``widgetSidebar`` - _optional_ - URL to a page that will be shown in the Player sidebar instead of usual contents; the page will be rendered in a restricted web view, appending "?item_hash=" at the end with Item Hash
 
