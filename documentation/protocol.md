@@ -167,8 +167,8 @@ Returns an array of [``stream objects``](/documentation/protocol.md#stream-objec
 ``widgetPlayer`` - _optional_ - URL to a page that will replace the sit on top of the entire Player; the page will be rendered in a restricted web view, appending "?item_hash=" at the end with Item Hash; useful for things like YouTube/Vimeo embeds, as well as showing additional information/functionality when player is paused
 
 ``widgetPlayerStates`` - _optional_ - array of the states in which the ``widgetPlayer`` is shown; default is ``["buffering", "loading"]``, which means it will be shown during loading
-
-  Possible states are:
+  
+ Possible states are:
   
   * ``buffering`` - while the video is buffering
   * ``loading`` - white the video is initially loading
@@ -178,6 +178,7 @@ Returns an array of [``stream objects``](/documentation/protocol.md#stream-objec
   * ``device`` - when casting to a device
   * ``replaceplayer`` - entirely replaces the default player with the widget
 
+``meta`` - _optional_ - object, used to specify ``{ season: X, episode: Y }`` in case you're using a [``Stream Object``](/documentation/protocol.md#stream-object) for ``videos`` for a series
 
 
 _**Tip**: to provide several streams with varying qualities, return an array of [``Stream Objects``](/documentation/protocol.md#stream-object) with different quality tag in their tag array._
