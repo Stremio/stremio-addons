@@ -38,7 +38,7 @@ function rpcClient(endpoint, options, globalOpts)
 		if (body.length>=LENGTH_TO_FORCE_POST) isGet = false;
 
 		var reqObj = { };
-		if (!isGet) _.extend(reqObj, url.parse(endpoint), { protocol: null, method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } });
+		if (!isGet) _.extend(reqObj, url.parse(endpoint), { method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } });
 		else _.extend(reqObj, url.parse(endpoint+"/q.json?b="+new Buffer(body, "binary").toString("base64")));
 		
 		if (globalOpts.disableHttps) reqObj.protocol = "http:";
