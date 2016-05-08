@@ -28,6 +28,7 @@ function Server(methods, options, manifest)
 	var req = (parsed.protocol.match("https") ? require("https") : require("http")).request(_.extend(parsed, { 
 		method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } 
 	}), function(res) { /* console.log(res.statusCode); currently we don't care */ });
+	req.on("error", function(err) { console.error("Announce error for "+manifest.id, error) });
 	req.end(body);
 
 	// Introspect the addon
