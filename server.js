@@ -23,13 +23,17 @@ function Server(methods, options, manifest)
 	});
 
 	// Announce to central
-	var body = JSON.stringify({ id: manifest.id, manifest: _.omit(manifest, "filter") });
-        var parsed = url.parse(module.parent.CENTRAL+"/stremio/announce/"+options.secret);
-	var req = (parsed.protocol.match("https") ? require("https") : require("http")).request(_.extend(parsed, { 
-		method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } 
-	}), function(res) { /* console.log(res.statusCode); currently we don't care */ });
-	req.on("error", function(err) { console.error("Announce error for "+manifest.id, error) });
-	req.end(body);
+	self.announced = false;
+	function announce() {
+		self.announced = true;
+		var body = JSON.stringify({ id: manifest.id, manifest: _.omit(manifest, "filter") });
+		var parsed = url.parse(module.parent.CENTRAL+"/stremio/announce/"+options.secret);
+		var req = (parsed.protocol.match("https") ? require("https") : require("http")).request(_.extend(parsed, { 
+			method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } 
+		}), function(res) { /* console.log(res.statusCode); currently we don't care */ });
+		req.on("error", function(err) { console.error("Announce error for "+manifest.id, error) });
+		req.end(body);
+	}
 
 	// Introspect the addon
 	function meta(cb) {
@@ -87,6 +91,8 @@ function Server(methods, options, manifest)
 
 	// HTTP middleware
 	this.middleware = function(req, res, next) {
+		if (! self.announced) announce();
+		
 		var start = Date.now(), finished = false;
 		req._statsNotes = [];
 		var getInfo = function() { return [req.url].concat(req._statsNotes).filter(function(x) { return x }) };
