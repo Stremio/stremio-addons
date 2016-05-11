@@ -43,7 +43,7 @@ Valid properties are:
 
 ```javascript
 [
-  { prop: "popularities.moviedb", name: "SORT_TRENDING", types: ["movie", "series"] }
+  { prop: "popularities.moviedb", name: "SORT_TRENDING", types: ["movie", "series"], noDiscoverTab: false }
 ]
 ```
 
