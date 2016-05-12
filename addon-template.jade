@@ -67,7 +67,7 @@ head
             
             - var mapType = function(t) { return ({ movie: "Movies", series: "Series", tv: "TV Channels", channel: "Channels" })[t] || t };
 
-            h2.gives This add-on will give you:
+            h2.gives This add-on has:
             ul
                 if addon.methods['meta.find']
                     li More #{addon.manifest.types.map(mapType).join(", ")} in Discover
