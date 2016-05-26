@@ -73,7 +73,7 @@ new addons.Server({
 	},
 }, { secret: "SOME SECRET - or leave undefined for test secret" });
 ```
-##### For the methods you can implement, and their expected input and output, see [methods](documentation/methods.md).
+##### For the methods you can implement, and their expected input and output, see [protocol](documentation/protocol.md).
 
 
 ## Using add-ons in Stremio
