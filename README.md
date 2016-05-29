@@ -8,8 +8,8 @@ Unlike regular software plugins, Stremio add-ons **do not run inside Stremio cli
 
 ## Documentation
 1. [Basics (home)](documentation/home.md)
-2. [Enabling Add-on in Stremio](documentation/enabling-addon.md)
-3. [Protocol documentation](documentation/protocol.md)
+2. [Protocol documentation](documentation/protocol.md)
+3. [Enabling Add-on in Stremio](documentation/enabling-addon.md)
 4. [Using Cinemeta](documentation/using-cinemeta.md)
 
 
@@ -71,7 +71,7 @@ new addons.Server({
 	},
 }, { secret: "SOME SECRET - or leave undefined for test secret" });
 ```
-##### For the methods you can implement, and their expected input and output, see [protocol](documentation/protocol.md).
+### For the methods you can implement, and their expected input and output, see [protocol](documentation/protocol.md).
 
 
 ## Using add-ons in Stremio
@@ -86,18 +86,6 @@ new addons.Server({
 // this is the same for remote add-ons, for example --services=http://stremio-guidebox.herokuapp.com
 ```
 
-## Authentication
-
-**Authentication is optional - not all add-ons require it.** The third-party add-ons **should not** require authentication.
-
-To authenticate when using Stremio Addons as a client, one must call
-```javascript
-client.setAuth(/* CENTRAL SERVER or null for default */, /* USER SESSION TOKEN (authToken) OR ADDON SECRET */);
-```
-
-**The authToken** is a session ID we use for addon clients to identify the user. The Addon Server (implemented in server.js) is responsible for evaluating if we're getting requests from a logged-in users. That happens by asking the **central server** if that authToken is valid and belongs to a user. 
-
-**The secret** is a token, issued by a central server that we use to identify our Add-on server to the central server. We can also use our secret to identify ourselves to other Add-ons, if using them as a client - if our Add-on uses other Stremio add-ons under the hood (through the client library).
 
 ## Usage in browser 
 ```sh
@@ -111,4 +99,3 @@ var client = window.require("stremio-addons").Client();
 /// ...
 </script>
 ```
-
