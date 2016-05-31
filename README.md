@@ -40,16 +40,6 @@ An Add-ons system that works like an RPC system, however it allows to **use mult
 
 Stremio Add-ons are **loaded through HTTP(S)**, so the Add-on has to have it's own server, provided by the Add-on provider. See "[Creating a basic Add-on](documentation/basic-addon.md)" for the reasons behind this approach.
 
-
-## Server (Add-on)
-```javascript
-var addons = require("stremio-addons");
-new addons.Server({
-	"meta.get": function(args, cb) {
-		// this.user -> get info about the user
-	},
-}, { secret: "SOME SECRET - or leave undefined for test secret" });
-```
 ### For the methods you can implement, and their expected input and output, see [protocol](documentation/protocol.md).
 
 
@@ -66,11 +56,23 @@ new addons.Server({
 ```
 
 
-
 #### Provides
 
 * **Add-on server library**: what we use to initialize an HTTP server that provides a Stremio add-on.
 * **Add-on client library**: a client library to use one or more Stremio add-ons
+
+## Server (Add-on)
+```javascript
+var addons = require("stremio-addons");
+new addons.Server({
+	"meta.get": function(args, cb) {
+	},
+	"meta.find": function(args, cb) {
+	},
+	"stream.find": function(args, cb) {
+	},
+}, {  });
+```
 
 ## Client (Add-on Client)
 ```javascript
