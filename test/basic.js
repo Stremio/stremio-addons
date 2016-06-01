@@ -32,7 +32,6 @@ tape("initialize server, landing page", function(t) {
 
 			t.ok(args.query.id == 1, "we are receiving arguments");
 			t.ok(!!sess, "we have session");
-			t.ok(sess.isAnotherService, "we are calling from another service"); 
 			return cb(null, { now: Date.now() });
 		}
 	},
@@ -57,7 +56,6 @@ tape("initialize server, basic call", function(t) {
 
 			t.ok(args.query.id == 1, "we are receiving arguments");
 			t.ok(!!sess, "we have session");
-			t.ok(sess.isAnotherService, "we are calling from another service"); 
 			return cb(null, { now: Date.now() });
 		}
 	},
@@ -67,7 +65,6 @@ tape("initialize server, basic call", function(t) {
 			t.ok(addon, "callback to .add"); 
 			s.add(url, null, function(err, addon) {  t.ok(addon, "callback to .add - second time") });
 		});
-		s.setAuth(null, TEST_SECRET);
 		s.call("meta.get", { query: { id: 1 } }, function(err, res)
 		{
 			t.error(err, "no err on first call");
@@ -133,7 +130,6 @@ tape("local basic call", function(t) {
 
 			t.ok(args.query.id == 1, "we are receiving arguments");
 			t.ok(!!sess, "we have session");
-			t.ok(sess.isAnotherService, "we are calling from another service"); 
 			return cb(null, { now: Date.now() });
 		}
 	};
@@ -148,7 +144,6 @@ tape("local basic call", function(t) {
 		t.ok(addon, "callback to .add"); 
 		s.add(server, null, function(err, addon) {  t.ok(addon, "callback to .add - second time") });
 	});
-	s.setAuth(null, TEST_SECRET);
 	s.call("meta.get", { query: { id: 1 } }, function(err, res)
 	{
 		t.error(err, "no err on first call");
@@ -181,7 +176,6 @@ tape("test events", function(t) {
 		s.on("pick", function(params) { picker = params });
 
 		s.add(url);
-		s.setAuth(null, TEST_SECRET);
 		s.call("meta.get", { query: { id: 1 } }, function(err, res)
 		{
 			t.ok(!err, "no err on call");
@@ -214,7 +208,6 @@ tape("callEvery", function(t) {
 			var s = new addons.Client({ });
 			s.add(url1);
 			s.add(url2);
-			s.setAuth(null, TEST_SECRET);
 			s.callEvery("stream.get", { query: { id: 1 } }, function(err, res)
 			{
 				t.ok(!err, "no err on call");
@@ -246,7 +239,6 @@ tape("fallback if result is null", function(t) {
 			var s = new addons.Client({ });
 			s.add(url1, { priority: 0 });
 			s.add(url2, { priority: 1 });
-			s.setAuth(null, TEST_SECRET);
 			s.stream.get({ query: { id: 1 } }, function(err, res)
 			{
 				t.ok(!err, "no err on call");
@@ -275,7 +267,6 @@ tape("fallback if network times out", function(t) {
 			var s = new addons.Client({ timeout: 500 });
 			s.add(url1, { priority: 0 });
 			s.add(url2, { priority: 1 });
-			s.setAuth(null, TEST_SECRET);
 			s.meta.find({ query: { id: 1 } }, function(err, res)
 			{
 				t.ok(!err, "no err on call");
@@ -306,7 +297,6 @@ tape("intercept error from addon", function(t) {
 			var s = new addons.Client({ });
 			s.add(url1, { priority: 0 });
 			s.add(url2, { priority: 1 });
-			s.setAuth(null, TEST_SECRET);
 			s.stream.get({ query: { id: 1 } }, function(err, res)
 			{
 				t.ok(err, "we have an error");
@@ -330,7 +320,6 @@ tape("fallback on a network error, emit network-error event", function(t) {
 		var s = new addons.Client({ });
 		s.add("http://dummy-dummy-dummy.du", { priority: 0 }); // wrong URL
 		s.add(url1, { priority: 1 });
-		s.setAuth(null, TEST_SECRET);
 		
 		s.on("network-error", function(err, addon, url) { 
 			emitted = true; 
@@ -365,7 +354,6 @@ tape("timeouts after opts.timeout time", function(t) {
 		var start = Date.now();
 		var s = new addons.Client({ timeout: 1000 });
 		s.add(url1, { priority: 1 });
-		s.setAuth(null, TEST_SECRET);
 
 		s.stream.get({ query: { id: 1 } }, function(err, res, addon)
 		{
@@ -426,7 +414,6 @@ tape("stream.get validation", function(t) {
 		var s = new addons.Client({ });
 
 		s.add(url);
-		s.setAuth(null, TEST_SECRET);
 		s.call("stream.get", { test: "weqew" }, function(err, res)
 		{
 			t.ok(err, "there is error");
@@ -450,7 +437,6 @@ tape("stream.find validation", function(t) {
 		var s = new addons.Client({ });
 
 		s.add(url);
-		s.setAuth(null, TEST_SECRET);
 		s.call("stream.find", [{ test: "weqew" }], function(err, res)
 		{
 			t.ok(err, "there is error");

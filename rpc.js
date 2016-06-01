@@ -27,10 +27,10 @@ var receiveJSON = function(resp, callback) {
 function rpcClient(endpoint, options, globalOpts)
 {
 	var isGet = true;
-	
+
 	var client = { };
 	client.request = function(method, params, callback) { 
-		params[0] = null; // work around authentication (index 0) slot which was used before
+		params[0] = null; // OBSOLETE work around authentication (index 0) slot which was used before
 
 		var body = JSON.stringify({ params: params, method: method, id: 1, jsonrpc: "2.0" });
 		callback = _.once(callback);
