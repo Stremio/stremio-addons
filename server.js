@@ -43,30 +43,6 @@ function Server(methods, options, manifest)
 		});
 	};
 
-	// Authentication
-	var sessions = { };
-	var checkSession = async.queue(function(task, cb) {
-		var auth = task.auth;
-		if (options.allow && options.allow.indexOf(auth[0])==-1) return cb({ message: "not allowed to auth via that server", code: 2 });
-
-		if (sessions[auth[1]]) return cb(null, sessions[auth[1]]);
-
-		var parsed = require("url").parse(auth[0]+"/stremio/service/"+options.secret+"/"+encodeURIComponent(auth[1]));
-		var req = (parsed.protocol.match("https") ? require("https") : require("http")).get(parsed, function(resp) {
-			rpc.receiveJSON(resp, function(err, body) {
-				if (resp.statusCode==200 && body) {
-					sessions[auth[1]] = body;
-					setTimeout(function() { delete sessions[auth[1]] }, SESSION_LIVE);
-					return cb(null, body);
-				};
-				if (err) return cb(err);
-				if (!body.message) console.error("auth server returned", body);
-				return cb(body.message ? body : { message: "unknown error reaching auth server", code: 8 }); // error
-			});
-		});
-		req.on("error", function(e) { cb({ message: "failed to connect to center", code: 5 }) });
-	}, 1);
-
 	// In case we use this in place of endpoint URL
 	this.toString = function() {
 		return self.manifest.id;
@@ -77,16 +53,10 @@ function Server(methods, options, manifest)
 		if (method == "meta") return meta(cb);
 		if (! methods[method]) return cb({ message: "method not supported", code: -32601 }, null);
 
-		var auth = params[0], args = params[1] || { };
-		if (auth && auth.stremioget) return methods[method](args, cb, { stremioget: true }); // everything is allowed without auth in stremioget mode
-		if (!(auth && auth[1]) && methods[method].noauth) return methods[method](args, cb, { noauth: true }); // the function is allowed without auth
-		if (! auth) return cb({ message: "auth not specified", code: 1 });
-		
-		checkSession.push({ auth: auth }, function(err, session) {
-			if (err && methods[method].noauth) return methods[method](args, cb, { noauth: true }); // the function is allowed without auth
-			if (err) return cb(err);
-			methods[method](args, cb, session);
-		});
+		var auth = params[0], // AUTH is obsolete
+			args = params[1] || { };
+
+		return methods[method](args, cb, { stremioget: true }); // everything is allowed without auth in stremioget mode
 	};
 
 	// HTTP middleware
@@ -104,9 +74,7 @@ function Server(methods, options, manifest)
 			setTimeout(function() { if (!finished) console.log("-> \x1b[31m[WARNING]\x1b[0m "+getInfo().join(", ")+" taking more than 3000ms to run") }, 3000);
 		}
 
-		// Only serves stremio endpoint - currently /stremio/v1
 		var parsed = url.parse(req.url);
-		if (! parsed.pathname.match(module.parent.STREMIO_PATH)) return next(); 
 		
 		req._statsNotes.push(req.method);
 
@@ -124,8 +92,6 @@ function Server(methods, options, manifest)
 		
 		if (req.method == "POST" || ( req.method == "GET" && parsed.pathname.match("q.json$") ) ) return serveRPC(req, res, function(method, params, cb) {
 			req._statsNotes.push(method);
-
-			if (options.stremioget && req.method == "GET") params[0] = { stremioget: true }; // replace auth object
 			self.request(method, params, cb);
 		}); else if (req.method == "GET") { // unsupported by JSON-RPC, it uses post
 			return landingPage(req, res);
@@ -177,7 +143,7 @@ function Server(methods, options, manifest)
 	};
 
 	function landingPage(req, res) {
-		var endpoint = manifest.endpoint || (req.url.match('/stremio/v1') && ("http://"+req.headers.host+req.url));
+		var endpoint = manifest.endpoint || "http://"+req.headers.host+req.url;
 		var stats = { }, top = [];
 
 		// TODO: cache at least stats.get for some time
