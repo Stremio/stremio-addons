@@ -194,24 +194,25 @@ tape("callEvery", function(t) {
 	t.timeoutAfter(2000);
 
 	initServer({ 
-		"stream.get": function(args, cb, sess) {
-			return cb(null, { infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223", availability: 2, now: Date.now(), from: "ONE" });
+		"stream.find": function(args, cb, sess) {
+			return cb(null, [{ infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223", availability: 2, now: Date.now(), from: "ONE" }]);
 		}
 	},
 	function(url1) {
 		initServer({ 
-			"stream.get": function(args, cb, sess) {
-				return cb(null, { infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223", availability: 2, now: Date.now(), from: "TWO" });
+			"stream.find": function(args, cb, sess) {
+				return cb(null, [{ infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223", availability: 2, now: Date.now(), from: "TWO" }]);
 			}
 		},
 		function(url2) {
 			var s = new addons.Client({ });
 			s.add(url1);
 			s.add(url2);
-			s.callEvery("stream.get", { query: { id: 1 } }, function(err, res)
+			s.callEvery("stream.find", { query: { id: 1 } }, function(err, res)
 			{
 				t.ok(!err, "no err on call");
 				t.ok(res.length == 2, "2 results");
+				res = _.flatten(res);
 				t.ok(_.findWhere(res, { from: "ONE" }), "we have results from one");
 				t.ok(_.findWhere(res, { from: "TWO" }), "we have results from two");
 				t.end();
@@ -225,25 +226,26 @@ tape("fallback if result is null", function(t) {
 	t.timeoutAfter(2000);
 
 	initServer({ 
-		"stream.get": function(args, cb, sess) {
+		"stream.find": function(args, cb, sess) {
 			return cb(null, null);
 		}
 	},
 	function(url1) {
 		initServer({ 
-			"stream.get": function(args, cb, sess) {
-				return cb(null, { infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223", availability: 2, now: Date.now(), from: "TWO" });
+			"stream.find": function(args, cb, sess) {
+				return cb(null, [{ infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223", availability: 2, now: Date.now(), from: "TWO" }]);
 			}
 		},
 		function(url2) {
 			var s = new addons.Client({ });
 			s.add(url1, { priority: 0 });
 			s.add(url2, { priority: 1 });
-			s.stream.get({ query: { id: 1 } }, function(err, res)
+			s.stream.find({ query: { id: 1 } }, function(err, res)
 			{
 				t.ok(!err, "no err on call");
+				res = _.flatten(res);
 				t.ok(res, "we have result");
-				t.ok(res.from == "TWO", "we have results from two");
+				t.ok(res[0].from == "TWO", "we have results from two");
 				t.end();
 			});
 		});
@@ -283,21 +285,21 @@ tape("intercept error from addon", function(t) {
 	t.timeoutAfter(2000);
 
 	initServer({ 
-		"stream.get": function(args, cb, sess) {
+		"stream.find": function(args, cb, sess) {
 			return cb(new Error("not supported"), null);
 		}
 	},
 	function(url1) {
 		initServer({ 
-			"stream.get": function(args, cb, sess) {
-				return cb(null, { infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223", availability: 2, now: Date.now(), from: "TWO" });
+			"stream.find": function(args, cb, sess) {
+				return cb(null, [{ infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223", availability: 2, now: Date.now(), from: "TWO" }]);
 			}
 		},
 		function(url2) {
 			var s = new addons.Client({ });
 			s.add(url1, { priority: 0 });
 			s.add(url2, { priority: 1 });
-			s.stream.get({ query: { id: 1 } }, function(err, res)
+			s.stream.find({ query: { id: 1 } }, function(err, res)
 			{
 				t.ok(err, "we have an error");
 				t.end();
@@ -310,8 +312,8 @@ tape("fallback on a network error, emit network-error event", function(t) {
 	t.timeoutAfter(4000);
 
 	initServer({ 
-		"stream.get": function(args, cb, sess) {
-			return cb(null, { infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223", availability: 2, now: Date.now(), from: "ONE" });
+		"stream.find": function(args, cb, sess) {
+			return cb(null, [{ infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223", availability: 2, now: Date.now(), from: "ONE" }]);
 		}
 	},
 	function(url1) {
@@ -327,10 +329,10 @@ tape("fallback on a network error, emit network-error event", function(t) {
 			t.ok(addon.url == "http://dummy-dummy-dummy.du", "addon url correct"); 
 		});
 
-		s.stream.get({ query: { id: 1 } }, function(err, res, addon)
+		s.stream.find({ query: { id: 1 } }, function(err, res, addon)
 		{
 			t.ok(!err, "no error");
-			t.ok(res && res.from == "ONE", "we have a result");
+			t.ok(res && res[0] && res[0].from == "ONE", "we have a result");
 			t.ok(addon, "we have the picked addon");
 			t.ok(addon.url == url1, "correct url to picked addon");
 			//t.ok(emitted, "network-error emitted");
@@ -346,7 +348,7 @@ tape("timeouts after opts.timeout time", function(t) {
 	t.timeoutAfter(4000);
 
 	initServer({ 
-		"stream.get": function(args, cb, sess) {
+		"stream.find": function(args, cb, sess) {
 			// wait to time-out
 		}
 	},
@@ -355,7 +357,7 @@ tape("timeouts after opts.timeout time", function(t) {
 		var s = new addons.Client({ timeout: 1000 });
 		s.add(url1, { priority: 1 });
 
-		s.stream.get({ query: { id: 1 } }, function(err, res, addon)
+		s.stream.find({ query: { id: 1 } }, function(err, res, addon)
 		{
 			t.ok((Date.now()-start)>=1000, "waited 2 seconds");
 			t.ok(err, "has error");
@@ -400,21 +402,21 @@ tape("validation - stream results", function(t) {
 
 
 
-tape("stream.get validation", function(t) {
+tape("stream.find validation", function(t) {
 	t.timeoutAfter(2000);
     t.skip("validation disabled"); return t.end();
 
 
 	initServer({ 
-		"stream.get": function(args, cb, sess) {
-			return cb(null, { now: Date.now() });
+		"stream.find": function(args, cb, sess) {
+			return cb(null, [{ now: Date.now() }]);
 		}
 	},
 	function(url) {
 		var s = new addons.Client({ });
 
 		s.add(url);
-		s.call("stream.get", { test: "weqew" }, function(err, res)
+		s.call("stream.find", { test: "weqew" }, function(err, res)
 		{
 			t.ok(err, "there is error");
 			t.ok(err.code === 0, "error code is correct");
@@ -429,7 +431,7 @@ tape("stream.find validation", function(t) {
 	t.timeoutAfter(2000);
 
 	initServer({ 
-		"stream.get": function(args, cb, sess) {
+		"stream.find": function(args, cb, sess) {
 			return cb(null, { now: Date.now() });
 		}
 	},
