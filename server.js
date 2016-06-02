@@ -1,4 +1,4 @@
-var _ = require("lodash");
+var _ = require("underscore");
 var url = require("url");
 var rpc = require("./rpc");
 var async = require("async");
