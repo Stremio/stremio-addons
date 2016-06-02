@@ -213,6 +213,10 @@ function Stremio(options)
 	_.extend(this, bindDefaults(call));
 
 };
-inherits(Stremio, emitter);
+
+// Inherit the emitter
+Stremio.super_ = emitter;
+Stremio.prototype = new emitter();
+Stremio.prototype.constructor = Stremio;
 
 module.exports = Stremio;
