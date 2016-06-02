@@ -21,7 +21,6 @@ function bindDefaults(call) {
 			get: call.bind(null, "index.get")
 		},
 		stream: {
-			get: call.bind(null, "stream.get"),
 			find: call.bind(null, "stream.find")
 		},
 		subtitles: {
@@ -51,7 +50,7 @@ function Addon(url, options, stremio, ready)
 	var client = options.client || require("./rpc");
 
 	if (typeof(url) == "string") {
-		this.client = client(url+(module.parent ? module.parent.STREMIO_PATH : "/stremio/v1") , { 
+		this.client = client(url, { 
 			timeout: options.timeout || stremio.options.timeout || 10000,
 			respTimeout: options.respTimeout || stremio.options.respTimeout //|| 10000,
 		}, stremio.options);
@@ -133,14 +132,7 @@ function Stremio(options)
 
 	options = self.options = options || {};
 
-	var auth;
 	var services = {};
-
-	// Set the authentication
-	this.setAuth = function(url, token) {
-		auth = [url || module.parent.CENTRAL, token];
-	};
-	this.getAuth = function() { return auth };
 
 	// Adding services
 	this.add = function(url, opts, cb) {
@@ -176,7 +168,7 @@ function Stremio(options)
 			var service = s.shift(), next = _.once(next);
 			if (! service) return next(true); // end the loop
 
-			service.call(method, [auth, args], function(skip, err, error, res) {				
+			service.call(method, [null, args], function(skip, err, error, res) {				
 				networkErr = err;
 				// err, error are respectively HTTP error / JSON-RPC error; we need to implement fallback based on that (do a skip)
 				if (skip || err) return next(); // Go to the next service
@@ -196,7 +188,7 @@ function Stremio(options)
 	function callEvery(method, args, cb) {
 		var results = [], err;
 		async.each(self.get(method).filter(function(x) { return x.initialized || !x.networkErr }), function(service, callback) {
-			service.call(method, [self.getAuth(), args], function(skip, err, error, result) {
+			service.call(method, [null, args], function(skip, err, error, result) {
 				if (error) return callback(error);
 				if (!skip && !err && !error) results.push(result);
 				callback();
@@ -221,6 +213,10 @@ function Stremio(options)
 	_.extend(this, bindDefaults(call));
 
 };
-inherits(Stremio, emitter);
+
+// Inherit the emitter
+Stremio.super_ = emitter;
+Stremio.prototype = new emitter();
+Stremio.prototype.constructor = Stremio;
 
 module.exports = Stremio;

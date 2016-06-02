@@ -26,11 +26,11 @@ var receiveJSON = function(resp, callback) {
 // 2) reduce number of dependencies
 function rpcClient(endpoint, options, globalOpts)
 {
-	var isGet = !!endpoint.match("stremioget");
+	var isGet = true;
 
 	var client = { };
 	client.request = function(method, params, callback) { 
-		if (isGet) params[0] = null; // noauth request for GET
+		params[0] = null; // OBSOLETE work around authentication (index 0) slot which was used before
 
 		var body = JSON.stringify({ params: params, method: method, id: 1, jsonrpc: "2.0" });
 		callback = _.once(callback);

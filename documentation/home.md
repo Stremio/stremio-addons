@@ -1,10 +1,8 @@
 ## What are Stremio add-ons 
 
-**Stremio add-ons extend Stremio with content.**
+**Stremio add-ons extend Stremio with video content.**
 
-That means either adding items to Discover or providing sources to stream content from.
-
-Unlike regular software plugins, Stremio addons **do not run inside Stremio**, but instead are **accessed through HTTP over network**. You can think of them as **RSS on steroids**. Multiple addons can be activated, providing you more content, without any installation / security risks.
+Unlike regular software plugins, Stremio add-ons **do not run inside Stremio client app**, but instead are **server-side and accessed over network**. You can think of it as **RSS on steroids**. Multiple add-ons can be installed, providing you more content, without any installation or security risks.
 
 ## How to create a Stremio add-on
 

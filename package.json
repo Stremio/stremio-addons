@@ -1,13 +1,12 @@
 {
   "name": "stremio-addons",
-  "version": "1.30.6",
+  "version": "2.0.0",
   "description": "Stremio Add-on Server / Client",
   "main": "index.js",
   "dependencies": {
     "async": "1.x.x",
     "dot-object": "^1.3.0",
-    "inherits": "^2.0.1",
-    "jade": "1.x.x",
+    "ejs": "2.x.x",
     "lodash": "3.8.x",
     "events": "^1.1.0"
   },
@@ -17,9 +16,8 @@
     "uglifyjs": "*"
   },
   "scripts": {
-    "templates": "jade -c addon-template.jade -n addon ; echo '; module.exports = addon; var jade = require(\"jade/runtime.js\")' >> addon-template.js",
-    "prepublish": "npm run templates; browserify -r ./index-browser.js:stremio-addons > browser/stremio-addons.js ; uglifyjs browser/stremio-addons.js > browser/stremio-addons.min.js ; git commit --allow-empty browser/stremio-addons.js browser/stremio-addons.min.js -m 'stremio-addons.js update'",
-    "test": "npm run templates; node test/basic.js"
+    "prepublish": "browserify -r ./index-browser.js:stremio-addons > browser/stremio-addons.js ; uglifyjs browser/stremio-addons.js > browser/stremio-addons.min.js ; git commit --allow-empty browser/stremio-addons.js browser/stremio-addons.min.js -m 'stremio-addons.js update'",
+    "test": "node test/basic.js"
   },
   "repository": {
     "type": "git",

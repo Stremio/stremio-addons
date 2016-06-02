@@ -1,18 +1,36 @@
 
 ## What are Stremio add-ons?
 
-**Stremio add-ons extend Stremio with content.**
+**Stremio add-ons extend Stremio with video content.** In fact, all of the video content Stremio provides, it gets exclusively through the add-on system, with no content or specific provider being built into the app.
 
-That means either adding items to Discover or providing sources to stream content from.
-
-Unlike regular software plugins, Stremio addons **do not run inside Stremio**, but instead are **accessed through HTTP over network**. You can think of them as **RSS on steroids**. Multiple addons can be activated, providing you more content, without any installation process or security risks.
+Unlike regular software plugins, Stremio add-ons **do not run inside Stremio client app**, but instead are **server-side and accessed over network**. You can think of it as **RSS on steroids**. Multiple add-ons can be installed, providing you more content, without any installation or security risks.
 
 
-## Documentation
-1. [Basics (home)](documentation/home.md)
-2. [Enabling Add-on in Stremio](documentation/enabling-addon.md)
-3. [Protocol documentation](documentation/protocol.md)
-4. [Using Cinemeta](documentation/using-cinemeta.md)
+## How to get started
+
+First, make sure you have [Node.js](https://nodejs.org/en/) and [Git](https://desktop.github.com).
+
+Start by creating your repository from the Hello World add-on:
+```bash
+git --work-tree=my-addon clone http://github.com/Stremio/addon-helloworld
+cd my-addon
+git init
+git add * 
+git commit -a -m "first commit"
+npm install
+open stremio://localhost:7000/stremio/v1 & # Load this add-on in Stremio
+PORT=7000 node index # Start the add-on server
+```
+
+**Stremio should open, and you should see "Example Addon" in Settings. Congrats! You've created your first add-on!**
+
+### For more details, please see [» Getting Started «](documentation/home.md)
+
+
+## Full Documentation
+1. [Protocol documentation](documentation/protocol.md)
+2. [Enabling and testing Add-ons in Stremio](documentation/enabling-addon.md)
+3. [Using Cinemeta (meta API)](documentation/using-cinemeta.md)
 
 
 -----------------
@@ -20,7 +38,22 @@ Unlike regular software plugins, Stremio addons **do not run inside Stremio**, b
 # stremio-addons
 An Add-ons system that works like an RPC system, however it allows to **use multiple Add-ons through one interface** and it automatically **selects which add-on to handle the call**, depending the methods the Add-on provides and the priority of add-ons. You can also issue calls to all Add-ons and aggregate results (e.g. search metadata).
 
-Stremio Add-ons are **loaded through HTTP**, so the Add-on has to have it's own server, provided by the Add-on provider. See "[Creating a basic Add-on](documentation/basic-addon.md)" for the reasons behind this approach.
+Stremio Add-ons are **loaded through HTTP(S)**, so the Add-on has to have it's own server, provided by the Add-on provider. See "[Creating a basic Add-on](documentation/basic-addon.md)" for the reasons behind this approach.
+
+### For the methods you can implement, and their expected input and output, see [protocol](documentation/protocol.md).
+
+
+## Using add-ons in Stremio
+```javascript
+// pass your add-on's HTTP endpoint to --services argument to Stremio
+// for example, if you're running an add-on locally at port 9008, do
+/Applications/Stremio.app/Contents/MacOS/Electron . --services=http://localhost:9008
+
+// Windows
+%LOCALAPPDATA%\Programs\LNV\Stremio\Stremio.exe .. --services=http://localhost:9008
+
+// this is the same for remote add-ons, for example --services=http://stremio-guidebox.herokuapp.com
+```
 
 
 #### Provides
@@ -28,7 +61,20 @@ Stremio Add-ons are **loaded through HTTP**, so the Add-on has to have it's own 
 * **Add-on server library**: what we use to initialize an HTTP server that provides a Stremio add-on.
 * **Add-on client library**: a client library to use one or more Stremio add-ons
 
-## Client
+## Server (Add-on)
+```javascript
+var addons = require("stremio-addons");
+new addons.Server({
+	"meta.get": function(args, cb) {
+	},
+	"meta.find": function(args, cb) {
+	},
+	"stream.find": function(args, cb) {
+	},
+}, {  });
+```
+
+## Client (Add-on Client)
 ```javascript
 var addons = require("stremio-addons");
 var stremio = new addons.Client({ /* options; picker: function(addons) { return addons } */ });
@@ -64,43 +110,6 @@ stremio.on("addon-ready", function(addon, url) {
 ```
 
 
-## Server
-```javascript
-var addons = require("stremio-addons");
-new addons.Server({
-	"meta.get": function(args, cb) {
-		// this.user -> get info about the user
-	},
-}, { secret: "SOME SECRET - or leave undefined for test secret" });
-```
-##### For the methods you can implement, and their expected input and output, see [methods](documentation/methods.md).
-
-
-## Using add-ons in Stremio
-```javascript
-// pass your add-on's HTTP endpoint to --services argument to Stremio
-// for example, if you're running an add-on locally at port 9008, do
-/Applications/Stremio.app/Contents/MacOS/Electron . --services=http://localhost:9008
-
-// Windows
-%LOCALAPPDATA%\Programs\LNV\Stremio\Stremio.exe .. --services=http://localhost:9008
-
-// this is the same for remote add-ons, for example --services=http://stremio-guidebox.herokuapp.com
-```
-
-## Authentication
-
-**Authentication is optional - not all add-ons require it.** The third-party add-ons **should not** require authentication.
-
-To authenticate when using Stremio Addons as a client, one must call
-```javascript
-client.setAuth(/* CENTRAL SERVER or null for default */, /* USER SESSION TOKEN (authToken) OR ADDON SECRET */);
-```
-
-**The authToken** is a session ID we use for addon clients to identify the user. The Addon Server (implemented in server.js) is responsible for evaluating if we're getting requests from a logged-in users. That happens by asking the **central server** if that authToken is valid and belongs to a user. 
-
-**The secret** is a token, issued by a central server that we use to identify our Add-on server to the central server. We can also use our secret to identify ourselves to other Add-ons, if using them as a client - if our Add-on uses other Stremio add-ons under the hood (through the client library).
-
 ## Usage in browser 
 ```sh
 browserify -r ./node_modules/stremio-addons/index.js:stremio-addons > stremio-addons.js
@@ -113,4 +122,3 @@ var client = window.require("stremio-addons").Client();
 /// ...
 </script>
 ```
-
