@@ -108,7 +108,7 @@ function Server(methods, options, manifest)
 
 		// Only serves stremio endpoint - currently /stremio/v1
 		var parsed = url.parse(req.url);
-		if (! parsed.pathname.match(module.parent.STREMIO_PATH)) return next(); 
+		if (! parsed.pathname.match('/stremio/v1')) return next(); 
 		
 		req._statsNotes.push(req.method);
 
