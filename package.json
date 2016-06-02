@@ -4,7 +4,7 @@
   "description": "Stremio Add-on Server / Client",
   "main": "index.js",
   "dependencies": {
-    "async": "0.9.x",
+    "async": "1.x.x",
     "dot-object": "^1.3.0",
     "ejs": "2.x.x",
     "underscore": "1.x.x",
