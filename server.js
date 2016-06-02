@@ -3,6 +3,8 @@ var url = require("url");
 var rpc = require("./rpc");
 var async = require("async");
 
+var template;
+
 var SESSION_LIVE = 10*60*60*1000; // 10 hrs
 var CACHE_TTL = 2.5 * 60 * 60; // seconds to live for the cache
 
@@ -164,7 +166,7 @@ function Server(methods, options, manifest)
 
 		function respond() {
 			try { 
-				var template = require("./addon-template");
+				if (! template) template = require("ejs").compile(require("fs").readFileSync(__dirname+"/addon-template.ejs").toString(), { });
 				var body = template({ 
 					addon: { manifest: manifest, methods: methods }, 
 					endpoint: endpoint, 
