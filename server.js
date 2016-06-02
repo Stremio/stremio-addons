@@ -6,12 +6,14 @@ var async = require("async");
 var SESSION_LIVE = 10*60*60*1000; // 10 hrs
 var CACHE_TTL = 2.5 * 60 * 60; // seconds to live for the cache
 
+var CENTRAL = "https://api9.strem.io";
+
 function Server(methods, options, manifest)
 {
 	var self = this;
 
 	options = _.extend({ 
-		allow: [ module.parent.CENTRAL ], // default stremio central
+		allow: [ CENTRAL ], // default stremio central
 		secret: "8417fe936f0374fbd16a699668e8f3c4aa405d9f" // default secret for testing add-ons
 	}, options || { });
 
@@ -27,7 +29,7 @@ function Server(methods, options, manifest)
 	function announce() {
 		self.announced = true;
 		var body = JSON.stringify({ id: manifest.id, manifest: _.omit(manifest, "filter") });
-		var parsed = url.parse(module.parent.CENTRAL+"/stremio/announce/"+options.secret);
+		var parsed = url.parse(CENTRAL+"/stremio/announce/"+options.secret);
 		var req = (parsed.protocol.match("https") ? require("https") : require("http")).request(_.extend(parsed, { 
 			method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } 
 		}), function(res) { /* console.log(res.statusCode); currently we don't care */ });
