@@ -2,9 +2,8 @@
 
 This package includes both Server and Client for a complete Add-on System.
 
-These add-ons are being hosted server-side and support their own node modules.
+Add-ons are being hosted server-side and support their own node modules. Their purpose is to respond to requests from the Client which will expect:
 
-Their purpose is to respond to requests from the Client which will expect:
 - a [manifest](/documents/manifest.md) (add-on description)
 - an array of [meta elements](/documents/meta.element.md) (primary meta feed)
 - an array of [meta elements](/documents/meta.element.md) (requested by search query)
