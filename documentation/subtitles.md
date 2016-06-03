@@ -2,6 +2,14 @@
 
 Subtitles are being handled by the `subtitles.find` method.
 
+```
+var addon = new Stremio.Server({
+	"subtitles.find": function(args, callback, user) {
+		// expects an array of subtitle objects
+	}
+});
+```
+
 #### Request
 
 ``query`` - **required** - Object, query to retrieve the subtitles
