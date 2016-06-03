@@ -53,12 +53,3 @@ Valid properties are:
 ``zipSpecific`` - _optional_ - boolean - if true, the stremio client must pass ``zip`` of the user along with  ``meta.find``. *Example*: cinema showtimes guide add-on
 
 ***Tip* - to implement sources where streams are geo-restricted (stream.find), see [``Stream object's``](/documentation/protocol.md#stream-object) `geos`**
-
-### See Also
-
-- Anatomy of an Add-on
-- Meta Feed
-- Searching
-- Meta Element
-- Stream Link
-- Testing Environments

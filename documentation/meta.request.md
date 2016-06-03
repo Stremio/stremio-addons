@@ -11,7 +11,3 @@
 ``skip`` - skip first N results
 
 _**TIP**: If you don't use MongoDB, you can use [sift](https://www.npmjs.com/package/sift) or [linvodb3](https://www.npmjs.com/package/linvodb3) to support to the query format._
-
-See Also:
-- [Content Types]()
-- [Meta Element]()

@@ -40,12 +40,3 @@ var server = require("http").createServer(function (req, res) {
     console.log("Sample Stremio Addon listening on "+server.address().port);
 }).listen(process.env.PORT || 7000); // set port for add-on
 ```
-
-### See Also
-
-- Manifest
-- Meta Feed
-- Searching
-- Meta Element
-- Stream Link
-- Testing Environments
