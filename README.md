@@ -27,10 +27,10 @@ Their purpose is to respond to requests from the Client which will expect:
 
 ### Demo Add-ons
 
-- [Hello World add-on](https://github.com/Ivshti/addon-helloworld)
-- [Twitch.tv add-on](https://github.com/jaruba/stremio-twitch)
-- [Guidebox add-on](http://github.com/Stremio/guidebox-stremio)
-- [Filmon.tv add-on](http://github.com/Stremio/filmon-stremio)
-- [Local Files add-on](http://github.com/Stremio/stremio-local-files)
+- [Hello World](https://github.com/Ivshti/addon-helloworld)
+- [Twitch.tv](https://github.com/jaruba/stremio-twitch)
+- [Guidebox](http://github.com/Stremio/guidebox-stremio)
+- [Filmon.tv](http://github.com/Stremio/filmon-stremio)
+- [Local Files](http://github.com/Stremio/stremio-local-files)
 
 _brought to you by [Stremio](http://www.strem.io/)_
