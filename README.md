@@ -21,7 +21,7 @@ Add-ons are being hosted server-side and support their own node modules. Their p
 - [Stream Link](/docs/api/stream/README.md)
 - [Subtitles](/docs/api/subtitles/README.md)
 
-## Tutorials
+### Tutorials
 
 - [Testing Environments](/docs/tutorial/testing.md)
 - [Using Cinemeta (meta API)](/docs/tutorial/using-cinemeta.md)
