@@ -6,7 +6,7 @@ The response is an array of Metadata objects.
 
 ``id`` - **required** - universal identifier, formed like "DOMAIN_id:ID", for example "yt_id:UCrDkAvwZum-UTjHmzDI2iIw".
 
-``type`` - **required** - type of the content; e.g. `movie`, `series`, `channel`, `tv` (see [Content Types]())
+``type`` - **required** - type of the content; e.g. `movie`, `series`, `channel`, `tv` (see [Content Types](../content.types.md))
 
 ``name`` - **required** - name of the content
 
@@ -72,4 +72,4 @@ The response is an array of Metadata objects.
 
 ``id`` - _optional_ - YouTube ID of the video
 
-_Alternatively of using only a YouTube ID, **you can inherit the [``Stream Object``](/documentation/protocol.md#stream-object)** to point the video to an HTTP URL, BitTorrent, YouTube or any other stremio-supported transport protocol._
+_Alternatively of using only a YouTube ID, **you can inherit the [``Stream Object``](../stream/stream.response.md)** to point the video to an HTTP URL, BitTorrent, YouTube or any other stremio-supported transport protocol._

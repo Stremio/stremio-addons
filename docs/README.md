@@ -1,6 +1,6 @@
 ### Anatomy of an Add-on
 
-```
+```javascript
 var Stremio = require("stremio-addons");
 
 var manifest = { 
@@ -40,3 +40,18 @@ var server = require("http").createServer(function (req, res) {
     console.log("Sample Stremio Addon listening on "+server.address().port);
 }).listen(process.env.PORT || 7000); // set port for add-on
 ```
+
+### Documentation
+
+- [Manifest](/api/manifest.md)
+- [Meta Feed](/api/meta/meta.feed.md)
+- [Searching](/api/meta/meta.search.md)
+- [Meta Element](/api/meta/meta.element.md)
+- [Stream Link](/api/stream/README.md)
+- [Subtitles](/api/subtitles/README.md)
+
+### Tutorials
+
+- [Testing Environments](/tutorial/testing.md)
+- [Using Cinemeta (meta API)](/tutorial/using-cinemeta.md)
+- [Add to Your App](/tutorial/add.to.app.md)

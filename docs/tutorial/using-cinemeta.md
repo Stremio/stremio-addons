@@ -1,5 +1,5 @@
-
 # Using Cinemeta
+
 **Cinemeta** is the first offical Stremio Add-on - it provides metadata for most movies / TV series in IMDB.
 
 It can be seen as an alternative of APIs like OMDb, TheMovieDB and TheTVDB.
@@ -31,7 +31,7 @@ addons.meta.find({ query: { type: "series" }, limit: 50 }, function(err, res) {
 });
 ```
 
-For documentation on the ``meta.get`` or ``meta.find`` interface, see [Meta Request](https://github.com/Ivshti/stremio-addons/blob/master/documentation/protocol.md#meta-request) and [Meta Response](https://github.com/Ivshti/stremio-addons/blob/master/documentation/protocol.md#response-format-1).
+For documentation on the ``meta.get`` or ``meta.find`` interface, see [Meta Request](../meta/meta.request.md) and [Meta Response](../meta/meta.element.md).
 
 # Using ``index.get``
 ```javascript

@@ -24,7 +24,7 @@
 
 ``isPeered`` - _optional_ - set this to ``true`` if this stream is peered locally and therefore delivered with a high speed; useful for areas with slow internet connections, such as India
 
-``subtitles`` - _optional_ - [``Subtitles Objects``](subtitles.object.md) representing subtitles for this stream
+``subtitles`` - _optional_ - [``Subtitles Objects``](../subtitles/subtitles.object.md) representing subtitles for this stream
 
 ``live`` - _optional_ - boolean, specify if this is a live stream; this will be auto-detected if you're using HLS
 

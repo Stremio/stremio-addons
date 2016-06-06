@@ -1,16 +1,4 @@
-### Subtitles
-
-Subtitles are being handled by the `subtitles.find` method.
-
-```
-var addon = new Stremio.Server({
-	"subtitles.find": function(args, callback, user) {
-		// expects an array of subtitle objects
-	}
-});
-```
-
-#### Request
+### Subtitles Find
 
 ``query`` - **required** - Object, query to retrieve the subtitles
 
@@ -29,15 +17,3 @@ For channels, this is the YouTube ID of the channel and the YouTube ID of the vi
 ``query.videoName`` - _optional_ - filename of the original video
 
 ``supportsZip`` - _optional_ - boolean, true if your client supports ``.zip`` files for subtitles; in this case, the client should use the first ``.srt`` file inside the provided ``.zip`` file
-
-#### Response
-
-```javascript
-{
-  id: "string identifier",
-  url: "url to srt file",
-  lang: "language code in ISO 639-1"
-}
-```
-
-See [Subtitle Object](subtitle.object.md) for Parameters.

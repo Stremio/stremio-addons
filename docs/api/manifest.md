@@ -18,7 +18,7 @@ Valid properties are:
 
 ``logo`` - _optional_ - logo icon, URL to png, monochrome, 256x256
 
-``types`` - **required** - array of supported types, from all the [``Content Types``](/documentation/protocol.md#content-types)
+``types`` - **required** - array of supported types, from all the [``Content Types``](content.types.md)
 
 ``isFree`` - _optional_ - set this to ``true`` if you want to specify that all of the content in this add-on is free of charge; this is used when auto-generating a landing page for that add-on
 
@@ -52,4 +52,4 @@ Valid properties are:
 
 ``zipSpecific`` - _optional_ - boolean - if true, the stremio client must pass ``zip`` of the user along with  ``meta.find``. *Example*: cinema showtimes guide add-on
 
-***Tip* - to implement sources where streams are geo-restricted (stream.find), see [``Stream object's``](/documentation/protocol.md#stream-object) `geos`**
+***Tip* - to implement sources where streams are geo-restricted (stream.find), see [``Stream object's``](/stream/stream.response.md) `geos`**

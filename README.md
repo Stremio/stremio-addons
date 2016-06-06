@@ -4,25 +4,29 @@ This package includes both Server and Client for a complete Add-on System.
 
 Add-ons are being hosted server-side and support their own node modules. Their purpose is to respond to requests from the Client which will expect:
 
-- a [manifest](/documents/manifest.md) (add-on description)
-- an array of [meta elements](/documents/meta.element.md) (primary meta feed)
-- an array of [meta elements](/documents/meta.element.md) (requested by search query)
-- an array of [subtitle objects](/documents/subtitle.object.md)
-- one [meta element](/documents/meta.element.md) (requested by ID)
-- an array of [stream links](/documents/stream.link.md) (requested by ID)
+- a [manifest](/docs/manifest.md) (add-on description)
+- an array of [meta elements](/docs/meta/meta.element.md) (primary meta feed)
+- an array of [meta elements](/docs/meta/meta.element.md) (requested by search query)
+- an array of [subtitle objects](/docs/subtitles/subtitles.object.md) (requested by ID)
+- an array of [stream links](/docs/steam/stream.link.md) (requested by ID)
+- one [meta element](/docs/meta/meta.element.md) (requested by ID)
 
 ### Documentation
 
-- [Anatomy of an Add-on](/documents/anatomy.md)
-- [Manifest](/documents/manifest.md)
-- [Meta Feed](/documents/meta.feed.md)
-- [Searching](/documents/meta.search.md)
-- [Meta Element](/documents/meta.element.md)
-- [Stream Link](/documents/stream.link.md)
-- [Subtitles](/documents/subtitles.md)
-- [Testing Environments](/documents/testing.md)
-- [Using Cinemeta (meta API)](/documentation/using-cinemeta.md)
-- [Add to Your App](/document/add.to.app.md)
+- [Anatomy of an Add-on](/docs/README.md)
+- [Manifest](/docs/manifest.md)
+- [Content Types](/docs/content.types.md)
+- [Meta Feed](/docs/api/meta/meta.feed.md)
+- [Searching](/docs/api/meta/meta.search.md)
+- [Meta Element](/docs/api/meta/meta.element.md)
+- [Stream Link](/docs/api/stream/README.md)
+- [Subtitles](/docs/api/subtitles/README.md)
+
+## Tutorials
+
+- [Testing Environments](/docs/tutorial/testing.md)
+- [Using Cinemeta (meta API)](/docs/tutorial/using-cinemeta.md)
+- [Add to Your App](/docs/tutorial/add.to.app.md)
 
 ### Demo Add-ons
 
