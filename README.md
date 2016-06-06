@@ -15,7 +15,6 @@ Add-ons are being hosted server-side and support their own node modules. Their p
 
 - [Anatomy of an Add-on](/docs/README.md)
 - [Manifest](/docs/manifest.md)
-- [Content Types](/docs/content.types.md)
 - [Meta Feed](/docs/api/meta/meta.feed.md)
 - [Searching](/docs/api/meta/meta.search.md)
 - [Meta Element](/docs/api/meta/meta.element.md)

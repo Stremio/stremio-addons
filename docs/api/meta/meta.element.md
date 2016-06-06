@@ -6,7 +6,7 @@ The response is an array of Metadata objects.
 
 ``id`` - **required** - universal identifier, formed like "DOMAIN_id:ID", for example "yt_id:UCrDkAvwZum-UTjHmzDI2iIw".
 
-``type`` - **required** - type of the content; e.g. `movie`, `series`, `channel`, `tv` (see [Content Types](../content.types.md))
+``type`` - **required** - type of the content; e.g. `movie`, `series`, `channel`, `tv` (see [Content Types](content.types.md))
 
 ``name`` - **required** - name of the content
 

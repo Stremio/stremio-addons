@@ -43,4 +43,4 @@ See [Meta Request](meta.request.md) for Parameters.
 
 See [Meta Element](meta.element.md) for Parameters.
 
-See [Content Types](../content.types.md) for the `type` parameter.
+See [Content Types](content.types.md) for the `type` parameter.

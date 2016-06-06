@@ -35,7 +35,7 @@ When an array of fewer then `70` elements is returned, the feed will be consider
 
 See [Meta Request](meta.request.md) for Parameters.
 
-See [Content Types](../content.types.md) for the `type` parameter.
+See [Content Types](content.types.md) for the `type` parameter.
 
 ### Response
 
@@ -59,4 +59,4 @@ See [Content Types](../content.types.md) for the `type` parameter.
 
 See [Meta Element](meta.element.md) for Parameters.
 
-See [Content Types](../content.types.md) for the `type` parameter.
+See [Content Types](content.types.md) for the `type` parameter.

@@ -18,7 +18,7 @@ Valid properties are:
 
 ``logo`` - _optional_ - logo icon, URL to png, monochrome, 256x256
 
-``types`` - **required** - array of supported types, from all the [``Content Types``](content.types.md)
+``types`` - **required** - array of supported types, from all the [``Content Types``](/meta/content.types.md)
 
 ``isFree`` - _optional_ - set this to ``true`` if you want to specify that all of the content in this add-on is free of charge; this is used when auto-generating a landing page for that add-on
 
