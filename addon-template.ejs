@@ -104,7 +104,7 @@
       $.get("http://localhost:11470/manifest").success(function() {
           $("#addon").on("click", ".activate-link", function(e) { 
               e.preventDefault();
-              $.get("http://localhost:11470/info/"+encodeURIComponent("#{endpoint.replace(new RegExp('^http(s?)://'), '')}"))
+              $.get("http://localhost:11470/info/"+encodeURIComponent("<%= endpoint.replace(new RegExp('^http(s?)://'), '') %>"))
               return false;
           });
       }).error(function(e) { /* ignore */ })
