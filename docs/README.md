@@ -43,7 +43,7 @@ var server = require("http").createServer(function (req, res) {
 
 ### Documentation
 
-- [Manifest](/docs/api/meta/manifest.md)
+- [Manifest](/docs/api/manifest.md)
 - [Meta Feed](/docs/api/meta/meta.find.md)
 - [Searching](/docs/api/meta/meta.search.md)
 - [Meta Element](/docs/api/meta/meta.element.md)
