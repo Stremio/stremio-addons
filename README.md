@@ -11,11 +11,11 @@ Add-ons are being hosted separately (on a server). As such, they have increased 
 The purpose of an add-on is to gather media content (not to extend app features) and respond to requests from the Client which will expect:
 
 - a [manifest](/docs/manifest.md) (add-on description)
-- an array of [meta elements](/docs/meta/meta.element.md) (primary meta feed)
-- an array of [meta elements](/docs/meta/meta.element.md) (requested by search query)
-- an array of [subtitle objects](/docs/subtitles/subtitles.object.md) (requested by ID)
-- an array of [stream links](/docs/steam/stream.link.md) (requested by ID)
-- one [meta element](/docs/meta/meta.element.md) (requested by ID)
+- an array of [meta elements](/docs/api/meta/meta.element.md) (primary meta feed)
+- an array of [meta elements](/docs/api/meta/meta.element.md) (requested by search query)
+- an array of [subtitle objects](/docs/api/subtitles/subtitles.object.md) (requested by ID)
+- an array of [stream links](/docs/api/stream/stream.link.md) (requested by ID)
+- one [meta element](/docs/api/meta/meta.element.md) (requested by ID)
 
 ### Documentation
 
