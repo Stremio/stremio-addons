@@ -72,4 +72,4 @@ The response is an array of Metadata objects.
 
 ``id`` - _optional_ - YouTube ID of the video
 
-_Alternatively of using only a YouTube ID, **you can inherit the [``Stream Object``](../stream/stream.response.md)** to point the video to an HTTP URL, BitTorrent, YouTube or any other stremio-supported transport protocol._
+_As an alternative to using a YouTube ID, **you can inherit the [``Stream Object``](/docs/api/stream/stream.response.md)** to point the video to a HTTP URL, BitTorrent, YouTube or any other stremio-supported transport protocol._
