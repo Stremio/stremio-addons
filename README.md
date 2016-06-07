@@ -1,8 +1,14 @@
-### Description
+### Stremio Add-ons
+
+_All of the video content [Stremio](http://www.strem.io/) provides, it gets exclusively through this add-on system, with no content or specific provider being built into the app._
 
 This package includes both Server and Client for a complete Add-on System.
 
-Add-ons are being hosted server-side and support their own node modules. Their purpose is to respond to requests from the Client which will expect:
+Add-ons are being hosted separately (on a server). As such, they have increased security and support their own node modules.
+
+### What do they do?
+
+The purpose of an add-on is to gather media content (not to extend app features) and respond to requests from the Client which will expect:
 
 - a [manifest](/docs/manifest.md) (add-on description)
 - an array of [meta elements](/docs/meta/meta.element.md) (primary meta feed)
