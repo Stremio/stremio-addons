@@ -43,15 +43,15 @@ var server = require("http").createServer(function (req, res) {
 
 ### Documentation
 
-- [Manifest](/api/manifest.md)
-- [Meta Feed](/api/meta/meta.feed.md)
-- [Searching](/api/meta/meta.search.md)
-- [Meta Element](/api/meta/meta.element.md)
-- [Stream Link](/api/stream/README.md)
-- [Subtitles](/api/subtitles/README.md)
+- [Manifest](/docs/api/meta/manifest.md)
+- [Meta Feed](/docs/api/meta/meta.find.md)
+- [Searching](/docs/api/meta/meta.search.md)
+- [Meta Element](/docs/api/meta/meta.element.md)
+- [Stream Link](/docs/api/stream/README.md)
+- [Subtitles](/docs/api/subtitles/README.md)
 
 ### Tutorials
 
-- [Testing Environments](/tutorial/testing.md)
-- [Using Cinemeta (meta API)](/tutorial/using-cinemeta.md)
-- [Add to Your App](/tutorial/add.to.app.md)
+- [Testing Environments](/docs/tutorial/testing.md)
+- [Using Cinemeta (meta API)](/docs/tutorial/using-cinemeta.md)
+- [Add to Your App](/docs/tutorial/add.to.app.md)
