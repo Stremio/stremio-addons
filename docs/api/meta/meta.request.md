@@ -1,4 +1,4 @@
-### ``Meta Request``
+### Meta Request
 
 ``query`` - MongoDB-like query object, where all objects must be matched against; should support ``$in``, ``$exists``, ``$gt``, ``$lt`` operators; on ``meta.search`` method, this is a string
 
