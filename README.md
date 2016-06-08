@@ -1,21 +1,27 @@
-### Description
+### Stremio Add-ons
+
+_All of the video content [Stremio](http://www.strem.io/) provides, it gets exclusively through this add-on system, with no content or specific provider being built into the app._
 
 This package includes both Server and Client for a complete Add-on System.
 
-Add-ons are being hosted server-side and support their own node modules. Their purpose is to respond to requests from the Client which will expect:
+Add-ons are being hosted separately (on a server). As such, they have increased security and support their own node modules.
 
-- a [manifest](/docs/manifest.md) (add-on description)
-- an array of [meta elements](/docs/meta/meta.element.md) (primary meta feed)
-- an array of [meta elements](/docs/meta/meta.element.md) (requested by search query)
-- an array of [subtitle objects](/docs/subtitles/subtitles.object.md) (requested by ID)
-- an array of [stream links](/docs/steam/stream.link.md) (requested by ID)
-- one [meta element](/docs/meta/meta.element.md) (requested by ID)
+### What do they do?
+
+The purpose of an add-on is to gather media content (not to extend app features) and respond to requests from the Client which will expect:
+
+- a [manifest](/docs/api/manifest.md) (add-on description)
+- an array of [meta elements](/docs/api/meta/meta.element.md) (primary meta feed)
+- an array of [meta elements](/docs/api/meta/meta.element.md) (requested by search query)
+- an array of [subtitle objects](/docs/api/subtitles/subtitles.object.md) (requested by ID)
+- an array of [stream links](/docs/api/stream/stream.response.md) (requested by ID)
+- one [meta element](/docs/api/meta/meta.element.md) (requested by ID)
 
 ### Documentation
 
 - [Anatomy of an Add-on](/docs/README.md)
-- [Manifest](/docs/manifest.md)
-- [Meta Feed](/docs/api/meta/meta.feed.md)
+- [Manifest](/docs/api/manifest.md)
+- [Meta Feed](/docs/api/meta/meta.find.md)
 - [Searching](/docs/api/meta/meta.search.md)
 - [Meta Element](/docs/api/meta/meta.element.md)
 - [Stream Link](/docs/api/stream/README.md)
