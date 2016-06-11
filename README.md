@@ -13,9 +13,9 @@ The purpose of an add-on is to gather media content (not to extend app features)
 - a [manifest](/docs/api/manifest.md) (add-on description)
 - an array of [meta elements](/docs/api/meta/meta.element.md) (primary meta feed)
 - an array of [meta elements](/docs/api/meta/meta.element.md) (requested by search query)
+- one [meta element](/docs/api/meta/meta.element.md) (requested by ID)
 - an array of [subtitle objects](/docs/api/subtitles/subtitles.object.md) (requested by ID)
 - an array of [stream links](/docs/api/stream/stream.response.md) (requested by ID)
-- one [meta element](/docs/api/meta/meta.element.md) (requested by ID)
 
 ### Documentation
 
