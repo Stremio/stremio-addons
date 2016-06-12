@@ -454,7 +454,8 @@ tape("add-on priority", function(t) {
 });
 
 tape("checkArgs", function(t) { 
-	var checkArgs = (new addons.Client({ })).checkArgs;
+	var cli = new addons.Client({ });
+	var checkArgs = function(args, filter) { return cli.checkArgs(args, { filter: filter }) };
 
 	var f = { "query.id": { $exists: true }, "query.type": { $in: ["foo", "bar"] }, toplevel: { $exists: true } };
 	t.ok(checkArgs({ toplevel: 5 }, f) == true, "basic top-level match");
