@@ -37,9 +37,9 @@ The purpose of an add-on is to gather media content (not to extend app features)
 
 - [Hello World](https://github.com/Ivshti/addon-helloworld)
 - [Twitch.tv](https://github.com/jaruba/stremio-twitch)
-- [Guidebox](http://github.com/Stremio/guidebox-stremio)
-- [Filmon.tv](http://github.com/Stremio/filmon-stremio)
 - [Local Files](http://github.com/Stremio/stremio-local-files)
+- [Filmon.tv](http://github.com/Stremio/filmon-stremio)
+- [Guidebox](http://github.com/Stremio/guidebox-stremio)
 
 
 _brought to you by [Stremio](http://www.strem.io/)_
