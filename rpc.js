@@ -1,7 +1,7 @@
 var http = require("http");
 var https = require("https");
 var url = require("url");
-var _ = require("lodash");
+var _ = require("underscore");
 
 var LENGTH_TO_FORCE_POST=8192;
 
