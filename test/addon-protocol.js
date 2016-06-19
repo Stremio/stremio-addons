@@ -1,6 +1,6 @@
 var stremio = require("../");
 var tape = require("tape");
-var _ = require("lodash");
+var _ = require("underscore");
 var async = require("async");
 
 var NETWORK_TIMEOUT = 35*1000;

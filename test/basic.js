@@ -1,7 +1,7 @@
 var addons = require("../");
 var tape = require("tape");
 var http = require("http");
-var _ = require("lodash");
+var _ = require("underscore");
 
 var TEST_SECRET = "51af8b26c364cb44d6e8b7b517ce06e39caf036a";
 
