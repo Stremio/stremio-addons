@@ -1,6 +1,6 @@
 ## Meta Search
 
-Perform a text search. Arguments are exactly the same as usual [``Meta Request``](meta.request.md), except ``query`` is a string. Returns an array of [``Meta Elements``](metadata.element.md) matches.
+Perform a text search. Arguments are exactly the same as usual [``Meta Request``](meta.request.md), except ``query`` is a string. Returns an array of [``Meta Elements``](meta.element.md) matches.
 
 This is used for the Search functionality.
 

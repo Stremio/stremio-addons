@@ -80,7 +80,7 @@ function Server(methods, options, manifest)
 
 		var parsed = url.parse(req.url);
 		
-		req._statsNotes.push(req.method);
+		req._statsNotes.push(req.method); // HTTP method
 
 		if (req.method === "OPTIONS") {
 			var headers = {};
@@ -95,7 +95,7 @@ function Server(methods, options, manifest)
 		};
 		
 		if (req.method == "POST" || ( req.method == "GET" && parsed.pathname.match("q.json$") ) ) return serveRPC(req, res, function(method, params, cb) {
-			req._statsNotes.push(method);
+			req._statsNotes.push(method); // stremio method
 			self.request(method, params, cb);
 		}); else if (req.method == "GET") { // unsupported by JSON-RPC, it uses post
 			return landingPage(req, res);

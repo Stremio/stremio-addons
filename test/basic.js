@@ -453,8 +453,12 @@ tape("add-on priority", function(t) {
 	t.end();
 });
 
+
 tape("checkArgs", function(t) { 
-	var checkArgs = (new addons.Client({ })).checkArgs;
+	var cli = new addons.Client({ });
+
+	/*
+	var checkArgs = function(args, filter) { return cli.checkArgs(args, { filter: filter }) };
 
 	var f = { "query.id": { $exists: true }, "query.type": { $in: ["foo", "bar"] }, toplevel: { $exists: true } };
 	t.ok(checkArgs({ toplevel: 5 }, f) == true, "basic top-level match");
@@ -466,6 +470,18 @@ tape("checkArgs", function(t) {
 	t.ok(checkArgs({ query: { type: "somethingelse" } }, f) == false, "nested with $in - not matching");
 	t.ok(checkArgs({ query: {} }, f) == false, "nested - not matching");
 	t.ok(checkArgs({ query: { idx: 5 } } , f) == false, "nested - not maching");
+	*/
+
+	var checkArgs = cli.checkArgs;
+
+	var manifest = { idProperty: "filmon_id", types: ["movie", "series"] };
+
+	t.ok(checkArgs({ }, { }) === 0,  "no matches - empty manifest");
+	t.ok(checkArgs({}, { types: ["series", "movie"] }) === 0, "no matches");
+	t.ok(checkArgs({ query: { type: "series" } }, manifest) === 1, "one match by type");
+	t.ok(checkArgs({ query: { filmon_id: "something" } }, manifest) === 1, "one match by id");
+	t.ok(checkArgs({ query: { id: "filmon_id:something" } }, manifest) === 1, "one match by id, with prefix");
+	t.ok(checkArgs({ query: { filmon_id: "something", type: "movie" } }, manifest) === 2, "two matches");
 
 	process.nextTick(function() { t.end(); });
 });

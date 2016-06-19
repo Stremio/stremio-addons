@@ -1,6 +1,5 @@
 var _ = require("underscore");
 var async = require("async");
-var dot = require("dot-object");
 var url = require("url");
 var emitter = require("events").EventEmitter;
 
@@ -30,15 +29,14 @@ function bindDefaults(call) {
 };
 
 // Check arguments against the service's filter
-function checkArgs(args, filter)
+function checkArgs(args, manifest)
 {
-	if (!filter || _.isEmpty(filter)) return true;
-	var flat = dot.dot(args);
-	return _.filter(filter, function(val, key) {
-		var v = dot.pick(key, args) || flat[key]; // bit of a hack to handle the case where a key has dot in it
-		if (val.$exists) return (v !== undefined) == val.$exists;
-		if (val.$in) return _.intersection(Array.isArray(v) ? v : [v], val.$in).length;
-	}).length;
+	var score = 0;
+	if (! args.query) return score;
+	if ((manifest.types || []).indexOf(args.query.type)!=-1) score++;
+	if (args.query.hasOwnProperty(manifest.idProperty)) score++;
+	if (args.query.id && args.query.id.toString().indexOf(manifest.idProperty) === 0) score++;
+	return score;
 };
 
 
@@ -157,7 +155,7 @@ function Stremio(options)
 		var res = _.chain(services).values().sortBy(function(x){ return x.priority }).value();
 		if (forMethod) res = res.filter(function(x) { return x.initialized ? x.methods.indexOf(forMethod) != -1 : true }); // if it's not initialized, assume it supports the method
 		if (forMethod && !noPicker) res = picker(res, forMethod); // apply the picker for a method
-		if (forArgs) res = _.sortBy(res, function(x) { return -checkArgs(forArgs, x.manifest.filter) });
+		if (forArgs) res = _.sortBy(res, function(x) { return -checkArgs(forArgs, x.manifest) }); // sort by relevance to arguments
 		return _.sortBy(res, function(x) { return -(x.initialized && !x.networkErr) });
 	};
 
