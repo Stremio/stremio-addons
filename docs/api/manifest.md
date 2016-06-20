@@ -10,6 +10,8 @@ Valid properties are:
 
 ``description`` - **required** - human readable description
 
+``idProperty`` - **required** - ID property of the Meta or Streams that this add-on delivers - for example ``imdb_id`` or ``filmon_id``
+
 ``webDescription`` - _optional_ - human readable description for the auto-generated add-on HTML page ; HTML allowed
 
 ``endpoint`` - _optional_ - http endpoint to the hosted version of this add-on; should end in standard stremio URL path, such as ``/stremio/v1`` for the v1 version of the protocol; example: ``http://cinemeta.strem.io/stremioget/stremio/v1``
@@ -25,8 +27,6 @@ Valid properties are:
 ``contactEmail`` - **required** - contact email for add-on issues; used for the Report button in the app; also, the Stremio team may reach you on this email for anything relating your add-on
 
 ``suggested`` - _optional_ - array of IDs of other add-ons that should be suggested when installing this add-on
-
-``filter`` - _optional_ - object of conditions for query properties that, when matched, increase the priority of the add-on in the call order
 
 ```javascript
  "filter": {
