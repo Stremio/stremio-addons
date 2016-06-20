@@ -475,6 +475,7 @@ tape("checkArgs", function(t) {
 	var checkArgs = cli.checkArgs;
 
 	var manifest = { idProperty: "filmon_id", types: ["movie", "series"] };
+	var manifestOld = { filter: { "query.filmon_id": { "$exists": true } } };
 
 	t.ok(checkArgs({ }, { }) === 0,  "no matches - empty manifest");
 	t.ok(checkArgs({}, { types: ["series", "movie"] }) === 0, "no matches");
@@ -482,6 +483,7 @@ tape("checkArgs", function(t) {
 	t.ok(checkArgs({ query: { filmon_id: "something" } }, manifest) === 1, "one match by id");
 	t.ok(checkArgs({ query: { id: "filmon_id:something" } }, manifest) === 1, "one match by id, with prefix");
 	t.ok(checkArgs({ query: { filmon_id: "something", type: "movie" } }, manifest) === 2, "two matches");
+	t.ok(checkArgs({ query: { filmon_id: "something" } }, manifestOld) === 1, "one match by id, old manifest");
 
 	process.nextTick(function() { t.end(); });
 });
