@@ -28,7 +28,7 @@ function bindDefaults(call) {
 	}
 };
 
-// Check arguments against the service's filter
+// Check priority based on arguments - e.g. on type and idProperty
 function checkArgs(args, manifest)
 {
 	var score = 0;
