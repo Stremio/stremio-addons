@@ -40,11 +40,11 @@ Valid properties are:
 
 ```javascript
 [
-  { prop: "popularities.moviedb", name: "SORT_TRENDING", types: ["movie", "series"], noDiscoverTab: false }
+  { prop: "popularities.moviedb", name: "SORT_TRENDING", types: ["movie", "series"], noDiscoverTab: false, countrySpecific: false }
 ]
 ```
 
-***Tip* - use different sorts to provide different catalogues for your users, e.g. separate "popular movies" and "new movies"**
+***Tip* - use different sorts to provide different catalogues for your users, e.g. separate "popular movies" and "new movies". This will appear as a tab in Discover and as a row in Board**
 
 ``searchDebounce`` - _optional_ - how much to de-bounce after the user types before calling ``meta.search``; not all clients use this
 
