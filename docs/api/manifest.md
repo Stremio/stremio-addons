@@ -10,7 +10,7 @@ Valid properties are:
 
 ``description`` - **required** - human readable description
 
-``idProperty`` - **required** - ID property of the Meta or Streams that this add-on delivers - for example ``imdb_id`` or ``filmon_id``
+``idProperty`` - **required** - ID property of the Meta or Streams that this add-on delivers - for example ``imdb_id`` or ``filmon_id``; can be string or array of strings
 
 ``webDescription`` - _optional_ - human readable description for the auto-generated add-on HTML page ; HTML allowed
 
