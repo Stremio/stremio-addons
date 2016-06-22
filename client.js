@@ -37,7 +37,7 @@ function checkArgs(args, manifest)
         if (!manifest.idProperty && manifest.filter) Object.keys(manifest.filter).some(function(k) {
                 if (k.match("_id$")) return manifest.idProperty = k.split(".").pop() 
         });
-	if (args.query.hasOwnProperty(manifest.idProperty)) score++;
+	(Array.isArray(manifest.idProperty) ? manifest.idProperty : [manifest.idProperty]).forEach(function(prop) { if (args.query.hasOwnProperty(prop)) score++ });
 	if (args.query.id && args.query.id.toString().indexOf(manifest.idProperty) === 0) score++;
 	return score;
 };
