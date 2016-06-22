@@ -48,7 +48,7 @@ Valid properties are:
 
 ``searchDebounce`` - _optional_ - how much to de-bounce after the user types before calling ``meta.search``; not all clients use this
 
-``countrySpecific`` - _optional_ - boolean - if true, the stremio client must pass ``countryCode`` of the user along with ``meta.find``. *Example*: add-on for service where the streams are georestricted, e.g. Netflix
+``countrySpecific`` - _optional_ - boolean - if true, the stremio client must pass ``countryCode`` of the user along with ``meta.find``. *Example*: add-on for service where the streams are georestricted, e.g. Netflix; you can use this either directly in ``manifest``, or under one or more of the ``sorts``
 
 ``zipSpecific`` - _optional_ - boolean - if true, the stremio client must pass ``zip`` of the user along with  ``meta.find``. *Example*: cinema showtimes guide add-on
 
