@@ -36,11 +36,11 @@ The purpose of an add-on is to gather media content (not to extend app features)
 
 ### Demo Add-ons
 
-- [Hello World](https://github.com/Ivshti/addon-helloworld)
-- [Twitch.tv](https://github.com/jaruba/stremio-twitch)
-- [Local Files](http://github.com/Stremio/stremio-local-files)
-- [Filmon.tv](http://github.com/Stremio/filmon-stremio)
-- [Guidebox](http://github.com/Stremio/guidebox-stremio)
-- [OpenSubtitles](http://github.com/Stremio/stremio-opensubtitles)
+- [Hello World](https://github.com/Ivshti/addon-helloworld) - basic explanation of how to create a streaming add-on
+- [Twitch.tv](https://github.com/jaruba/stremio-twitch) - streams live from Twitch.tv
+- [Local Files](http://github.com/Stremio/stremio-local-files) - indexes files found locally and puts them in Stremio
+- [Filmon.tv](http://github.com/Stremio/filmon-stremio) - adds TV catalogue from Filmon.tv with streaming
+- [Guidebox](http://github.com/Stremio/guidebox-stremio) - redirects to legal sources where you can stream movies/series
+- [OpenSubtitles](http://github.com/Stremio/stremio-opensubtitles) - find subtitles automatically for the played video file
 
 _brought to you by [Stremio](http://www.strem.io/)_
