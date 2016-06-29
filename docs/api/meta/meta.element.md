@@ -28,6 +28,10 @@ The response is an array of Metadata objects.
 
 ``dvdRelease`` - _optional_ - DVD release date
 
+``released`` - _optional_ - initial release date; for movies, this is the cinema debut
+
+``inTheaters`` - _optional_ - used only for ``movie`` type, boolean whether this movie is still in theaters or not; if not provided, it will be decided based on ``released`` date
+
 ``episodes`` - _optional_ - used for ``series``, array of Episode objects
 
 ``videos`` - _optional_ - used for ``channel``, array of Video objects
