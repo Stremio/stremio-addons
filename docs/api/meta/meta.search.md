@@ -32,7 +32,7 @@ See [Meta Request](meta.request.md) for Parameters.
 ```javascript
 {
   query: 'baseball season', // return the query from the response
-  results: [
+  results: [ // Array of Metadata objects
     {
       id: 'basic_id:opa2135',         // unique ID for the media, will be returned as "basic_id" in the request object later
       name: 'basic title',            // title of media
