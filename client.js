@@ -158,6 +158,7 @@ function Stremio(options)
 		var res = _.chain(services).values().sortBy(function(x){ return x.priority }).value();
 		if (forMethod) res = res.filter(function(x) { return x.initialized ? x.methods.indexOf(forMethod) != -1 : true }); // if it's not initialized, assume it supports the method
 		if (forMethod && !noPicker) res = picker(res, forMethod); // apply the picker for a method
+		//if (forArgs) res = res.filter(function(x) { return checkArgs(forArgs, x.manifest) }); // must have > 0 checkArgs, means we've at least matched type
 		if (forArgs) res = _.sortBy(res, function(x) { return -checkArgs(forArgs, x.manifest) }); // sort by relevance to arguments
 		return _.sortBy(res, function(x) { return -(x.initialized && !x.networkErr) });
 	};
