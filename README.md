@@ -43,4 +43,8 @@ The purpose of an add-on is to gather media content (not to extend app features)
 - [Guidebox](http://github.com/Stremio/guidebox-stremio) - redirects to legal sources where you can stream movies/series
 - [OpenSubtitles](http://github.com/Stremio/stremio-opensubtitles) - find subtitles automatically for the played video file
 
+### Benefits
+
+- [Benefits of creating an add-on for Stremio](/docs/BENEFITS.md)
+
 _brought to you by [Stremio](http://www.strem.io/)_
