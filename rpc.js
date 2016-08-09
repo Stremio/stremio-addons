@@ -1,5 +1,3 @@
-var http = require("http");
-var https = require("https");
 var url = require("url");
 var _ = require("underscore");
 
@@ -26,6 +24,9 @@ var receiveJSON = function(resp, callback) {
 // 2) reduce number of dependencies
 function rpcClient(endpoint, options, globalOpts)
 {
+	var http = require("http");
+	var https = require("https");
+
 	var isGet = true;
 
 	var client = { };
@@ -65,4 +66,3 @@ function rpcClient(endpoint, options, globalOpts)
 
 module.exports = rpcClient;
 module.exports.receiveJSON = receiveJSON;
-module.exports.http = http;
