@@ -11,7 +11,7 @@ Retrieving metadata and associating video files with IMDB ID are useful use case
 ### Initializing a client
 
 ```javascript
-var CINEMETA_ENDPOINT = "http://cinemeta.strem.io/stremioget";
+var CINEMETA_ENDPOINT = "http://cinemeta.strem.io/stremioget/stremio/v1";
 
 var Stremio = require("stremio-addons");
 var addons = new Stremio.Client();
@@ -30,6 +30,11 @@ addons.meta.get({ query: { imdb_id: "tt0032138" } }, function(err, meta) {
 addons.meta.find({ query: { type: "series" }, limit: 50 }, function(err, res) { 
 	console.log(res); // array of 50 series
 });
+
+// TIP: in order to get other content types, you can initialize add-ons for them
+// addons.add("http://channels.strem.io/stremioget/stremio/v1");
+// addons.add("http://filmon.strem.io/stremioget/stremio/v1");
+
 ```
 
 For documentation on the ``meta.get`` or ``meta.find`` interface, see [Meta Request](../meta/meta.request.md) and [Meta Response](../meta/meta.element.md).
