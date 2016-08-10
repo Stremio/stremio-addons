@@ -47,7 +47,7 @@ function Addon(url, options, stremio, ready)
 {
 	var self = this;
 
-	var client = options.client || require("./rpc");
+	var client = options.client || Stremio.RPC;
 
 	if (typeof(url) == "string") {
 		this.client = client(url, { 

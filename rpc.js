@@ -1,6 +1,9 @@
 var url = require("url");
 var _ = require("underscore");
 
+var http = require("http");
+var https = require("https");
+
 var LENGTH_TO_FORCE_POST=8192;
 
 var receiveJSON = function(resp, callback) {
@@ -24,9 +27,6 @@ var receiveJSON = function(resp, callback) {
 // 2) reduce number of dependencies
 function rpcClient(endpoint, options, globalOpts)
 {
-	var http = require("http");
-	var https = require("https");
-
 	var isGet = true;
 
 	var client = { };
