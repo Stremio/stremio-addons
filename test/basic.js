@@ -264,8 +264,8 @@ tape("intercept error from addon", function(t) {
 		},
 		function(url2) {
 			var s = new addons.Client({ });
-			s.add(url1, { priority: 0 });
-			s.add(url2, { priority: 1 });
+			s.add(url1, { priority: 1 });
+			s.add(url2, { priority: 0 });
 			s.stream.find({ query: { id: 1 } }, function(err, res)
 			{
 				t.ok(err, "we have an error");
@@ -391,8 +391,8 @@ tape("picks right add-on depending on checkArgs", function(t) {
 		initServer({ "stream.find": function(args, cb, sess) {
 			return cb(null, { url: "success", idProperty: manifest.idProperty });
 		} }, function(url) {
-			//s.add(url, { priority: j }, function() {
-			s.add(url, { priority: 0 }, function() {
+			s.add(url, { priority: j }, function() {
+			//s.add(url, { priority: 0 }, function() {
 				if (++j === all.length) ready();
 			})
 		}, null, manifest);

@@ -10,7 +10,7 @@ var stremio = new addons.Client({ /* options; picker: function(addons) { return 
 // respTimeout: specify response timeout
 // disableHttps: use HTTP instead of HTTPS
 
-stremio.add(URLtoAddon, { priority: 0 }); // Priority is an integer, zero is the highest priority
+stremio.add(URLtoAddon, { priority: 0 }); // Priority is an integer, the larger it is, the higher the priority
 // OR
 stremio.add(URLtoAddon);
 // Priority determines which Add-on to pick first for an action, if several addons provide the same thing (e.g. streaming movies)
