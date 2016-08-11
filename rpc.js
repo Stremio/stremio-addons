@@ -1,5 +1,5 @@
 var url = require("url");
-var _ = require("underscore");
+var extend = require("extend");
 
 var http = require("http");
 var https = require("https");
@@ -34,13 +34,12 @@ function rpcClient(endpoint, options, globalOpts)
 		params[0] = null; // OBSOLETE work around authentication (index 0) slot which was used before
 
 		var body = JSON.stringify({ params: params, method: method, id: 1, jsonrpc: "2.0" });
-		callback = _.once(callback);
 
 		if (body.length>=LENGTH_TO_FORCE_POST) isGet = false;
 
 		var reqObj = { };
-		if (!isGet) _.extend(reqObj, url.parse(endpoint), { method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } });
-		else _.extend(reqObj, url.parse(endpoint+"/q.json?b="+new Buffer(body, "binary").toString("base64")));
+		if (!isGet) extend(reqObj, url.parse(endpoint), { method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } });
+		else extend(reqObj, url.parse(endpoint+"/q.json?b="+new Buffer(body, "binary").toString("base64")));
 		
 		if (globalOpts.disableHttps) reqObj.protocol = "http:";
 

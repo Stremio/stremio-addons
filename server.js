@@ -1,6 +1,6 @@
-var _ = require("underscore");
 var url = require("url");
 var rpc = require("./rpc");
+var extend = require("extend");
 var async = require("async");
 
 var template;
@@ -14,7 +14,7 @@ function Server(methods, options, manifest)
 {
 	var self = this;
 
-	options = _.extend({ 
+	options = extend({ 
 		allow: [ CENTRAL ], // default stremio central
 		secret: "8417fe936f0374fbd16a699668e8f3c4aa405d9f" // default secret for testing add-ons
 	}, options || { });
@@ -30,9 +30,9 @@ function Server(methods, options, manifest)
 	self.announced = false;
 	function announce() {
 		self.announced = true;
-		var body = JSON.stringify({ id: manifest.id, manifest: _.omit(manifest, "filter") });
+		var body = JSON.stringify({ id: manifest.id, manifest: manifest });
 		var parsed = url.parse(CENTRAL+"/stremio/announce/"+options.secret);
-		var req = (parsed.protocol.match("https") ? require("https") : require("http")).request(_.extend(parsed, { 
+		var req = (parsed.protocol.match("https") ? require("https") : require("http")).request(extend(parsed, { 
 			method: "POST", headers: { "Content-Type": "application/json", "Content-Length": body.length } 
 		}), function(res) { /* console.log(res.statusCode); currently we don't care */ });
 		req.on("error", function(err) { console.error("Announce error for "+manifest.id, err) });
@@ -43,7 +43,7 @@ function Server(methods, options, manifest)
 	function meta(cb) {
 		cb(null, {
 			methods: Object.keys(methods),
-			manifest: _.extend({ methods: Object.keys(methods) }, manifest || {})
+			manifest: extend({ methods: Object.keys(methods) }, manifest || {})
 		});
 	};
 
