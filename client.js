@@ -158,10 +158,9 @@ function Stremio(options)
 
 		var cmp = function(a, b, fn) { return fn(a) - fn(b) };
 		return res.sort(function(a, b) {
-			return 
-				cmp(b, a, function(x) { return x.initialized && !x.networkErr }) || // sort by whether it's usable
-				cmp(b, a, function(x) { return forArgs ? checkArgs(forArgs, x.manifest) : 0 }) ||  // sort by relevance to arguments
-				cmp(b, a, function(x) { return x.priority }) // compare prio // sort by priority
+			return cmp(b, a, function(x) { return x.initialized && !x.networkErr }) // sort by whether it's usable
+				|| cmp(b, a, function(x) { return forArgs ? checkArgs(forArgs, x.manifest) : 0 }) // sort by relevance to arguments
+				|| cmp(b, a, function(x) { return x.priority }) // compare prio // sort by priority
 		});
 	};
 

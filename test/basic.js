@@ -5,9 +5,9 @@ var extend = require("extend");
 
 var TEST_SECRET = "51af8b26c364cb44d6e8b7b517ce06e39caf036a";
 
-function initServer(methods, callback, opts) {
+function initServer(methods, callback, opts, manifest) {
 	var manifest;
-	var server = new addons.Server(methods, extend({ secret: TEST_SECRET  }, opts), manifest = { 
+	var server = new addons.Server(methods, extend({ secret: TEST_SECRET  }, opts), manifest = manifest || { 
 	 name: "testing add-on", description: "add-on used for testing", version: "1.0.0",
 	 filter: { "query.id": { $exists: true }, "query.types": { $in: [ "foo", "bar" ] } }
 	});
@@ -142,7 +142,7 @@ tape("local basic call", function(t) {
 	var s = new addons.Client({ picker: function(addons) { t.ok("picker called with 1 addon", addons.length==1); return addons } });
 	s.add(server, null, function(err, addon) {
 		t.ok(addon, "callback to .add"); 
-		s.add(server, null, function(err, addon) {  t.ok(addon, "callback to .add - second time") });
+		s.add(server, null, function(err, addon) { t.ok(addon, "callback to .add - second time") });
 	});
 	s.call("meta.get", { query: { id: 1 } }, function(err, res)
 	{
@@ -373,4 +373,42 @@ tape("checkArgs", function(t) {
 	t.ok(checkArgs({ query: { filmon_id: "something" } }, manifestOld) === 1, "one match by id, old manifest");
 
 	process.nextTick(function() { t.end(); });
+});
+
+
+
+tape("picks right add-on depending on checkArgs", function(t) {
+	t.timeoutAfter(2000);
+
+	var s = new addons.Client({ timeout: 1000 });
+
+	var manifestCine = { idProperty: "imdb_id", types: ["movie", "series"] };
+	var manifestFilmon = { idProperty: "filmon_id", types: ["movie", "series"] };
+	var manifestYt = { idProperty: "yt_id", types: ["movie", "channel"] };
+
+	var j = 0;
+	[manifestFilmon, manifestYt, manifestCine].forEach(function(manifest, i, all) {
+		initServer({ "stream.find": function(args, cb, sess) {
+			return cb(null, { url: "success", idProperty: manifest.idProperty });
+		} }, function(url) {
+			//s.add(url, { priority: j }, function() {
+			s.add(url, { priority: 0 }, function() {
+				if (++j === all.length) ready();
+			})
+		}, null, manifest);
+	});
+
+	function ready() {
+		var j = 0;
+		[manifestFilmon, manifestYt, manifestCine].forEach(function(manifest, i, all) {
+			var q = { type: manifest.types[0], id: manifest.idProperty+":test" };
+			s.stream.find({ query: q }, function(err, res) {
+				t.error(err, "stream.find");
+				t.ok(res, "has res");
+				t.equals(res.idProperty, manifest.idProperty, "should be "+manifest.idProperty);
+				if (++j === all.length) t.end();
+			})
+		});
+
+	}
 });
