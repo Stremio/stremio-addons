@@ -1,6 +1,5 @@
 var _ = require("underscore");
 var async = require("async");
-var url = require("url");
 var emitter = require("events").EventEmitter;
 
 var MAX_RETRIES = 4;
