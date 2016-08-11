@@ -1,6 +1,6 @@
+var emitter = require("events").EventEmitter;
 var _ = require("underscore");
 var async = require("async");
-var emitter = require("events").EventEmitter;
 
 var MAX_RETRIES = 4;
 var SERVICE_RETRY_TIMEOUT = 30*1000;
@@ -64,16 +64,19 @@ function Addon(url, options, stremio, ready)
 
 	this.priority = options.priority || 0;
 	this.initialized = false;
+	this.initializing = false;
 	this.manifest = { };
 	this.methods = [];
 	this.retries = 0;
 
-	var q = async.queue(function(task, done) {
-		if (self.initialized) return done();
-
+	initialize();
+	
+	function initialize() {
+		self.initializing = true;
 		self.client.request("meta", [], function(err, error, res) {
+			self.initializing = false;
 			self.networkErr = err;
-			if (err) { stremio.emit("network-error", err, self, self.url); return done(); } // network error. just ignore
+			if (err) { stremio.emit("network-error", err, self, self.url) } // network error. just ignore
 			
 			// Re-try if the add-on responds with error on meta; this is usually due to a temporarily failing add-on
 			if (error) { 
@@ -84,25 +87,23 @@ function Addon(url, options, stremio, ready)
 			self.retries = 0; // return retries back to 0
 			if (res && res.methods) self.methods = [].concat(res.methods);
 			if (res && res.manifest) self.manifest = res.manifest;
-			if (ready) ready();
-			done();
+			if (res) stremio.emit("addon-ready", self, self.url);
+			stremio.emit("addon-meta:"+self.url, self, err, res);
 		});
-	}, 1);
-
-	q.push({ }, function() { }); // Start initialization now
+	}
 
 	this.call = function(method, args, cb)
 	{
-		// Validate arguments - we should do this via some sort of model system
-		var err;
-		//if (method.match("^stream")) [args[1]].forEach(function(args) { err =  err || validation.stream_args(args) });
-		if (err) return cb(0, null, err);
+		// wait for initialization
+		if (! self.initialized) {
+			if (! self.initializing) initialize();
+			stremio.once("addon-meta:"+self.url, function() { self.call(method, args, cb) });
+			return;
+		}
 
-		if (cb) cb = _.once(cb);
-		q.push({ }, function() {
-			if (self.methods.indexOf(method) == -1) return cb(1);
-			self.client.request(method, args, function(err, error, res) { cb(0, err, error, res) });
-		});
+		// Validate arguments - we should do this via some sort of model system
+		if (self.methods.indexOf(method) == -1) return cb(1);
+		self.client.request(method, args, function(err, error, res) { cb(0, err, error, res) });
 	};
 
 	this.identifier = function() {
@@ -138,8 +139,6 @@ function Stremio(options)
 		cb = (typeof(cb) == "function") ? cb : function() { };
 		if (services[url]) return cb(null, services[url]);
 		services[url] = new Addon(url, _.extend({}, options, opts || {}), self, function() { 
-			// callback for ready service
-			self.emit("addon-ready", services[url], url);
 			cb(null, services[url]);
 		});
 	};
