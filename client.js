@@ -1,6 +1,5 @@
 var emitter = require("events").EventEmitter;
 var _ = require("underscore");
-var async = require("async");
 
 var MAX_RETRIES = 4;
 var SERVICE_RETRY_TIMEOUT = 30*1000;
@@ -162,10 +161,11 @@ function Stremio(options)
 	};
 
 	function fallthrough(s, method, args, cb) {
-		var cb = _.once(cb), networkErr; // save last network error to return it potentially
-		async.forever(function(next) {
-			var service = s.shift(), next = _.once(next);
-			if (! service) return next(true); // end the loop
+		var networkErr; // save last network error to return it potentially
+		
+		function next() {
+			var service = s.shift();
+			if (! service) return cb(networkErr || new Error("no addon supplies this method / arguments")); 
 
 			service.call(method, [null, args], function(skip, err, error, res) {				
 				networkErr = err;
@@ -173,11 +173,9 @@ function Stremio(options)
 				if (skip || err) return next(); // Go to the next service
 
 				cb(error, res, service);
-				next(1); // Stop
 			});
-		}, function(err) {
-			if (err !== 1) cb(networkErr || new Error("no addon supplies this method / arguments"));
-		});
+		};
+		next();
 	};
 
 	function call(method, args, cb) {
