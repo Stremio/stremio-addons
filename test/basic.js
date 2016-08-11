@@ -1,13 +1,13 @@
 var addons = require("../");
 var tape = require("tape");
 var http = require("http");
-var _ = require("underscore");
+var extend = require("extend");
 
 var TEST_SECRET = "51af8b26c364cb44d6e8b7b517ce06e39caf036a";
 
 function initServer(methods, callback, opts) {
 	var manifest;
-	var server = new addons.Server(methods, _.extend({ secret: TEST_SECRET  }, opts), manifest = { 
+	var server = new addons.Server(methods, extend({ secret: TEST_SECRET  }, opts), manifest = { 
 	 name: "testing add-on", description: "add-on used for testing", version: "1.0.0",
 	 filter: { "query.id": { $exists: true }, "query.types": { $in: [ "foo", "bar" ] } }
 	});
@@ -210,7 +210,7 @@ tape("fallback if result is null", function(t) {
 			s.stream.find({ query: { id: 1 } }, function(err, res)
 			{
 				t.ok(!err, "no err on call");
-				res = _.flatten(res);
+				res = res.reduce(function(a, b) { return a.concat(b) }, []);
 				t.ok(res, "we have result");
 				t.ok(res[0].from == "TWO", "we have results from two");
 				t.end();
@@ -334,86 +334,6 @@ tape("timeouts after opts.timeout time", function(t) {
 
 });
 
-
-
-
-/* 
-tape("picking an add-on depending on filter")
-tape("picking an add-on depending on priority")
-tape("calling all add-ons")
-tape("falling back when addon result is null")
- */
-
-var validation = require("../validation");
-
-tape("validation - stream arguments", function(t) {
-	//t.skip("validation disabled"); return t.end();
-
-	t.ok(validation.stream_args({ infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223"} ) === false, "valid with infoHash");
-	t.ok(validation.stream_args({ query: { imdb_id: "tt0032138" } } ) === false, "valid with query");
-	t.ok(validation.stream_args({ test: { imdb_id: "tt0032138" } } ).code == 0, "invalid args");
-	t.end();
-});
-
-tape("validation - stream results", function(t) {
-        //t.skip("validation disabled"); return t.end();
-
-	t.ok(validation.stream({ test: "http://test" }).code === 3, "invalid - no availability");
-	t.ok(validation.stream({ availability: 3, infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223", mapIdx: 0 } ) === false, "valid with infoHash / mapIdx");
-	t.ok(validation.stream({ availability: 3, infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223" } ).code === 5, "invalid with infoHash");
-	t.ok(validation.stream({ availability: 3, url: "http://test" }) === false, "valid with url");
-	t.ok(validation.stream({ availability: 3, test: "http://test" }).code === 4, "invalid");
-	t.end();
-});
-
-
-
-
-tape("stream.find validation", function(t) {
-	t.timeoutAfter(2000);
-    t.skip("validation disabled"); return t.end();
-
-
-	initServer({ 
-		"stream.find": function(args, cb, sess) {
-			return cb(null, [{ now: Date.now() }]);
-		}
-	},
-	function(url) {
-		var s = new addons.Client({ });
-
-		s.add(url);
-		s.call("stream.find", { test: "weqew" }, function(err, res)
-		{
-			t.ok(err, "there is error");
-			t.ok(err.code === 0, "error code is correct");
-			t.end();
-		});
-	});
-});
-
-tape("stream.find validation", function(t) {
-
-    t.skip("validation disabled"); return t.end();
-	t.timeoutAfter(2000);
-
-	initServer({ 
-		"stream.find": function(args, cb, sess) {
-			return cb(null, { now: Date.now() });
-		}
-	},
-	function(url) {
-		var s = new addons.Client({ });
-
-		s.add(url);
-		s.call("stream.find", [{ test: "weqew" }], function(err, res)
-		{
-			t.ok(err, "there is error");
-			t.ok(err.code === 0, "error code is correct");
-			t.end();
-		});
-	});
-});
 
 tape("add-on priority", function(t) {
 	t.skip("not implemented");
