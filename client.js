@@ -69,6 +69,7 @@ function Addon(url, options, stremio, ready)
 	this.manifest = { };
 	this.methods = [];
 	this.retries = 0;
+	this.idx = stremio.count++;
 
 	initialize();
 
@@ -133,7 +134,10 @@ function Stremio(options)
 
 	options = self.options = options || {};
 
-	var services = {};
+	var services = { };
+
+	// counter
+	this.count = 0;
 
 	// Adding services
 	this.add = function(url, opts, cb) {
@@ -161,6 +165,7 @@ function Stremio(options)
 			return cmp(b, a, function(x) { return x.initialized && !x.networkErr }) // sort by whether it's usable
 				|| cmp(b, a, function(x) { return forArgs ? checkArgs(forArgs, x.manifest) : 0 }) // sort by relevance to arguments
 				|| cmp(b, a, function(x) { return x.priority }) // compare prio // sort by priority
+				|| a.idx - b.idx // index in the entire array
 		});
 	};
 
