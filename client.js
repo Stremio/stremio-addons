@@ -61,6 +61,8 @@ function Addon(url, options, stremio, ready)
 		this.url = url.toString();
 	}
 
+	if (ready) stremio.once("addon-meta:"+self.url, function() { ready(null, self) });
+
 	this.priority = options.priority || 0;
 	this.initialized = false;
 	this.initializing = false;
@@ -137,9 +139,7 @@ function Stremio(options)
 	this.add = function(url, opts, cb) {
 		cb = (typeof(cb) == "function") ? cb : function() { };
 		if (services[url]) return cb(null, services[url]);
-		services[url] = new Addon(url, extend({}, options, opts || {}), self, function() { 
-			cb(null, services[url]);
-		});
+		services[url] = new Addon(url, extend({}, options, opts || {}), self, cb);
 	};
 	
 	// Removing
@@ -160,7 +160,7 @@ function Stremio(options)
 		return res.sort(function(a, b) {
 			return 
 				cmp(b, a, function(x) { return x.initialized && !x.networkErr }) || // sort by whether it's usable
-				cmp(b, a, function(x) { return checkArgs(forArgs, x.manifest) }) ||  // sort by relevance to arguments
+				cmp(b, a, function(x) { return forArgs ? checkArgs(forArgs, x.manifest) : 0 }) ||  // sort by relevance to arguments
 				cmp(b, a, function(x) { return x.priority }) // compare prio // sort by priority
 		});
 	};
