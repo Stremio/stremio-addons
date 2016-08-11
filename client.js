@@ -70,7 +70,7 @@ function Addon(url, options, stremio, ready)
 	this.retries = 0;
 
 	initialize();
-	
+
 	function initialize() {
 		self.initializing = true;
 		self.client.request("meta", [], function(err, error, res) {
@@ -184,19 +184,6 @@ function Stremio(options)
 		return fallthrough(self.get(method, args), method, args, cb);
 	};
 
-	function callEvery(method, args, cb) {
-		var results = [], err;
-		async.each(self.get(method).filter(function(x) { return x.initialized || !x.networkErr }), function(service, callback) {
-			service.call(method, [null, args], function(skip, err, error, result) {
-				if (error) return callback(error);
-				if (!skip && !err && !error) results.push(result);
-				callback();
-			});
-		}, function(err) {
-			cb(err, results);
-		});
-	};
-
 	function picker(s, method) {
 		var params = { addons: s, method: method };
 		if (options.picker) params.addons = options.picker(params.addons, params.method);
@@ -207,7 +194,6 @@ function Stremio(options)
 
 	this.fallthrough = fallthrough;
 	this.call = call;
-	this.callEvery = callEvery;
 	this.checkArgs = checkArgs;
 	_.extend(this, bindDefaults(call));
 

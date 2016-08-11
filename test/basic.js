@@ -189,39 +189,6 @@ tape("test events", function(t) {
 
 });
 
-
-tape("callEvery", function(t) {
-	t.timeoutAfter(2000);
-
-	initServer({ 
-		"stream.find": function(args, cb, sess) {
-			return cb(null, [{ infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223", availability: 2, now: Date.now(), from: "ONE" }]);
-		}
-	},
-	function(url1) {
-		initServer({ 
-			"stream.find": function(args, cb, sess) {
-				return cb(null, [{ infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223", availability: 2, now: Date.now(), from: "TWO" }]);
-			}
-		},
-		function(url2) {
-			var s = new addons.Client({ });
-			s.add(url1);
-			s.add(url2);
-			s.callEvery("stream.find", { query: { id: 1 } }, function(err, res)
-			{
-				t.ok(!err, "no err on call");
-				t.ok(res.length == 2, "2 results");
-				res = _.flatten(res);
-				t.ok(_.findWhere(res, { from: "ONE" }), "we have results from one");
-				t.ok(_.findWhere(res, { from: "TWO" }), "we have results from two");
-				t.end();
-			});
-		});
-	});
-
-});
-
 tape("fallback if result is null", function(t) {
 	t.timeoutAfter(2000);
 
