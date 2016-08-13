@@ -66,6 +66,8 @@ The response is an array of Metadata objects.
 
 ``overview`` - _optional_ - episode overview/summary
 
+``available`` - _optional_ - set to true to explicitly state that this episode is available for streaming, from your add-on
+
 #### Video object
 
 ``title`` - **required** - title of the video
