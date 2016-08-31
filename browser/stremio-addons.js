@@ -2400,8 +2400,8 @@ module.exports.Client.RPC = function(endpoint) {
 		//if (stremio.options.disableHttps) endpoint = endpoint.replace("^https", "http");
 
 		var request = ((body.length < 8192) && endpoint.match("/stremioget")) ?
-			fetch(endpoint+"/q.json?b="+buf.toString("base64")) // GET
-			: fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json", "Content-Length": buf.length }, body: body }); // POST
+			window.fetch(endpoint+"/q.json?b="+buf.toString("base64")) // GET
+			: window.fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json", "Content-Length": buf.length }, body: body }); // POST
 
 		request.then(function(resp) {
 			if (resp.status !== 200) return callback(new Error("response code "+resp.status));
