@@ -1,16 +1,16 @@
 module.CENTRAL = "http://api9.strem.io";
 module.exports.Client = require("./client");
+/*
+// Fetch-based client
 module.exports.Client.RPC = function(endpoint) {
 	var self = { };
 	self.request = function(method, params, callback) {
 		var body = JSON.stringify({ params: params, method: method, id: 1, jsonrpc: "2.0" });
-		var buf = new buffer.Buffer(body);
-
-		if (stremio.options.disableHttps) endpoint = endpoint.replace("^https", "http");
+		var buf = new Buffer(body);
 
 		var request = ((body.length < 8192) && endpoint.match("/stremioget")) ?
-			fetch(endpoint+"/q.json?b="+buf.toString("base64")) // GET
-			: fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json", "Content-Length": buf.length }, body: body }); // POST
+			window.fetch(endpoint+"/q.json?b="+buf.toString("base64")) // GET
+			: window.fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json", "Content-Length": buf.length }, body: body }); // POST
 
 		request.then(function(resp) {
 			if (resp.status !== 200) return callback(new Error("response code "+resp.status));
@@ -26,3 +26,32 @@ module.exports.Client.RPC = function(endpoint) {
 	};
 	return self;
 };
+*/
+
+// XMLHttpRequest-based client
+module.exports.Client.RPC = function (endpoint) {
+	var self = { };
+
+	self.request = function(method, params, callback) {
+		var body = JSON.stringify({ params: params, method: method, id: 1, jsonrpc: "2.0" });
+
+		var request = new XMLHttpRequest();
+
+		request.onreadystatechange = function() {
+			if (request.readyState == XMLHttpRequest.DONE) {
+				if (request.status == 200) {
+					var res;
+					try {
+						res = JSON.parse(request.responseText);
+					} catch(e) { callback(e) }
+
+					callback(null, res.error, res.result);
+				} else callback("network err "+request.status);
+			}
+		}
+
+		request.open("GET", endpoint+"/q.json?b="+ btoa(body), true);
+		request.send();
+	};
+	return self;
+}
