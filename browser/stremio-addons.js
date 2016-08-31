@@ -2397,7 +2397,7 @@ module.exports.Client.RPC = function(endpoint) {
 		var body = JSON.stringify({ params: params, method: method, id: 1, jsonrpc: "2.0" });
 		var buf = new Buffer(body);
 
-		if (stremio.options.disableHttps) endpoint = endpoint.replace("^https", "http");
+		//if (stremio.options.disableHttps) endpoint = endpoint.replace("^https", "http");
 
 		var request = ((body.length < 8192) && endpoint.match("/stremioget")) ?
 			fetch(endpoint+"/q.json?b="+buf.toString("base64")) // GET
