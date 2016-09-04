@@ -126,9 +126,9 @@ function Server(methods, options, manifest)
 		function send(respBody, ttl) {
 			respBody = JSON.stringify(respBody);
 			res.setHeader("Content-Type", "application/json");
-			if (! req.url.match(/localhost|127.0.0.1/)) {
 			res.setHeader("Content-Length", Buffer.byteLength(respBody, "utf8"));
-			res.setHeader("Cache-Control", "public, max-age="+(ttl || CACHE_TTL) ); // around 2 hours default
+			if (! (req.headers.host && req.headers.host.match(/localhost|127.0.0.1/))) {
+				res.setHeader("Cache-Control", "public, max-age="+(ttl || CACHE_TTL) ); // around 2 hours default
 			}
 			res.end(respBody);
 		};
