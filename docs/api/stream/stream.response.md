@@ -24,7 +24,7 @@
 
 ``isPeered`` - _optional_ - set this to ``true`` if this stream is peered locally and therefore delivered with a high speed; useful for areas with slow internet connections, such as India
 
-``subtitles`` - _optional_ - [``Subtitles Objects``](/docs/api/subtitles/subtitles.object.md) representing subtitles for this stream
+``subtitles`` - _optional_ - [``Subtitles Objects``](/docs/api/subtitles/subtitles.object.md) representing subtitles for this stream. Use the `exclusive` flag under `subtitles` if you want Stremio_not to_ try to get subtitles from other add-ons
 
 ``live`` - _optional_ - boolean, specify if this is a live stream; this will be auto-detected if you're using HLS
 
