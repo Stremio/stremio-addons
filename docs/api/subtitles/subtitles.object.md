@@ -13,3 +13,6 @@
     lang: "language code in ISO 639-1"
 }
 ```
+
+
+``exclusive`` - _optional_ - set to `true` if you don't want Stremio to try to find more subtitles by `subtitles.find`. Applicable when returning a Subtitle Object with your `stream.find`.
