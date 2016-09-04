@@ -46,6 +46,6 @@ Valid properties are:
 
 ``countrySpecific`` - _optional_ - boolean - if true, the stremio client must pass ``countryCode`` of the user along with ``meta.find``. *Example*: add-on for service where the streams are georestricted, e.g. Netflix; you can use this either directly in ``manifest``, or under one or more of the ``sorts``
 
-``zipSpecific`` - _optional_ - boolean - if true, the stremio client must pass ``zip`` of the user along with  ``meta.find``. *Example*: cinema showtimes guide add-on
+``zipSpecific`` - _optional_ - boolean - if true, the stremio client must pass ``zip`` code of the user along with  ``meta.find``. *Example*: cinema showtimes guide add-on where result is specific to city
 
 ***TIP* - to implement sources where streams are geo-restricted (stream.find), see [``Stream object's``](/stream/stream.response.md) `geos`**
