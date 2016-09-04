@@ -1,6 +1,6 @@
-### Stremio Add-ons
+## Stremio Add-ons
 
-_All of the video content [Stremio](http://www.strem.io/) provides, it gets exclusively through this add-on system, with no content or specific provider being built into the app._
+#### _All of the video content [Stremio](http://www.strem.io/) provides, it gets exclusively through this add-on system, with no content or specific provider being built into the app._
 
 This package includes both Server and Client for a complete Add-on System.
 
