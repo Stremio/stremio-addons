@@ -10,10 +10,8 @@ var manifest = {
     "background": "URL to 1366x756 png background",
     "id": "org.stremio.basic", // just change "basic" to a shorthand of your add-on
     "version": "1.0.0",
-    "types": ["movie"], // can also be "tv", "series", "channel",
-
-    // filter: when the client calls all add-ons, the order will depend on how many of those conditions are matched in the call arguments for every add-on
-    "filter": { "query.basic_id": { "$exists": true }, "query.type": { "$in":["movie"] } }
+    "types": ["movie"], // can also be "tv", "series", "channel"; your add-on will be preferred for those content types
+    "idProperty": "imdb_id", // the property to use as an ID for your add-on; your add-on will be preferred for items with that property; can be an array
 };
 
 var addon = new Stremio.Server({
@@ -42,6 +40,8 @@ var server = require("http").createServer(function (req, res) {
 ```
 
 ### Documentation
+
+- [Benefits - why should I create an add-on?](/docs/BENEFITS.md)
 
 - [Manifest](/docs/api/manifest.md)
 - [Meta Feed](/docs/api/meta/meta.find.md)
