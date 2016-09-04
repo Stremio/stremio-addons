@@ -14,13 +14,19 @@ function Server(methods, options, manifest)
 {
 	var self = this;
 
+	if (options && typeof(manifest) === "undefined") {
+		manifest = options;
+		options = null;
+	}
+
 	options = extend({ 
 		allow: [ CENTRAL ], // default stremio central
 		secret: "8417fe936f0374fbd16a699668e8f3c4aa405d9f" // default secret for testing add-ons
 	}, options || { });
 
-	this.manifest = manifest;
 	this.methods = methods;
+	this.manifest = manifest;
+	this.options = options;
 
 	Object.keys(methods).forEach(function(key) {
 		if (typeof(methods[key]) != "function") throw Error(key+" should be a function");
