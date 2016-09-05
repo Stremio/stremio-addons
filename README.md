@@ -17,6 +17,12 @@ The purpose of an add-on is to gather media content (not to extend app features)
 - an array of [subtitle objects](/docs/api/subtitles/subtitles.object.md) (requested by ID)
 - an array of [stream links](/docs/api/stream/stream.response.md) (requested by ID)
 
+### Benefits
+
+
+- [Benefits of creating an add-on for Stremio](/docs/BENEFITS.md)
+
+
 ### Documentation
 
 - [Anatomy of an Add-on](/docs/README.md)
@@ -42,9 +48,5 @@ The purpose of an add-on is to gather media content (not to extend app features)
 - [Filmon.tv](http://github.com/Stremio/filmon-stremio) - adds TV catalogue from Filmon.tv with streaming
 - [Guidebox](http://github.com/Stremio/guidebox-stremio) - redirects to legal sources where you can stream movies/series
 - [OpenSubtitles](http://github.com/Stremio/stremio-opensubtitles) - find subtitles automatically for the played video file
-
-### Benefits
-
-- [Benefits of creating an add-on for Stremio](/docs/BENEFITS.md)
 
 _brought to you by [Stremio](http://www.strem.io/)_
