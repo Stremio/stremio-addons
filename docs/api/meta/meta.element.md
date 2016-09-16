@@ -54,7 +54,7 @@ The response is an array of Metadata objects.
 
 #### Video object
 
-``id`` - **required** - ID of the video
+``id`` - **required** - ID of the video; you can skip this only if you've passed ``season`` and ``episode``
 
 ``title`` - **required** - title of the video
 
@@ -73,6 +73,10 @@ The response is an array of Metadata objects.
 ``trailer`` - _optional_ - YouTube ID (string) of the trailer video; use if this is an episode for a series
 
 ``overview`` - _optional_ - video overview/summary
+
+_**NOTE** - In case you've provided ``id``, the query to ``stream.find`` for playing that video will contain ``video_id`` property with the same value._
+
+_In case you've provided ``season`` and ``episode`` combination, both would be contained in the query to ``stream.find``._
 
 ##### Video object - series example
 
