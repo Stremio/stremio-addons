@@ -5,11 +5,41 @@ var extend = require("extend");
 
 var TEST_SECRET = "51af8b26c364cb44d6e8b7b517ce06e39caf036a";
 
+tape("server(methods, options, manifest)", function(t) {
+	var server = new addons.Server({ "stream.find": function() { } }, { cacheTTL: { test: 1} }, { 
+		name: "testing add-on", description: "add-on used for testing", version: "1.0.0",
+		idProperty: "id",
+		types: ["foo", "bar"]
+	});
+
+	t.ok(server.manifest, "has manifest");
+	t.equals(server.manifest.name, "testing add-on", "has manifest name");
+	t.ok(server.methods["stream.find"], "has method")
+	t.ok(server.options.cacheTTL, "has options")
+	t.end();
+});
+
+tape("server(methods, manifest)", function(t) {
+	t.timeoutAfter(3000);
+
+	var server = new addons.Server({ "stream.find": function() { } }, { 
+		name: "testing add-on", description: "add-on used for testing", version: "1.0.0",
+		idProperty: "id",
+		types: ["foo", "bar"]
+	});
+
+	t.ok(server.manifest, "has manifest");
+	t.equals(server.manifest.name, "testing add-on", "has manifest name");
+	t.ok(server.methods["stream.find"], "has method")
+	t.end();
+});
+
 function initServer(methods, callback, opts, manifest) {
 	var manifest;
 	var server = new addons.Server(methods, extend({ secret: TEST_SECRET  }, opts), manifest = manifest || { 
 	 name: "testing add-on", description: "add-on used for testing", version: "1.0.0",
-	 filter: { "query.id": { $exists: true }, "query.types": { $in: [ "foo", "bar" ] } }
+	 idProperty: "id",
+	 types: ["foo", "bar"]
 	});
 
 	var s = http.createServer(function (req, res) {
@@ -136,7 +166,6 @@ tape("local basic call", function(t) {
 	var server = new addons.Server(methods, { }, { 
 	 id: "org.test",
 	 name: "testing add-on", description: "add-on used for testing", version: "1.0.0",
-	 filter: { "query.id": { $exists: true }, "query.types": { $in: [ "foo", "bar" ] } }
 	});
 
 	var s = new addons.Client({ picker: function(addons) { t.ok("picker called with 1 addon", addons.length==1); return addons } });
@@ -343,21 +372,6 @@ tape("add-on priority", function(t) {
 
 tape("checkArgs", function(t) { 
 	var cli = new addons.Client({ });
-
-	/*
-	var checkArgs = function(args, filter) { return cli.checkArgs(args, { filter: filter }) };
-
-	var f = { "query.id": { $exists: true }, "query.type": { $in: ["foo", "bar"] }, toplevel: { $exists: true } };
-	t.ok(checkArgs({ toplevel: 5 }, f) == true, "basic top-level match");
-	t.ok(checkArgs({ query: { id: 2 } }, f) == true, "nested on one level with $exists");
-	t.ok(checkArgs({ "query.id": 2 }, f) == true, "passing flat dot property with $exists");
-	t.ok(checkArgs({ query: { type: "foo" } }, f) == true, "nested with $in");
-	t.ok(checkArgs({ query: { type: "bar" } }, f) == true, "nested with $in");
-	t.ok(checkArgs({ query: { type: ["bar"] } }, f) == true, "nested with an array with $in");
-	t.ok(checkArgs({ query: { type: "somethingelse" } }, f) == false, "nested with $in - not matching");
-	t.ok(checkArgs({ query: {} }, f) == false, "nested - not matching");
-	t.ok(checkArgs({ query: { idx: 5 } } , f) == false, "nested - not maching");
-	*/
 
 	var checkArgs = cli.checkArgs;
 

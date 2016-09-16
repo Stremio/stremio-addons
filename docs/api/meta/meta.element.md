@@ -76,6 +76,6 @@ The response is an array of Metadata objects.
 
 ``thumbnail`` - **required** - URL to png of the video thumbnail, in the video's aspect ratio, max file size 5kb
 
-``id`` - _optional_ - YouTube ID of the video
+``id`` - _optional_ - ID of the video
 
-_As an alternative to using a YouTube ID, **you can inherit the [``Stream Object``](/docs/api/stream/stream.response.md)** to point the video to a HTTP URL, BitTorrent, YouTube or any other stremio-supported transport protocol._
+``stream`` - _optional_ - In case you can return links to streams while forming meta response, **you can pass the [``Stream Object``](/docs/api/stream/stream.response.md)** to point the video to a HTTP URL, BitTorrent, YouTube or any other stremio-supported transport protocol.

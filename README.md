@@ -1,6 +1,6 @@
-### Stremio Add-ons
+## Stremio Add-ons
 
-_All of the video content [Stremio](http://www.strem.io/) provides, it gets exclusively through this add-on system, with no content or specific provider being built into the app._
+#### _All of the video content [Stremio](http://www.strem.io/) provides, it gets exclusively through this add-on system, with no content or specific provider being built into the app._
 
 This package includes both Server and Client for a complete Add-on System.
 
@@ -16,6 +16,12 @@ The purpose of an add-on is to gather media content (not to extend app features)
 - one [meta element](/docs/api/meta/meta.element.md) (requested by ID)
 - an array of [subtitle objects](/docs/api/subtitles/subtitles.object.md) (requested by ID)
 - an array of [stream links](/docs/api/stream/stream.response.md) (requested by ID)
+
+### Benefits
+
+
+- [Benefits of creating an add-on for Stremio](/docs/BENEFITS.md)
+
 
 ### Documentation
 
@@ -42,9 +48,5 @@ The purpose of an add-on is to gather media content (not to extend app features)
 - [Filmon.tv](http://github.com/Stremio/filmon-stremio) - adds TV catalogue from Filmon.tv with streaming
 - [Guidebox](http://github.com/Stremio/guidebox-stremio) - redirects to legal sources where you can stream movies/series
 - [OpenSubtitles](http://github.com/Stremio/stremio-opensubtitles) - find subtitles automatically for the played video file
-
-### Benefits
-
-- [Benefits of creating an add-on for Stremio](/docs/BENEFITS.md)
 
 _brought to you by [Stremio](http://www.strem.io/)_

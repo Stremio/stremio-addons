@@ -14,13 +14,19 @@ function Server(methods, options, manifest)
 {
 	var self = this;
 
+	if (options && typeof(manifest) === "undefined") {
+		manifest = options;
+		options = null;
+	}
+
 	options = extend({ 
 		allow: [ CENTRAL ], // default stremio central
 		secret: "8417fe936f0374fbd16a699668e8f3c4aa405d9f" // default secret for testing add-ons
 	}, options || { });
 
-	this.manifest = manifest;
 	this.methods = methods;
+	this.manifest = manifest;
+	this.options = options;
 
 	Object.keys(methods).forEach(function(key) {
 		if (typeof(methods[key]) != "function") throw Error(key+" should be a function");
@@ -120,9 +126,9 @@ function Server(methods, options, manifest)
 		function send(respBody, ttl) {
 			respBody = JSON.stringify(respBody);
 			res.setHeader("Content-Type", "application/json");
-			if (! req.url.match(/localhost|127.0.0.1/)) {
 			res.setHeader("Content-Length", Buffer.byteLength(respBody, "utf8"));
-			res.setHeader("Cache-Control", "public, max-age="+(ttl || CACHE_TTL) ); // around 2 hours default
+			if (! (req.headers.host && req.headers.host.match(/localhost|127.0.0.1/))) {
+				res.setHeader("Cache-Control", "public, max-age="+(ttl || CACHE_TTL) ); // around 2 hours default
 			}
 			res.end(respBody);
 		};

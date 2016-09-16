@@ -1,6 +1,14 @@
 ### Subtitles
 
-Subtitles are being handled by the `subtitles.find` method.
+**Subtitles are provided in a [Subtitle Object](subtitle.object.md) which represents all possible subtitle tracks (in any number of languages) for a video stream.**
+
+There are two ways to provide a [Subtitle Object](subtitle.object.md):
+
+1. In the `subtitles` property of a [Stream](/docs/api/stream/stream.response.md). Recommended if you have an add-on that would provide both video streams and subtitles.
+2. As a response from the `subtitles.find` method. Recommended if you are making a standalone add-on for subtitles.
+
+
+#### `subtitles.find` Example
 
 ```javascript
 var addon = new Stremio.Server({
@@ -10,7 +18,7 @@ var addon = new Stremio.Server({
 });
 ```
 
-#### Request
+#### `subtitles.find` Request
 
 ```javascript
 {
@@ -28,10 +36,13 @@ See [Subtitle Request](subtitles.find.md) for Parameters.
 
 #### Response
 
+See [Subtitle Object](subtitle.object.md) for response.
+
 ```javascript
+// Subtitle Object
 {
   id: "8e245d9679d31e12",  // mandatory, any unique string to identify this response
-                           // can be the Open Subtitle Hash of the file
+                           // can be the OpenSubtitles Hash of the file
   itemHash: "tt23155 4 5", // optional, same as the one from the request
   all: {
     [
@@ -44,5 +55,3 @@ See [Subtitle Request](subtitles.find.md) for Parameters.
     ]
 }
 ```
-
-See [Subtitle Object](subtitle.object.md) for Parameters.
