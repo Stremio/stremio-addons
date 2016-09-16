@@ -32,11 +32,11 @@ The response is an array of Metadata objects.
 
 ``inTheaters`` - _optional_ - used only for ``movie`` type, boolean whether this movie is still in theaters or not; if not provided, it will be decided based on ``released`` date
 
-``episodes`` - _optional_ - used for ``series``, array of Episode objects
-
 ``videos`` - _optional_ - used for ``channel``, array of Video objects
 
 ``uploads`` - _optional_ - used for ``channel``, array of Video objects; same as ``videos`` but **obsolete**
+
+``episodes`` - _optional_ - obsolete, replaced by ``videos``
 
 ``certification`` - _optional_ - [MPAA rating](http://www.mpaa.org/film-ratings/) - can be "G", "PG", "PG-13", "R", "NC-17"
 
@@ -52,30 +52,24 @@ The response is an array of Metadata objects.
 
 ``isPeered`` - _optional_ - set this property if you know whether that item can be streamed with peering by the same add-on which is serving the meta
 
-#### Episode object
-
-``number`` - **required** - number of the episode
-
-``season`` - **required** - season number of the episode
-
-``name`` - **required** - name of the episode
-
-``firstAired`` - **required** - Date, air date of the episode
-
-``trailer`` - _optional_ - YouTube ID of the trailer video for the episode
-
-``overview`` - _optional_ - episode overview/summary
-
-``available`` - _optional_ - set to true to explicitly state that this episode is available for streaming, from your add-on
-
 #### Video object
+
+``id`` - **required** - ID of the video
 
 ``title`` - **required** - title of the video
 
-``publishedAt`` - **required** - Date, publish date of the video
+``publishedAt`` - **required** - Date, publish date of the video; for episodes, this should be the initial air date
 
-``thumbnail`` - **required** - URL to png of the video thumbnail, in the video's aspect ratio, max file size 5kb
-
-``id`` - _optional_ - ID of the video
+``thumbnail`` - _optional_ - URL to png of the video thumbnail, in the video's aspect ratio, max file size 5kb
 
 ``stream`` - _optional_ - In case you can return links to streams while forming meta response, **you can pass the [``Stream Object``](/docs/api/stream/stream.response.md)** to point the video to a HTTP URL, BitTorrent, YouTube or any other stremio-supported transport protocol.
+
+``available`` - _optional_ - set to ``true`` to explicitly state that this video is available for streaming, from your add-on; no need to use this if you've passed ``stream``
+
+``episode`` - _optional_ - episode number, if applicable
+
+``season`` - _optional_ - season number, if applicable
+
+``trailer`` - _optional_ - YouTube ID (string) of the trailer video; use if this is an episode for a series
+
+``overview`` - _optional_ - video overview/summary
