@@ -73,3 +73,29 @@ The response is an array of Metadata objects.
 ``trailer`` - _optional_ - YouTube ID (string) of the trailer video; use if this is an episode for a series
 
 ``overview`` - _optional_ - video overview/summary
+
+##### Video object - series example
+
+```javascript
+{ 
+	id: "1:1",
+	title: "Pilot",
+	publishedAt: new Date("1994-09-22 20:00 UTC+02"),
+	season: 1,
+	episode: 1,
+	overview: "Monica and the gang introduce Rachel to the real world after she leaves her fiancé at the altar."
+}
+```
+
+##### Video object - YouTube video example (channels)
+
+
+```javascript
+{ 
+	id: "9bZkp7q19f0",
+	title: "PSY - GANGNAM STYLE",
+	publishedAt: new Date("2012-07-15 20:00 UTC+02"),
+	thumbnail: "https://i.ytimg.com/vi/9bZkp7q19f0/hqdefault.jpg"
+}
+```
+
