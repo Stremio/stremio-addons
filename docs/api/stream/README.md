@@ -17,38 +17,61 @@ var addon = new Stremio.Server({
 #### Request Examples
 
 ```javascript
-{
+var client = new Stremio.Client()
+//client.add('url to my add-on')
+client.stream.find({
   query: {
     basic_id: "opa2135"
   }
-}
+}, function(err, resp) { 
+})
 ```
 ```javascript
 // Request The Wizard of Oz
-{
+client.stream.find({
   query: {
     imdb_id: "tt0032138"
   }
-}
+}, function(err, resp) { 
+})
 ```
 ```javascript
 // Request pilot of Game of Thrones
-{
+client.stream.find({
   query: {
     imdb_id: "tt0944947",
     season: 1,
     episode: 1
   }
-}
+}, function(err, resp) { 
+})
 ```
 ```javascript
 // Request Gangnam Style
-{
+client.stream.find({
   query: {
     yt_id: "UCrDkAvwZum-UTjHmzDI2iIw",
     video_id: "9bZkp7q19f0"
   }
-}
+}, function(err, resp) { 
+})
+```
+
+#### Search
+
+The add-on can also implement the `stream.search` method to perform a full text-search through all available streams
+
+The argument is simply an object with  ``query`` property that is a string. Returns an array of [``Stream Object``](stream.response.md) matches.
+
+#### Search Examples
+
+```javascript
+var client = new Stremio.Client()
+//client.add('url to my add-on')
+client.stream.find({
+  query: "gangnam style"
+}, function(err, resp) { 
+})
 ```
 
 
