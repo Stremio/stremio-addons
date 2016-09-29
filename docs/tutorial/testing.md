@@ -10,7 +10,7 @@ Add-ons can be tested in two ways.
 - Open the "Add-ons" tab
 - Add your add-on url (ie: `http://localhost:9005`, remember to use your add-on's port) to the "Add new add-on" form
 
-**Testing with [Stremio](http://www.strem.io/)**
+**Testing with [Stremio](http://www.strem.io/) versions 3.6 or earlier**
 
 - On Windows, run Stremio with:
 
@@ -24,3 +24,7 @@ stremio . --services=http://localhost:9005/stremio/v1/stremioget
 open stremio://localhost:7000/stremio/v1 & # Load this add-on in Stremio
 PORT=7000 node index # Start the add-on server
 ```
+
+**Testing with [Stremio](http://www.strem.io/) versions 4.0 or later**
+
+Open your browser at `http://127.0.0.1:11470/#?addon=ADDON_URL`, where `ADDON_URL` is the url to your add-on.
