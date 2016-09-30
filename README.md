@@ -35,8 +35,10 @@ The purpose of an add-on is to gather media content (not to extend app features)
 
 ### Tutorials
 
+- [Creating an Add-on](https://github.com/Stremio/addon-helloworld)
 - [Testing Environments](/docs/tutorial/testing.md)
 - [Using Cinemeta (meta API)](/docs/tutorial/using-cinemeta.md)
+- [Using add-ons client in browser](/docs/tutorial/use-in-browser.md)
 - [Add to Your App](/docs/tutorial/add.to.app.md)
 - [Hosting multiple add-ons](https://github.com/Stremio/stremio-addons-box)
 
