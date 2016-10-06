@@ -6,11 +6,10 @@ module.exports.Client.RPC = function(endpoint) {
 	var self = { };
 	self.request = function(method, params, callback) {
 		var body = JSON.stringify({ params: params, method: method, id: 1, jsonrpc: "2.0" });
-		var buf = new Buffer(body);
 
 		var request = ((body.length < 8192) && endpoint.match("/stremioget")) ?
-			window.fetch(endpoint+"/q.json?b="+buf.toString("base64")) // GET
-			: window.fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json", "Content-Length": buf.length }, body: body }); // POST
+			window.fetch(endpoint+"/q.json?b="+btoa(body)) // GET
+			: window.fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: body }); // POST
 
 		request.then(function(resp) {
 			if (resp.status !== 200) return callback(new Error("response code "+resp.status));
@@ -50,7 +49,7 @@ module.exports.Client.RPC = function (endpoint) {
 			}
 		}
 
-		request.open("GET", endpoint+"/q.json?b="+ btoa(body), true);
+		request.open("GET", endpoint+"/q.json?b="+btoa(body), true);
 		request.send();
 	};
 	return self;
