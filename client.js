@@ -140,8 +140,11 @@ function Stremio(options)
 	this.count = 0;
 
 	// Adding services
+	// add(string url, object opts, function)
+	// add(string url, function callback)
 	this.add = function(url, opts, cb) {
-		cb = (typeof(cb) == "function") ? cb : function() { };
+		if (typeof(opts) === "function") { cb = opts; opts = { } };
+		cb = (typeof(cb) === "function") ? cb : function() { };
 		if (services[url]) return cb(null, services[url]);
 		services[url] = new Addon(url, extend({}, options, opts || {}), self, cb);
 	};
