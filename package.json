@@ -15,7 +15,7 @@
     "uglifyjs": "*"
   },
   "scripts": {
-    "prepublish": "browserify -r ./index-browser.js:stremio-addons > browser/stremio-addons.js ; uglifyjs browser/stremio-addons.js > browser/stremio-addons.min.js ; git commit --allow-empty browser/stremio-addons.js browser/stremio-addons.min.js -m 'stremio-addons.js update'",
+    "preversion": "browserify -r ./index-browser.js:stremio-addons > browser/stremio-addons.js ; uglifyjs browser/stremio-addons.js > browser/stremio-addons.min.js ; git commit --allow-empty browser/stremio-addons.js browser/stremio-addons.min.js -m 'stremio-addons.js update'",
     "test": "node test/basic.js"
   },
   "repository": {
