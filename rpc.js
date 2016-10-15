@@ -43,7 +43,11 @@ function rpcClient(endpoint, options, globalOpts)
 		
 		if (globalOpts.disableHttps) reqObj.protocol = "http:";
 
+		var timedOut = false
+
 		var req = ( reqObj.protocol==="https:" ?  https : http).request(reqObj, function(res) {
+			if (timedOut) return;
+
 			if (options.respTimeout && res.setTimeout) res.setTimeout(options.respTimeout);
 
 			receiveJSON(res, function(err, body) {
@@ -56,7 +60,12 @@ function rpcClient(endpoint, options, globalOpts)
 
 		if (options.timeout && req.setTimeout) req.setTimeout(options.timeout);
 		req.on("error", function(err) { callback(err) });
-		req.on("timeout", function() { callback(new Error("rpc request timed out")) });
+		req.on("timeout", function() {
+			timedOut = true;
+			req.removeAllListeners("data");
+			req.emit("close");
+			callback(new Error("rpc request timed out"));
+		});
 		if (! isGet) req.write(body);
 		req.end();
 	};
