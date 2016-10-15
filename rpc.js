@@ -30,14 +30,7 @@ function rpcClient(endpoint, options, globalOpts)
 	var isGet = true;
 
 	var client = { };
-	client.request = function(method, params, cb) { 
-		var called = false;
-		var callback = function() {
-			if (called) return;
-			called = true;
-			cb.apply(this, Array.prototype.slice.call(arguments));
-		};
-		
+	client.request = function(method, params, callback) { 
 		params[0] = null; // OBSOLETE work around authentication (index 0) slot which was used before
 
 		var body = JSON.stringify({ params: params, method: method, id: 1, jsonrpc: "2.0" });
