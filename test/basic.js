@@ -398,8 +398,6 @@ tape("checkArgs", function(t) {
 	process.nextTick(function() { t.end(); });
 });
 
-
-
 tape("picks right add-on depending on checkArgs", function(t) {
 	t.timeoutAfter(2000);
 
@@ -409,16 +407,18 @@ tape("picks right add-on depending on checkArgs", function(t) {
 	var manifestFilmon = { idProperty: "filmon_id", types: ["movie", "series"] };
 	var manifestYt = { idProperty: "yt_id", types: ["movie", "channel"] };
 
+	var servers = [];
+
 	var j = 0;
 	[manifestFilmon, manifestYt, manifestCine].forEach(function(manifest, i, all) {
-		initServer({ "stream.find": function(args, cb, sess) {
+		servers.push(initServer({ "stream.find": function(args, cb, sess) {
 			return cb(null, { url: "success", idProperty: manifest.idProperty });
 		} }, function(url) {
 			s.add(url, { priority: j }, function() {
 			//s.add(url, { priority: 0 }, function() {
 				if (++j === all.length) ready();
 			})
-		}, null, manifest);
+		}, null, manifest));
 	});
 
 	function ready() {
@@ -429,7 +429,7 @@ tape("picks right add-on depending on checkArgs", function(t) {
 				t.error(err, "stream.find");
 				t.ok(res, "has res");
 				t.equals(res.idProperty, manifest.idProperty, "should be "+manifest.idProperty);
-				if (++j === all.length) t.end();
+				if (++j === all.length) { t.end(); servers.forEach(function(s) { s.s.close() }) }
 			})
 		});
 
