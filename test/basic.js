@@ -19,6 +19,7 @@ tape("server(methods, options, manifest)", function(t) {
 	t.end();
 });
 
+
 tape("server(methods, manifest)", function(t) {
 	t.timeoutAfter(3000);
 
@@ -50,13 +51,14 @@ function initServer(methods, callback, opts, manifest) {
 		callback("http://localhost:"+s.address().port);
 	});
 
+	server.s = s;
 	return server;
 }
 
 tape("initialize server, landing page", function(t) {
 	t.timeoutAfter(3000);
 
-	initServer({ 
+	var serv = initServer({ 
 		"meta.get": function(args, cb, sess) {
 			received = true;
 
@@ -69,18 +71,17 @@ tape("initialize server, landing page", function(t) {
 		http.get(url+"/stremio/v1", function(resp) {
 			t.ok(resp, "has resp");
 			t.ok(resp.statusCode === 200, "response finished with 200");
-			t.end();
+			serv.s.close(function() { t.end() })
 		})
 	});
 });
-
 
 tape("initialize server, basic call", function(t) {
 	t.timeoutAfter(5000); // 5s because of slow auth
 
 	var received = false;
 
-	initServer({ 
+	var serv = initServer({ 
 		"meta.get": function(args, cb, sess) {
 			received = true;
 
@@ -106,18 +107,19 @@ tape("initialize server, basic call", function(t) {
 			{
 				t.ok(!err, "no err on second call");
 				t.ok(!isNaN(res.now), "we have returned timestamp");
-				t.end();
+				serv.s.close(function() { t.end() })
 			});
 		});
 	});
 });
+
 
 tape("initialize server, basic call - stremioget", function(t) {
 	t.timeoutAfter(2000); 
 
 	var received = false;
 
-	initServer({ 
+	var serv = initServer({ 
 		"meta.get": function(args, cb, sess) {
 			received = true;
 
@@ -141,7 +143,7 @@ tape("initialize server, basic call - stremioget", function(t) {
 			{
 				t.ok(!err, "no err on second call");
 				t.ok(!isNaN(res.now), "we have returned timestamp");
-				t.end();
+				serv.s.close(function() { t.end() })
 			});
 		});
 	}, { stremioget: true });
@@ -192,7 +194,7 @@ tape("local basic call", function(t) {
 tape("test events", function(t) {
 	t.timeoutAfter(3000);
 
-	initServer({ 
+	var serv = initServer({ 
 		"meta.get": function(args, cb, sess) {
 			return cb(null, { now: Date.now() });
 		}
@@ -212,7 +214,7 @@ tape("test events", function(t) {
 			t.ok(picker && picker.addons && picker.addons.length == 1 && picker.method == "meta.get", "pick was called with 1 addon");
 			t.ok(res, "has res");
 			t.ok(!isNaN(res.now), "we have returned timestamp");
-			t.end();
+			serv.s.close(function() { t.end() })
 		});
 	});
 
@@ -221,13 +223,13 @@ tape("test events", function(t) {
 tape("fallback if result is null", function(t) {
 	t.timeoutAfter(2000);
 
-	initServer({ 
+	var serv1 = initServer({ 
 		"stream.find": function(args, cb, sess) {
 			return cb(null, null);
 		}
 	},
 	function(url1) {
-		initServer({ 
+		var serv2 = initServer({ 
 			"stream.find": function(args, cb, sess) {
 				return cb(null, [{ infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223", availability: 2, now: Date.now(), from: "TWO" }]);
 			}
@@ -242,7 +244,9 @@ tape("fallback if result is null", function(t) {
 				res = res.reduce(function(a, b) { return a.concat(b) }, []);
 				t.ok(res, "we have result");
 				t.ok(res[0].from == "TWO", "we have results from two");
-				t.end();
+				serv1.s.close(function() { 
+					serv2.s.close(function() { t.end() })
+				})
 			});
 		});
 	});
@@ -251,12 +255,12 @@ tape("fallback if result is null", function(t) {
 tape("fallback if network times out", function(t) {
 	t.timeoutAfter(3000);
 
-	initServer({ 
+	var serv1 = initServer({ 
 		"meta.find": function(args, cb, sess) {
 		}
 	},
 	function(url1) {
-		initServer({ 
+		var serv2 = initServer({ 
 			"meta.find": function(args, cb, sess) {
 				return cb(null, [{ _id: "test" }, { _id: "test2" }])
 			}
@@ -270,7 +274,9 @@ tape("fallback if network times out", function(t) {
 				t.ok(!err, "no err on call");
 				t.ok(res, "we have result");
 				t.ok(res && res.length==2, "we have items");
-				t.end();
+				serv1.s.close(function() { 
+					serv2.s.close(function() { t.end() })
+				})
 			});
 		});
 	});
@@ -280,13 +286,13 @@ tape("fallback if network times out", function(t) {
 tape("intercept error from addon", function(t) {
 	t.timeoutAfter(2000);
 
-	initServer({ 
+	var serv1 = initServer({ 
 		"stream.find": function(args, cb, sess) {
 			return cb(new Error("not supported"), null);
 		}
 	},
 	function(url1) {
-		initServer({ 
+		var serv2 = initServer({ 
 			"stream.find": function(args, cb, sess) {
 				return cb(null, [{ infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223", availability: 2, now: Date.now(), from: "TWO" }]);
 			}
@@ -298,7 +304,9 @@ tape("intercept error from addon", function(t) {
 			s.stream.find({ query: { id: 1 } }, function(err, res)
 			{
 				t.ok(err, "we have an error");
-				t.end();
+				serv1.s.close(function() { 
+					serv2.s.close(function() { t.end() })
+				})
 			});
 		});
 	});
@@ -307,7 +315,7 @@ tape("intercept error from addon", function(t) {
 tape("fallback on a network error, emit network-error event", function(t) {
 	t.timeoutAfter(4000);
 
-	initServer({ 
+	var serv = initServer({ 
 		"stream.find": function(args, cb, sess) {
 			return cb(null, [{ infoHash: "ea53302184d1c63d8d6ad0517b2487eb6dd5b223", availability: 2, now: Date.now(), from: "ONE" }]);
 		}
@@ -332,7 +340,7 @@ tape("fallback on a network error, emit network-error event", function(t) {
 			t.ok(addon, "we have the picked addon");
 			t.ok(addon.url == url1, "correct url to picked addon");
 			//t.ok(emitted, "network-error emitted");
-			t.end();
+			serv.s.close(function() { t.end() });
 		});
 	});
 
@@ -341,11 +349,12 @@ tape("fallback on a network error, emit network-error event", function(t) {
 
 
 tape("timeouts after opts.timeout time", function(t) {
-	t.timeoutAfter(4000);
+	t.timeoutAfter(8000);
 
-	initServer({ 
+	var serv = initServer({ 
 		"stream.find": function(args, cb, sess) {
 			// wait to time-out
+			setTimeout(function() { cb() }, 3000);
 		}
 	},
 	function(url1) {
@@ -355,9 +364,9 @@ tape("timeouts after opts.timeout time", function(t) {
 
 		s.stream.find({ query: { id: 1 } }, function(err, res, addon)
 		{
-			t.ok((Date.now()-start)>=1000, "waited 2 seconds");
+			t.ok((Date.now()-start)<=1100, "waited around 1 seconds");
 			t.ok(err, "has error");
-			t.end();
+			serv.s.close(function() { t.end() });
 		});
 	});
 
@@ -426,3 +435,4 @@ tape("picks right add-on depending on checkArgs", function(t) {
 
 	}
 });
+
