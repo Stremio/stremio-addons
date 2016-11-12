@@ -1,0 +1,15 @@
+{
+  "name": "generator-stremio",
+  "version": "1.0.0",
+  "description": "Yeoman generator for Stremio addon",
+  "files": [
+    "app"
+  ],
+  "keywords": [
+    "yeoman-generator"
+  ],
+  "dependencies": {
+    "lodash": "^4.16.6",
+    "yeoman-generator": "^0.24.1"
+  }
+}
