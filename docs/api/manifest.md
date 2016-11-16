@@ -49,3 +49,7 @@ Valid properties are:
 ``zipSpecific`` - _optional_ - boolean - if true, the stremio client must pass ``zip`` code of the user along with  ``meta.find``. *Example*: cinema showtimes guide add-on where result is specific to city
 
 ***TIP* - to implement sources where streams are geo-restricted (stream.find), see [``Stream object's``](/stream/stream.response.md) `geos`**
+
+``listedOn`` - _optional_ - array - where is this add-on listed - there are four possible values - ``web``, ``desktop`` ([addons.strem.io](http://addons.strem.io)), ``android``, ``ios``; by default, the value is set to ``["web", "desktop", "android"]``. To hide the add-on from all catalogues, just pass an empty array (``listedOn: []``)
+
+***WARNING* - unlike the other platforms, getting the add-on listed on ``ios`` may require moderator approval**
