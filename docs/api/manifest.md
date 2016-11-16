@@ -58,3 +58,5 @@ Valid properties are:
 ***TIP* - to implement sources where streams are geo-restricted (stream.find), see [``Stream object's``](/stream/stream.response.md) `geos`**
 
 
+``enginefsUrl`` - _optional_ - string - an override URL for the streaming server which is running by default on `localhost:11470`
+
