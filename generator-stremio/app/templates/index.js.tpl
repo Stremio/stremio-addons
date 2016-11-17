@@ -26,9 +26,13 @@ var dataset = {};
 var methods = { };
 var addon = new Stremio.Server(methods, manifest);
 
-var server = require("http").createServer(function (req, res) {
-    addon.middleware(req, res, function() { res.end() }); // wire the middleware - also compatible with connect / express
-}).on("listening", function()
-{
-    console.log("Sample Stremio Addon listening on "+server.address().port);
-}).listen(process.env.PORT || 7000);
+if (module.parent) {
+    module.exports = addon
+} else {
+    var server = require("http").createServer(function (req, res) {
+        addon.middleware(req, res, function() { res.end() }); // wire the middleware - also compatible with connect / express
+    }).on("listening", function()
+    {
+        console.log("Sample Stremio Addon listening on "+server.address().port);
+    }).listen(process.env.PORT || 7000);
+}
