@@ -18,7 +18,7 @@ var manifest = {
     "types": <%- types %>, // your add-on will be preferred for those content types
     "idProperty": "imdb_id", // the property to use as an ID for your add-on; your add-on will be preferred for items with that property; can be an array
     // We need this for pre-4.0 Stremio, it's the obsolete equivalent of types/idProperty
-    "filter": { "query.imdb_id": { "$exists": true }, "query.type": { "$in":["series","movie"] } }
+    "filter": { "query.imdb_id": { "$exists": true }, "query.type": { "$in":<%- types %> } }
 };
 
 var dataset = {};
