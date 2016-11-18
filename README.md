@@ -41,6 +41,7 @@ The purpose of an add-on is to gather media content (not to extend app features)
 - [Using add-ons client in browser](/docs/tutorial/using-in-browser.md)
 - [Add to Your App](/docs/tutorial/add.to.app.md)
 - [Hosting multiple add-ons](https://github.com/Stremio/stremio-addons-box)
+- [Scaffolding](/docs/tutorial/scaffolding.md)
 
 ### Demo Add-ons
 
