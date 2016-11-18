@@ -78,7 +78,7 @@ function askForIdProperty(cb){
         return this.prompt({
             type: 'input',
             name: 'idProperty',
-            message: 'Add-on identifiers (Leave blank to continue):',
+            message: 'Add-on data identifiers (Leave blank to continue):',
             validate: function(answer){
                 if(answer && !/^[a-zA-Z_]+$/.test(answer)){
                     return "no numbers, no whitespaces"
