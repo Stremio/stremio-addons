@@ -4,7 +4,7 @@
   "description": "<%= description %>",
   "main": "index.js",
   "author": "<%= email %>",
-  "license": "ISC"
+  "license": "ISC",
   "dependencies": {
      "stremio-addons": "latest"
   }

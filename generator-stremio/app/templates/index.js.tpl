@@ -16,7 +16,7 @@ var manifest = {
 
     // Properties that determine when Stremio picks this add-on
     "types": <%- types %>, // your add-on will be preferred for those content types
-    "idProperty": "imdb_id", // the property to use as an ID for your add-on; your add-on will be preferred for items with that property; can be an array
+    "idProperty": <%- idProperty %>, // the property to use as an ID for your add-on; your add-on will be preferred for items with that property; can be an array
     // We need this for pre-4.0 Stremio, it's the obsolete equivalent of types/idProperty
     "filter": { "query.imdb_id": { "$exists": true }, "query.type": { "$in":["series","movie"] } }
 };
@@ -24,7 +24,23 @@ var manifest = {
 var dataset = {};
 
 var methods = { };
-var addon = new Stremio.Server(methods, manifest);
+
+var addon = new Stremio.Server({
+    "stream.find": function(args, callback, user) {
+        // callback expects array of stream objects
+    },
+    "meta.find": function(args, callback, user) {
+        // callback expects array of meta object (primary meta feed)
+        // it passes "limit" and "skip" for pagination
+    },
+    "meta.get": function(args, callback, user) {
+        // callback expects one meta element
+    },
+    "meta.search": function(args, callback, user) {
+        // callback expects array of search results with meta objects
+        // does not support pagination
+    },
+}, manifest);
 
 var server = require("http").createServer(function (req, res) {
     addon.middleware(req, res, function() { res.end() }); // wire the middleware - also compatible with connect / express
