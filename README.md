@@ -24,7 +24,7 @@ The purpose of an add-on is to gather media content (not to extend app features)
 
 ### Documentation
 
-- [Anatomy of an Add-on](/docs/README.md)
+- [Getting started & Anatomy of an Add-on](/docs/README.md)
 - [Manifest](/docs/api/manifest.md)
 - [Meta Feed](/docs/api/meta/meta.find.md)
 - [Searching](/docs/api/meta/meta.search.md)

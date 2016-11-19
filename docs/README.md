@@ -1,3 +1,15 @@
+### Getting started
+
+You can scaffold an empty Stremio add-on by running:
+
+```
+npm install -g yeoman
+yo stremio
+```
+
+You will find generated Stremio addon source code in `output/` directory.
+
+
 ### Anatomy of an Add-on
 
 ```javascript
