@@ -4,11 +4,9 @@ Stremio add-ons require hosting in order to be published. You need a NodeJS host
 
 We recommend:
 
-[Heroku](https://www.heroku.com) - [free with some restrictions](https://www.heroku.com/pricing)
-
-[cloudno.de](https://cloudno.de) - [free for up to 150k requests/month](https://cloudno.de/pricing)
-
-[Evennode](https://www.evennode.com) - [free for 7 days trial](https://www.evennode.com/pricing)
+- [Heroku](https://www.heroku.com) - [free with some restrictions](https://www.heroku.com/pricing)
+- [cloudno.de](https://cloudno.de) - [free for up to 150k requests/month](https://cloudno.de/pricing)
+- [Evennode](https://www.evennode.com) - [free for 7 days trial](https://www.evennode.com/pricing)
 
 You can also check this very comprehensive [guide by nodejs](https://github.com/nodejs/node-v0.x-archive/wiki/node-hosting).
 

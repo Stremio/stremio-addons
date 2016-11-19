@@ -18,7 +18,11 @@ var manifest = {
     "types": <%- types %>, // your add-on will be preferred for those content types
     "idProperty": <%- idProperty %>, // the property to use as an ID for your add-on; your add-on will be preferred for items with that property; can be an array
     // We need this for pre-4.0 Stremio, it's the obsolete equivalent of types/idProperty
-    "filter": { "query.imdb_id": { "$exists": true }, "query.type": { "$in":<%- types %> } }
+    "filter": { "query.imdb_id": { "$exists": true }, "query.type": { "$in":<%- types %> } },
+
+    // Needs to point to an HTTP(S) link where you hosted your add-on, when it's ready
+    // For hosting, see https://github.com/Stremio/stremio-addons/blob/master/docs/tutorial/hosting.md 
+    "endpoint": ""
 };
 
 var methods = { };
