@@ -59,12 +59,15 @@ tape("initialize server, landing page", function(t) {
 	t.timeoutAfter(3000);
 
 	var serv = initServer({ 
-		"meta.get": function(args, cb, sess) {
+		"stats.get": function(args, cb, sess) {
+			return cb(null, {});
+		},
+		"meta.find": function(args, cb, sess) {
 			received = true;
 
-			t.ok(args.query.id == 1, "we are receiving arguments");
+			t.ok(args.query, "we are receiving arguments");
 			t.ok(!!sess, "we have session");
-			return cb(null, { now: Date.now() });
+			return cb(null, []);
 		}
 	},
 	function(url) {
