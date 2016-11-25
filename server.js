@@ -160,10 +160,10 @@ function Server(methods, options, manifest)
 
 		// TODO: cache at least stats.get for some time
 		self.request("stats.get", [{ stremioget: true }], function(err, s) {
-			//if (err) return error(err);
+ 			if (err) return error(err);
 			if (s) stats = s;
 			self.request("meta.find", [{stremioget: true}, { query: {}, limit: 10 }], function(err, t) {
-				//if (err) return error(err);
+				if (err) return error(err);
 				if (t) top = t;
 				respond();
 			});
