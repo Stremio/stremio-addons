@@ -115,6 +115,12 @@ function Addon(url, options, stremio, ready)
 	this.isInitializing = function() {
 		return !this.initialized && !q.idle();
 	};
+
+	this.reinitialize = function() {
+		//this.initialized = false;
+		this.retries = 0;
+		initialize();
+	};
 };
 
 function Stremio(options)
