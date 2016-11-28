@@ -12,4 +12,4 @@ You can also check this very comprehensive [guide by nodejs](https://github.com/
 
 Stremio add-ons are deployed just like regular nodejs apps, so follow the nodejs instructions provided by your particular service provider.
 
-If you've built a great add-on, and need help with hosting your add-on, you are welcome to contact us at [office@strem.io](office@strem.io)
+If you've built a great add-on, and need help with hosting your add-on, you are welcome to contact us at [addons@strem.io](addons@strem.io)
