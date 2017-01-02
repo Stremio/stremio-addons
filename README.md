@@ -45,8 +45,8 @@ The purpose of an add-on is to gather media content (not to extend app features)
 
 ### Demo Add-ons
 
-- [Hello World](https://github.com/Ivshti/addon-helloworld) - basic explanation of how to create a streaming add-on
-- [Twitch.tv](https://github.com/jaruba/stremio-twitch) - streams live from Twitch.tv
+- [Hello World](https://github.com/Stremio/addon-helloworld) - basic explanation of how to create a streaming add-on
+- [Twitch.tv](https://github.com/Stremio/stremio-twitch) - streams live from Twitch.tv
 - [Local Files](http://github.com/Stremio/stremio-local-files) - indexes files found locally and puts them in Stremio
 - [Filmon.tv](http://github.com/Stremio/filmon-stremio) - adds TV catalogue from Filmon.tv with streaming
 - [Guidebox](http://github.com/Stremio/guidebox-stremio) - redirects to legal sources where you can stream movies/series
