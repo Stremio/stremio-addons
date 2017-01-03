@@ -34,7 +34,7 @@ The purpose of an add-on is to gather media content (not to extend app features)
 
 ### Tutorials
 
-- [Scaffolding](/docs/tutorial/scaffolding.md)
+- [Scaffolding an Add-on](/docs/tutorial/scaffolding.md)
 - [Creating an Add-on](https://github.com/Stremio/addon-helloworld)
 - [Hosting your Add-on](/docs/tutorial/hosting.md)
 - [Testing Environments](/docs/tutorial/testing.md)
