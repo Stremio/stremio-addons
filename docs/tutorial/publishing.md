@@ -1,6 +1,6 @@
 ### Publishing
 
-All you need to do to publish your add-on is host it publically, and have the `endpoint` field in your manifest to point to the HTTP URL where the add-on is accessible (e.g. `http://nfxaddon.strem.io`).
+All you need to do to publish your add-on is host it publically, and have the `endpoint` field in your manifest to point to the HTTP URL where the add-on is accessible (e.g. `http://twitch.strem.io`).
 
 Hosting the add-on is very easy, since Stremio add-ons are simply Node.js applications. You can see - [hosting your Add-on](/docs/tutorial/hosting.md) tutorial.
 
