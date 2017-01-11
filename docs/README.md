@@ -70,7 +70,10 @@ var server = require("http").createServer(function (req, res) {
 
 ### Tutorials
 
+- [Scaffolding an Add-on](/docs/tutorial/scaffolding.md)
 - [Creating an Add-on](https://github.com/Stremio/addon-helloworld)
+- [Hosting your Add-on](/docs/tutorial/hosting.md)
+- [Publishing an Add-on](/docs/tutorial/publishing.md)
 - [Testing Environments](/docs/tutorial/testing.md)
 - [Using Cinemeta (meta API)](/docs/tutorial/using-cinemeta.md)
 - [Using add-ons client in browser](/docs/tutorial/using-in-browser.md)
