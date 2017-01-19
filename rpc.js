@@ -52,8 +52,8 @@ function rpcClient(endpoint, options, globalOpts)
 
 			receiveJSON(res, function(err, body) {
 				if (err) return callback(err);
+				if (!body) return callback(null, new Error("no body"));
 				if (body.error) return callback(null, body.error);
-				if (!body.result) return callback(body);
 				callback(null, null, body.result);
 			});
 		});
