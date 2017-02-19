@@ -71,7 +71,7 @@ function Server(methods, options, manifest)
 
 	// HTTP middleware
 	this.middleware = function(req, res, next) {
-		if (! self.announced) announce();
+		if (!self.announced && !manifest.dontAnnounce) announce();
 
 		var start = Date.now(), finished = false;
 		req._statsNotes = [];
