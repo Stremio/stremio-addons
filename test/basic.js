@@ -9,7 +9,8 @@ tape("server(methods, options, manifest)", function(t) {
 	var server = new addons.Server({ "stream.find": function() { } }, { cacheTTL: { test: 1} }, { 
 		name: "testing add-on", description: "add-on used for testing", version: "1.0.0",
 		idProperty: "id",
-		types: ["foo", "bar"]
+		types: ["foo", "bar"],
+		dontAnnounce: true,
 	});
 
 	t.ok(server.manifest, "has manifest");
@@ -26,7 +27,8 @@ tape("server(methods, manifest)", function(t) {
 	var server = new addons.Server({ "stream.find": function() { } }, { 
 		name: "testing add-on", description: "add-on used for testing", version: "1.0.0",
 		idProperty: "id",
-		types: ["foo", "bar"]
+		types: ["foo", "bar"],
+		dontAnnounce: true,
 	});
 
 	t.ok(server.manifest, "has manifest");
@@ -40,7 +42,8 @@ function initServer(methods, callback, opts, manifest) {
 	var server = new addons.Server(methods, extend({ secret: TEST_SECRET  }, opts), manifest = manifest || { 
 	 name: "testing add-on", description: "add-on used for testing", version: "1.0.0",
 	 idProperty: "id",
-	 types: ["foo", "bar"]
+	 types: ["foo", "bar"],
+	 dontAnnounce: true,
 	});
 
 	var s = http.createServer(function (req, res) {
@@ -171,6 +174,7 @@ tape("local basic call", function(t) {
 	var server = new addons.Server(methods, { }, { 
 	 id: "org.test",
 	 name: "testing add-on", description: "add-on used for testing", version: "1.0.0",
+	 dontAnnounce: true,
 	});
 
 	var s = new addons.Client({ picker: function(addons) { t.ok("picker called with 1 addon", addons.length==1); return addons } });
