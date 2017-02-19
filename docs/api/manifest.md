@@ -20,6 +20,8 @@ Valid properties are:
 
 ``endpoint`` - _optional_ - http endpoint to the hosted version of this add-on; should end in standard stremio URL path, such as ``/stremio/v1`` for the v1 version of the protocol; example: ``http://cinemeta.strem.io/stremioget/stremio/v1`` 
 
+``dontAnnounce`` - _optional_ - do not announce to stremio add-on tracker; this means that your add-on won't be listed on [addons.strem.io](http://addons.strem.io) even if it has a valid `endpoint`
+
 **IMPORTANT** - At every start of the add-on server, the add-on will attempt to announce itself to the Stremio central API. If you have a valid `endpoint` in place, the central API will start showing it in the [Add-on catalogue](https://addons.strem.io).
 
 ``background`` - _optional_ - background image for the add-on; URL to png/jpg, at least 1024x786 resolution
