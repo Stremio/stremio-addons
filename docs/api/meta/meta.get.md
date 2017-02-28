@@ -1,6 +1,6 @@
 ## Meta Get
 
-This is used when double-clicking on items, when opening their detail page. The ``full`` projection returns properties like ``episodes`` and ``uploads``, so this will be especially useful to show ``series`` and ``channel`` types. 
+This is used when opening an item's detail page (e.g. double click from Discover). The result has to contain properties like ``episodes``, ``uploads`` and ``cast``, so this is especially useful to show ``series`` and ``channel`` types. 
 
 ```javascript
 var addon = new Stremio.Server({
