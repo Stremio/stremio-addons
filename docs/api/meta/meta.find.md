@@ -49,8 +49,8 @@ See [Content Types](content.types.md) for the `type` parameter.
     banner: 'http://goo.gl/xgCrG9', // image link
     genre: ['Entertainment'],
     isFree: 1,                      // some aren't
-    popularity: 3831,               // the larger the better
-    popularities: { basic: 3831 },  // same as 'popularity'
+    popularity: 3831,               // the larger, the more popular this item is
+    popularities: { basic: 3831 },  // same as 'popularity'; use this if you want to provide different sort orders in your manifest
     type: 'movie'                   // can also be "tv", "series", "channel"
   },
   ...
@@ -60,3 +60,5 @@ See [Content Types](content.types.md) for the `type` parameter.
 See [Meta Element](meta.element.md) for Parameters.
 
 See [Content Types](content.types.md) for the `type` parameter.
+
+SEe [Manifest](/docs/api/manifest.md) for instructions on how to define custom sort orders (Discover Tabs)
