@@ -20,7 +20,10 @@ _otherwise known as `args` in the above code_
 {
   query: { 
     type: "movies" // the type for which to return genres
-  }
+  },
+  sort: {
+    'popularities.basic': -1 // -1 for descending, 1 for ascending
+  },
 }
 ```
 

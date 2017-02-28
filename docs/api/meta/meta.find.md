@@ -24,7 +24,7 @@ _otherwise known as `args` in the above code_
   popular: true,
   complete: true,
   sort: {
-    'populstities.basic': -1 // -1 for descending, 1 for ascending
+    'popularities.basic': -1 // -1 for descending, 1 for ascending
   },
   limit: 70,                           // limit length of the response array to "70"
   skip: 0                              // offset, as pages change it will progress to "70", "140", ...
