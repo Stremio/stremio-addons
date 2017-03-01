@@ -86,7 +86,7 @@ _Example of a response with a link to a media file:_
     basic_id: 'opa2135',         // what you set as "id" in the "meta.get" response
     availability: 1,             // should be at least "1" if the stream works
     isFree: 1,                   // can also be "0" if it's not free
-    url: 'http://goo.gl/nM2J1x', // any streamable url
+    url: 'http://techslides.com/demos/sample-videos/small.mp4', // any streamable url
     title: 'HD',                 // set quality here as string
     tag: ['hls']
   }
