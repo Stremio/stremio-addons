@@ -61,4 +61,4 @@ See [Meta Element](meta.element.md) for Parameters.
 
 See [Content Types](content.types.md) for the `type` parameter.
 
-SEe [Manifest](/docs/api/manifest.md) for instructions on how to define custom sort orders (Discover Tabs)
+See [Manifest](/docs/api/manifest.md) for instructions on how to define custom sort orders (Discover Tabs)
