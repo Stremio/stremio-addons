@@ -44,9 +44,9 @@ See [Content Types](content.types.md) for the `type` parameter.
   {
     id: 'basic_id:opa2135',         // unique ID for the media, will be returned as "basic_id" in the request object later
     name: 'basic title',            // title of media
-    poster: 'http://goo.gl/rtxs10', // image link
+    poster: 'http://thetvdb.com/banners/posters/78804-52.jpg', // image link
     posterShape: 'regular',         // can also be 'landscape' or 'square'
-    banner: 'http://goo.gl/xgCrG9', // image link
+    banner: 'http://thetvdb.com/banners/graphical/78804-g44.jpg', // image link
     genre: ['Entertainment'],
     isFree: 1,                      // some aren't
     popularity: 3831,               // the larger, the more popular this item is
