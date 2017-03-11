@@ -3,10 +3,11 @@
 **One of the following must be passed** to point to the stream itself
 
 * ``url`` - direct URL to a video stream - http, https, rtmp protocols supported
-* ``externalUrl`` - URL to the video, which should be opened in a browser (webpage), e.g. link to Netflix
 * ``yt_id`` - youtube video ID, plays using the built-in YouTube player
 * ``infoHash`` and/or ``fileIdx`` - info hash of a torrent file, and mapIdx is the index of the video file within the torrent; **if fileIdx is not specified, the largest file in the torrent will be selected**
 * ``mapIdx`` - alias to ``fileIdx``, specifies index of file in case of BitTorrent
+* ``externalUrl`` - URL to the video, which should be opened in a browser (webpage), e.g. link to Netflix
+* ``externalUris`` - object/array of objects that represents URI to the video; supports linking to iOS or Android apps (see ``externalUri`` docs below)
 
 **Additional properties to provide information / behaviour flags**
 
@@ -49,3 +50,12 @@
   * ``replaceplayer`` - entirely replaces the default player with the widget
 
 ``meta`` - _optional_ - object, used to specify ``{ season: X, episode: Y }`` in case you're using a [``Stream Object``](/documentation/protocol.md#stream-object) for ``videos`` for a series
+
+
+#### ``externalUri``
+
+``externalUri`` is an object or an array of objects containing three properties:
+
+  * ``platform`` - platform for which the URI is relevant - possible values are ``android`` and ``ios``
+  * ``uri`` - URI to the video; example: ``aiv://aiv/play?asin=B012HPO8TE``
+  * ``appUri`` - URI to download the app required, if any; example: ``itms-apps://itunes.apple.com/app/amazon-instant-video/id5455193``
