@@ -7,7 +7,7 @@
 * ``infoHash`` and/or ``fileIdx`` - info hash of a torrent file, and mapIdx is the index of the video file within the torrent; **if fileIdx is not specified, the largest file in the torrent will be selected**
 * ``mapIdx`` - alias to ``fileIdx``, specifies index of file in case of BitTorrent
 * ``externalUrl`` - URL to the video, which should be opened in a browser (webpage), e.g. link to Netflix
-* ``externalUris`` - object/array of objects that represents URI to the video; supports linking to iOS or Android apps (see ``externalUri`` docs below)
+* ``externalUris`` - an array of objects that represent URI to the video; supports linking to iOS or Android apps (see ``externalUri`` docs below)
 
 **Additional properties to provide information / behaviour flags**
 
@@ -52,9 +52,9 @@
 ``meta`` - _optional_ - object, used to specify ``{ season: X, episode: Y }`` in case you're using a [``Stream Object``](/documentation/protocol.md#stream-object) for ``videos`` for a series
 
 
-#### ``externalUri``
+#### ``externalUris``
 
-``externalUri`` is an object or an array of objects containing three properties:
+``externalUris`` is an array of objects containing three properties:
 
   * ``platform`` - platform for which the URI is relevant - possible values are ``android`` and ``ios``
   * ``uri`` - URI to the video; example: ``aiv://aiv/play?asin=B012HPO8TE``
