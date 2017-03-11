@@ -46,6 +46,9 @@ var addon = new Stremio.Server({
 		// callback expects array of search results with meta objects
 		// does not support pagination
 	},
+    "meta.genres": function(args, callback, user) {
+        // callback expects array of strings (genres)
+    },
 }, manifest);
 
 var server = require("http").createServer(function (req, res) {
