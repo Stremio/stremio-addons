@@ -17,7 +17,7 @@
         left: 0px; right: 0px; top: 10%; bottom: auto;
         margin: auto;
     }
-    a {  text-decoration: none; }
+    a {  color: white; }
     button {
         border: 0px; outline: 0px;
         color: white;
@@ -29,6 +29,9 @@
         cursor: pointer;
         opacity: 0.9;
         display: block;
+    }
+    a.activate-link {
+        text-decoration: none; 
     }
     button:hover { opacity: 1; }
     .logo { float: left; margin: 20px; }
@@ -90,12 +93,15 @@
         </div>
       </div>
 
+      <h3 class="description"><%- addon.manifest.webDescription || addon.manifest.description %></h3>
+
       <% if (endpoint) { %> 
         <a class="activate-link" href="<%= endpoint ? endpoint.replace(/^http(s?)/, 'stremio') : null %>"><button name="Install">Install Add-on</button></a>
       <% } else { %>
         <div>No valid end-point for this add-on</div>
       <% } %>
 
+      <h3 class="contact">To contact add-on creator: <a href="mailto:<%- addon.manifest.email %>"><%- addon.manifest.email %></a></h3>
 
     </div>
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
