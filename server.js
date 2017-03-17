@@ -159,6 +159,8 @@ function Server(methods, options, manifest)
 		var stats = { }, top = [];
 
 		// TODO: cache at least stats.get for some time
+		if (! self.methods['stats.get']) return respond();
+		
 		self.request("stats.get", [{ stremioget: true }], function(err, s) {
  			if (err) console.log(err);
 			if (s) stats = s;
