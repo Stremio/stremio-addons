@@ -151,8 +151,12 @@ function Stremio(options)
 	this.add = function(url, opts, cb) {
 		if (typeof(opts) === "function") { cb = opts; opts = { } };
 		cb = (typeof(cb) === "function") ? cb : function() { };
-		if (services[url]) return cb(null, services[url]);
+		if (services[url]) {
+			cb(null, services[url]);
+			return services[url];
+		}
 		services[url] = new Addon(url, extend({}, options, opts || {}), self, cb);
+		return services[url];
 	};
 	
 	// Removing
