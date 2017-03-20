@@ -50,7 +50,7 @@ The purpose of an add-on is to gather media content (not to extend app features)
 - [Twitch.tv](https://github.com/Stremio/stremio-twitch) - streams live from Twitch.tv
 - [Local Files](http://github.com/Stremio/stremio-local-files) - indexes files found locally and puts them in Stremio
 - [Filmon.tv](http://github.com/Stremio/filmon-stremio) - adds TV catalogue from Filmon.tv with streaming
-- [Guidebox](http://github.com/Stremio/guidebox-stremio) - redirects to legal sources where you can stream movies/series
+- [WatchHub](http://github.com/Stremio/stremio-watchhub) - redirects to official sources where you can stream movies/series
 - [OpenSubtitles](http://github.com/Stremio/stremio-opensubtitles) - find subtitles automatically for the played video file
 
 _brought to you by [Stremio](http://www.strem.io/)_
