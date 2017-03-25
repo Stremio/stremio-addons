@@ -12,7 +12,7 @@ Valid properties are:
 
 ``idProperty`` - **required** - ID property of the Meta or Streams that this add-on delivers - for example ``imdb_id`` or ``filmon_id``; can be string or array of strings
 
-``types`` - **required** - array of supported types, from all the [``Content Types``](/meta/content.types.md)
+``types`` - **required** - array of supported types, from all the [``Content Types``](./meta/content.types.md)
 
 **IMPORTANT** - ``types`` and ``idProperty`` will be used when Stremio selects add-ons to call for a certain request. For example, if the user wants to watch Metropolis, the query would be ``{ type: "movie", imdb_id: "tt0017136" }``, your add-on has to have ``imdb_id`` in the manifest ``idProperty`` and ``movie`` in the manifest ``types``.
 
@@ -58,9 +58,9 @@ Valid properties are:
 
 ``zipSpecific`` - _optional_ - boolean - if true, the stremio client must pass ``zip`` code of the user along with  ``meta.find``. *Example*: cinema showtimes guide add-on where result is specific to city
 
-``countrySpecificStreams`` - _optional_ - boolean - if true, the stremio client must pass ``countryCode`` of the user along with ``stream.find``, so that it can return geo-specific results. Please note that returning ``geos`` in the response [``Stream objects``](/stream/stream.response.md) is preferred over returning geo-specific results from ``stream.find``, but this is allowed if you have a data limitation
+``countrySpecificStreams`` - _optional_ - boolean - if true, the stremio client must pass ``countryCode`` of the user along with ``stream.find``, so that it can return geo-specific results. Please note that returning ``geos`` in the response [``Stream objects``](./stream/stream.response.md) is preferred over returning geo-specific results from ``stream.find``, but this is allowed if you have a data limitation
 
-***TIP* - to implement sources where streams are geo-restricted (stream.find), see [``Stream object's``](/stream/stream.response.md) `geos`**
+***TIP* - to implement sources where streams are geo-restricted (stream.find), see [``Stream object's``](./stream/stream.response.md) `geos`**
 
 
 ``enginefsUrl`` - _optional_ - string - an override URL for the streaming server which is running by default on `localhost:11470`
