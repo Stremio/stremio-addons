@@ -31,6 +31,7 @@ The purpose of an add-on is to gather media content (not to extend app features)
 - [Meta Element](/docs/api/meta/meta.element.md)
 - [Stream Link](/docs/api/stream/README.md)
 - [Subtitles](/docs/api/subtitles/README.md)
+- [Repositories](/docs/api/repositories.md)
 
 ### Tutorials
 
