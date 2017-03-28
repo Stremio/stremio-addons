@@ -14,11 +14,11 @@ This is the basic format for a repository:
 
 #### Add-on meta object
 
-`id` - *required* - add-on identifier
+`id` - **required** - add-on identifier
 
-`endpoints` - *required* - array of all endpoints (URLs) that this add-on can be accessed on
+`endpoints` - **required** - array of all endpoints (URLs) that this add-on can be accessed on
 
-`name` - *required* - add-on name
+`name` - **required** - add-on name
 
 `logo` - _optional_ - URL to add-on logo
 
