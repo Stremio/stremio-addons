@@ -8,7 +8,7 @@ This is an example of the official repository: [http://api9.strem.io/addonsrepo.
 
 This is the basic format for a repository: 
 
-`addons` - _optional_ - array of [``add-on meta objects``](/docs/api/repositories.md#addon-meta-object)
+`addons` - _optional_ - array of [``add-on meta objects``](/docs/api/repositories.md#add-on-meta-object)
 
 `endpoints` - _optional_ - array of add-on endpoints; use this if you don't know the add-on meta
 
@@ -27,11 +27,11 @@ Example:
 ```json
 {
 	"addons": [{
-		id: "com.linvo.cinemeta",
-		endpoints: [
+		"id": "com.linvo.cinemeta",
+		"endpoints": [
 			"https://cinemeta.strem.io/stremioget/stremio/v1"
 		],
-		name: "Cinemeta",
+		"name": "Cinemeta",
 	}],
 	"endpoints": [
 		"https://channels.strem.io/stremioget/stremio/v1"
