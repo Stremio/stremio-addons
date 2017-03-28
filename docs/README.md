@@ -71,6 +71,9 @@ var server = require("http").createServer(function (req, res) {
 - [Stream Link](/docs/api/stream/README.md)
 - [Subtitles](/docs/api/subtitles/README.md)
 
+- [Repositories](/docs/api/repositories.md)
+
+
 ### Tutorials
 
 - [Scaffolding an Add-on](/docs/tutorial/scaffolding.md)
