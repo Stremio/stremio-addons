@@ -1,5 +1,7 @@
 ## Stremio Add-ons
 
+[![Join the chat at https://gitter.im/Stremio/stremio-addons](https://badges.gitter.im/Stremio/stremio-addons.svg)](https://gitter.im/Stremio/stremio-addons?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 #### _All of the video content [Stremio](http://www.strem.io/) provides, it gets exclusively through this add-on system, with no content or specific provider being built into the app._
 
 This package includes both Server and Client for a complete Add-on System.
