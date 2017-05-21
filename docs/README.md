@@ -3,8 +3,8 @@
 You can scaffold an empty Stremio add-on by running:
 
 ```
-npm install -g yeoman
-yo stremio
+npm -g install yo generator-stremio-addon # use sudo if you're on Linux
+yo stremio-addon
 ```
 
 You will find generated Stremio addon source code in `output/` directory.
