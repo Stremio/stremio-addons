@@ -1,5 +1,6 @@
 var url = require("url");
 var rpc = require("./rpc");
+var validate = require("./validate"); // simply console-log warnings in case of wrong args; aimed to aid development
 var extend = require("extend");
 var async = require("async");
 
@@ -9,6 +10,8 @@ var SESSION_LIVE = 10*60*60*1000; // 10 hrs
 var CACHE_TTL = 2.5 * 60 * 60; // seconds to live for the cache
 
 var CENTRAL = "https://api9.strem.io";
+
+var IS_DEVEL = process.env.NODE_ENV !== "production";
 
 function Server(methods, options, manifest)
 {
@@ -66,7 +69,11 @@ function Server(methods, options, manifest)
 		var auth = params[0], // AUTH is obsolete
 			args = params[1] || { };
 
-		return methods[method](args, cb, { stremioget: true }); // everything is allowed without auth in stremioget mode
+		return methods[method](args, function(err, res) {
+			if (err) return cb(err);
+			if (IS_DEVEL) validate(method, res); // This would simply console-log warnings in case of wrong args; aimed to aid development
+			cb(null, res);
+		}, { stremioget: true }); // everything is allowed without auth in stremioget mode
 	};
 
 	// HTTP middleware
