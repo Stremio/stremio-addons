@@ -23,6 +23,14 @@ The purpose of an add-on is to gather media content (not to extend app features)
 
 - [Benefits of creating an add-on for Stremio](/docs/BENEFITS.md)
 
+### Getting started
+
+You can scaffold an empty Stremio add-on by running:
+
+```
+npm -g install yo generator-stremio-addon # use sudo if you're on Linux
+yo stremio-addon
+```
 
 ### Documentation
 
