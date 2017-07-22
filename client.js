@@ -91,6 +91,7 @@ function Addon(url, options, stremio, ready)
 			if (res && res.manifest) self.manifest = res.manifest;
 			if (res) stremio.emit("addon-ready", self, self.url);
 			stremio.emit("addon-meta:"+self.url, self, err, res);
+			stremio.emit("addon-meta", self.url, self, err, res);
 		});
 	}
 
