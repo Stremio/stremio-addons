@@ -107,7 +107,9 @@ function Addon(url, options, stremio, ready)
 
 		// Validate arguments - we should do this via some sort of model system
 		if (self.methods.indexOf(method) == -1) return cb(1);
-		self.client.request(method, args, function(err, error, res) { cb(0, err, error, res) });
+		self.client.request(method, args, function(err, error, res) {
+			cb(0, err, error, res)
+		});
 	};
 
 	this.identifier = function() {
@@ -561,17 +563,17 @@ var isPlainObject = function isPlainObject(obj) {
 	// Own properties are enumerated firstly, so to speed up,
 	// if last one is own, then all properties are own.
 	var key;
-	for (key in obj) {/**/}
+	for (key in obj) { /**/ }
 
 	return typeof key === 'undefined' || hasOwn.call(obj, key);
 };
 
 module.exports = function extend() {
-	var options, name, src, copy, copyIsArray, clone,
-		target = arguments[0],
-		i = 1,
-		length = arguments.length,
-		deep = false;
+	var options, name, src, copy, copyIsArray, clone;
+	var target = arguments[0];
+	var i = 1;
+	var length = arguments.length;
+	var deep = false;
 
 	// Handle a deep copy situation
 	if (typeof target === 'boolean') {
@@ -579,7 +581,8 @@ module.exports = function extend() {
 		target = arguments[1] || {};
 		// skip the boolean and the target
 		i = 2;
-	} else if ((typeof target !== 'object' && typeof target !== 'function') || target == null) {
+	}
+	if (target == null || (typeof target !== 'object' && typeof target !== 'function')) {
 		target = {};
 	}
 
@@ -618,7 +621,6 @@ module.exports = function extend() {
 	// Return the modified object
 	return target;
 };
-
 
 },{}],"stremio-addons":[function(require,module,exports){
 module.CENTRAL = "http://api9.strem.io";
