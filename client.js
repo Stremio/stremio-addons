@@ -106,7 +106,9 @@ function Addon(url, options, stremio, ready)
 
 		// Validate arguments - we should do this via some sort of model system
 		if (self.methods.indexOf(method) == -1) return cb(1);
-		self.client.request(method, args, function(err, error, res) { cb(0, err, error, res) });
+		self.client.request(method, args, function(err, error, res) {
+			cb(0, err, error, res)
+		});
 	};
 
 	this.identifier = function() {
