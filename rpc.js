@@ -4,9 +4,13 @@ var extend = require("extend");
 var http = require("http");
 var https = require("https");
 
+var once = require("once");
+
 var LENGTH_TO_FORCE_POST=8192;
 
 var receiveJSON = function(resp, callback) {
+	callback = once(callback);
+
 	if (resp.method == "GET") {
 		var body = url.parse(resp.url, true).query.b;
 		try { body = JSON.parse(new Buffer(body, "base64").toString()) } catch(e) { 
@@ -35,7 +39,9 @@ function rpcClient(endpoint, options, globalOpts)
 	var isGet = true;
 
 	var client = { };
-	client.request = function(method, params, callback) { 
+	client.request = function(method, params, callback) {
+		callback = once(callback);
+
 		params[0] = null; // OBSOLETE work around authentication (index 0) slot which was used before
 
 		var body = JSON.stringify({ params: params, method: method, id: 1, jsonrpc: "2.0" });
