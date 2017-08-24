@@ -151,12 +151,16 @@ function Server(methods, options, manifest)
 				async.map(body, function(b, cb) { 
 					// WARNING: same logic as -->
 					if (!b || !b.id || !b.method) return cb(null, formatResp(null, { code: -32700, message: "parse error" })); 
-					handle(b.method, b.params, function(err, bb) { cb(null, formatResp(b.id, err, bb)) });
+					handle(b.method, b.params, function(err, bb) {
+						cb(null, formatResp(b.id, err, bb))
+					});
 				}, function(err, bodies) { send(bodies, ttl) });
 			} else { 
 				// --> THIS
 				if (!body || !body.id || !body.method) return send(formatResp(null, { code: -32700, message: "parse error" }));
-				handle(body.method, body.params, function(err, b) { send(formatResp(body.id, err, b), ttl) });
+				handle(body.method, body.params, function(err, b) {
+					send(formatResp(body.id, err, b), ttl)
+				});
 			}
 		});
 	};
