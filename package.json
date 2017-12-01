@@ -5,7 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "async": "1.x.x",
-    "ejs": "2.x.x",
+    "ejs": "^2.5.7",
     "events": "^1.1.0",
     "extend": "^3.0.0",
     "once": "^1.4.0"
