@@ -25,6 +25,8 @@ The purpose of an add-on is to gather media content (not to extend app features)
 
 ### Getting started
 
+To get started with Add-ons, you first need to have Node.js installed.
+
 You can scaffold an empty Stremio add-on by running:
 
 ```

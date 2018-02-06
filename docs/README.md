@@ -1,5 +1,7 @@
 ### Getting started
 
+First and foremost, you need to have Node.js installed. Everything in this documentation is valid across any operating system, as long as you have Node.js (required) and bash (optional) installed.
+
 You can scaffold an empty Stremio add-on by running:
 
 ```
