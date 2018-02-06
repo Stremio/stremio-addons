@@ -6,7 +6,9 @@ Repositories are added to the Stremio catalogue, after which it starts displayin
 
 This is an example of the official repository: [http://api9.strem.io/addonsrepo.json](http://api9.strem.io/addonsrepo.json)
 
-This is the basic format for a repository: 
+This is the basic format for a repository:
+
+`name` - **required** - the repository name
 
 `addons` - _optional_ - array of [``add-on meta objects``](/docs/api/repositories.md#add-on-meta-object)
 
@@ -26,6 +28,7 @@ Example:
 
 ```json
 {
+	"name": "My repo name",
 	"addons": [{
 		"id": "com.linvo.cinemeta",
 		"endpoints": [
