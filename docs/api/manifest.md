@@ -38,9 +38,13 @@ Valid properties are:
 
 ```javascript
 [
-  { prop: "popularities.moviedb", name: "SORT_TRENDING", types: ["movie", "series"], noDiscoverTab: false, countrySpecific: false }
-  // noDiscoverTab would hide this sort from Discover
-  // countrySpecific would force Stremio to send country code with the meta.find request for that sort
+  { 
+    prop: "popularities.moviedb",
+    name: "SORT_TRENDING",
+    types: ["movie", "series"],
+    noDiscoverTab: false, // hide this sort from Discover
+    countrySpecific: false // force Stremio to send country code with the meta.find
+  }
 ]
 ```
 
@@ -61,7 +65,4 @@ Valid properties are:
 ``countrySpecificStreams`` - _optional_ - boolean - if true, the stremio client must pass ``countryCode`` of the user along with ``stream.find``, so that it can return geo-specific results. Please note that returning ``geos`` in the response [``Stream objects``](./stream/stream.response.md) is preferred over returning geo-specific results from ``stream.find``, but this is allowed if you have a data limitation
 
 ***TIP* - to implement sources where streams are geo-restricted (stream.find), see [``Stream object's``](./stream/stream.response.md) `geos`**
-
-
-``enginefsUrl`` - _optional_ - string - an override URL for the streaming server which is running by default on `localhost:11470`
 
