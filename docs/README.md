@@ -10,6 +10,32 @@ yo stremio-addon
 You will find generated Stremio addon source code in `output/` directory.
 
 
+### Documentation
+
+- [Benefits - why should I create an add-on?](/docs/BENEFITS.md)
+
+- [Manifest](/docs/api/manifest.md)
+- [Meta Feed](/docs/api/meta/meta.find.md)
+- [Searching](/docs/api/meta/meta.search.md)
+- [Meta Element](/docs/api/meta/meta.element.md)
+- [Stream Link](/docs/api/stream/README.md)
+- [Subtitles](/docs/api/subtitles/README.md)
+
+- [Repositories](/docs/api/repositories.md)
+
+
+### Tutorials
+
+- [Creating an Add-on](https://github.com/Stremio/addon-helloworld)
+- [Hosting your Add-on](/docs/tutorial/hosting.md)
+- [Publishing an Add-on](/docs/tutorial/publishing.md)
+- [Testing Environments](/docs/tutorial/testing.md)
+- [Using Cinemeta (meta API)](/docs/tutorial/using-cinemeta.md)
+- [Using add-ons client in browser](/docs/tutorial/using-in-browser.md)
+- [Add to Your App](/docs/tutorial/add.to.app.md)
+- [Hosting multiple add-ons](https://github.com/Stremio/stremio-addons-box)
+- [Scaffolding an Add-on with yeoman](/docs/tutorial/scaffolding.md)
+
 ### Anatomy of an Add-on
 
 ```javascript
@@ -59,30 +85,4 @@ var server = require("http").createServer(function (req, res) {
 }).listen(process.env.PORT || 7000); // set port for add-on
 
 ```
-
-### Documentation
-
-- [Benefits - why should I create an add-on?](/docs/BENEFITS.md)
-
-- [Manifest](/docs/api/manifest.md)
-- [Meta Feed](/docs/api/meta/meta.find.md)
-- [Searching](/docs/api/meta/meta.search.md)
-- [Meta Element](/docs/api/meta/meta.element.md)
-- [Stream Link](/docs/api/stream/README.md)
-- [Subtitles](/docs/api/subtitles/README.md)
-
-- [Repositories](/docs/api/repositories.md)
-
-
-### Tutorials
-
-- [Scaffolding an Add-on](/docs/tutorial/scaffolding.md)
-- [Creating an Add-on](https://github.com/Stremio/addon-helloworld)
-- [Hosting your Add-on](/docs/tutorial/hosting.md)
-- [Publishing an Add-on](/docs/tutorial/publishing.md)
-- [Testing Environments](/docs/tutorial/testing.md)
-- [Using Cinemeta (meta API)](/docs/tutorial/using-cinemeta.md)
-- [Using add-ons client in browser](/docs/tutorial/using-in-browser.md)
-- [Add to Your App](/docs/tutorial/add.to.app.md)
-- [Hosting multiple add-ons](https://github.com/Stremio/stremio-addons-box)
 
