@@ -5,8 +5,6 @@ var extend = require("extend");
 var MAX_RETRIES = 4;
 var SERVICE_RETRY_TIMEOUT = 30*1000;
 
-var LENGTH_TO_FORCE_POST=8192;
-
 function bindDefaults(call) {
 	return {
 		meta: {
