@@ -1,18 +1,18 @@
 # Stremio P2P addons
 
+The new add-on spec should have a much friendlier way of requesting things: serialize the query as a string in the following format:
+
+```
+/{method}/{type}/{id}.json
+```
+
+For example: ```/stream.find/series/my-addon:14.json```
+
+Transports allowed should be HTTP and IPFS
+
+In the case of IPFS, an IPNS-based URL will be accessed, and in case the object does not exist, it will be sent over an IPFS pubsub channel, and any responses signed by the add-on creator would be considered valid resolutions too.
 
 
-Key used on IPNS: 'q.json?b='+base64(jsonRpcMsg)
+## Other considerations
 
-[ JSON-RPC ]
-     | 
-[  IPNS  ]
-     |
-[  IPFS  ]
-
-
-Stage 1: Use the same JSON-RPC protocol as at the moment, but auto-cache to IPNS + IPFS
-
-Stage 2: Instead of accessing the add-on through HTTPS/DNS, auto-find peers who run the add-on and directly connect to them to call a method (if it's not cached in IPNS+IPFS) 
-
-Stage 3: Ability to serve videos through IPFS too
+Consider an easy way of allowing videos to be replicated over IPFS
