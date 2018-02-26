@@ -21,6 +21,9 @@ In the case of IPFS, an IPNS-based URL will be accessed, and in case the object 
 
 Consider an easy way of allowing videos to be replicated over IPFS
 
+This revised protocol should allow as asy as possible introspection into what is available in the add-on. IPFS-based cache of all responses solves that.
+
+
 
 ## Design goals
 
@@ -31,3 +34,33 @@ Consider an easy way of allowing videos to be replicated over IPFS
 * The protocol should be simple enough to allow 'static' add-ons: directories of files, uploaded to GitHub pages or IPFS
 
 * Simplify the entire client-side stack (stremio-addons, stremio-addons-user)
+
+
+
+## Publishing
+
+`publish` mode: e.g. `./myAddon --publish`; this would start an IPFS pubsub, upload the initial files (manifest and possibly catalogues) and then respond to all stream/details requests later on, and cache the response in IPFS
+
+Additionally this mode will publish the result of stream/detail for the most popular pieces of content, without them being requested by peers first.
+
+Alternatively this would be able to publish to a directory, but of course in that mode you'd be limited to what is initially published rather than receiving messages to request what's missing
+
+## Scribbles
+
+```
+addon spec work
+	1) think of a global add-on index that contains info about what is available in which add-ons; related to the notification index?
+	2) if an add-on is auto-scraped by a publish script, then we KNOW which movies are in it and we can list them (meta.find or even a global index)
+ 	3) maybe the p2p spec can define addons in a way that's already friendly to this - "addon is a db"?
+ 	4) a global crawler would help a lot with the stremio UX
+
+	meta.find / manifest / etc. reverse introspection: the response of that should return some info on how it should be displayed
+	https://ipfs.io/blog/25-pubsub/
+
+	script / docs to host on IPFS/gh-pages (export static files)
+	tool to publish on github pages
+
+	subtitles to NOT be a local addon
+
+```
+
