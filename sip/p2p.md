@@ -45,6 +45,17 @@ Additionally this mode will publish the result of stream/detail for the most pop
 
 Alternatively this would be able to publish to a directory, but of course in that mode you'd be limited to what is initially published rather than receiving messages to request what's missing
 
+
+## Cache 
+
+Every response should have a certain caching policy.
+
+We should return the policy in the JSON response itself, so as to make it transport agnostic. 
+In the case of IPFS, we can implement an "always available" policy where even if something is expired, it would be served from an old version if a new response is found in N seconds.
+
+For HTTP, the cache policy may be return in the form of HTTP headers as well.
+
+
 ## Scribbles
 
 ```
