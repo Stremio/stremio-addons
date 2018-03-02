@@ -8,6 +8,9 @@
     "ejs": "^2.5.7",
     "events": "^1.1.0",
     "extend": "^3.0.0",
+    "ipfs": "^0.27.7",
+    "ipfs-pubsub-room": "^1.1.5",
+    "js-ipfs": "0.0.301",
     "once": "^1.4.0"
   },
   "devDependencies": {
