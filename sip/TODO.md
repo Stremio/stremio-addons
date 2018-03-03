@@ -4,6 +4,8 @@
 
 ## TODO
 
+* consider the response formats
+* consider how to handle JSON errors and 404
 * implement and use `subtitles.json`, `subtitlesHash.json`
 * Write docs
 * Write spec
