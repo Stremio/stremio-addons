@@ -14,8 +14,9 @@ tape('detectFromURL: invalid protocol', function(t) {
 })
 
 tape('detectFromURL: legacy protocol', function(t) {
-	AddonClient.detectFromURL('http://cinemeta.strem.io', function(err, res) {
-		console.log(res)
+	// https://cinemeta.strem.io/stremioget/stremio/v1/q.json?b=eyJwYXJhbXMiOltdLCJtZXRob2QiOiJtZXRhIiwiaWQiOjEsImpzb25ycGMiOiIyLjAifQ==
+	AddonClient.detectFromURL('https://cinemeta.strem.io/stremioget/stremio/v1', function(err, res) {
+		console.log(err, res)
 		t.end()
 	})
 })
