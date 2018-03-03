@@ -4,26 +4,24 @@ This document describes a new specification for Stremio add-ons, which allow muc
 
 ## Revised spec
 
-The new add-on spec should have a much friendlier way of requesting things: serialize the query as a string in the following format:
+Let us describe a v3 add-on as having:
+
+1. A manifest
+2. One or more metadata catalogues (listed in the manifest)
+3. Supported type(s) and supported idPrefix(es) - used to determine whether to perform a `/stream/` or `/meta/`
+
+The new add-on spec should have a much friendlier way of requesting things: access resources in following REST-like format:
 
 ```
 /{resource}/{type}/{id}.json
 ```
 
-For example: ```/stream/series/my-addon:14.json```
+For example: ```/stream/series/imdb:tt14.json```
 
 Transports allowed should be HTTP and IPFS
 
 In the case of IPFS, an IPNS-based URL will be accessed, and in case the object does not exist, it will be sent over an IPFS pubsub channel, and any responses signed by the add-on creator would be considered valid resolutions too
 
-
-
-
-## Other considerations
-
-Consider an easy way of allowing videos to be replicated over IPFS
-
-This revised protocol should allow as easy as possible introspection into what is available in the add-on. IPFS-based cache of all responses solves that.
 
 
 
@@ -61,22 +59,6 @@ For HTTP, the cache policy may be return in the form of HTTP headers as well.
 
 Peer to peer add-on discovery can be implemented via IPFS
 
-## Scribbles
+## Other considerations
 
-```
-addon spec work
-	1) think of a global add-on index that contains info about what is available in which add-ons; related to the notification index?
-	2) if an add-on is auto-scraped by a publish script, then we KNOW which movies are in it and we can list them (meta.find or even a global index)
- 	3) maybe the p2p spec can define addons in a way that's already friendly to this - "addon is a db"?
- 	4) a global crawler would help a lot with the stremio UX
-
-	meta.find / manifest / etc. reverse introspection: the response of that should return some info on how it should be displayed
-	https://ipfs.io/blog/25-pubsub/
-
-	script / docs to host on IPFS/gh-pages (export static files)
-	tool to publish on github pages
-
-	subtitles to NOT be a local addon
-
-```
-
+Consider an easy way of allowing videos to be replicated over IPFS
