@@ -1,6 +1,9 @@
-## TODO
+## DONE
 
 * draft new client lib with `legacy` support; figure out the architecture of detection and etc.
+
+## TODO
+
 * implement and use `subtitles.json`, `subtitlesHash.json`
 * Write docs
 * Write spec
