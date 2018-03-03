@@ -19,3 +19,13 @@ tape('detectFromURL: legacy protocol', function(t) {
 		t.end()
 	})
 })
+
+// @TODO: detectFromURL: not recognized json response (ERR_RESP_UNRECOGNIZED)
+
+// @TODO: detectFromURL: linked to a landing page with x-stremio-addon
+
+// @TODO: detectFromURL: linked directly to manifest.json
+
+// @TODO: constructFromManifest: invalid transport
+
+// @TODO: constructFromManifest: constructs successfully
