@@ -7,7 +7,7 @@ This document describes a new specification for Stremio add-ons, which allow muc
 Let us describe a v3 add-on as having:
 
 1. A manifest
-2. One or more metadata catalogues (listed in the manifest)
+2. One or more metadata catalogs (listed in the manifest)
 3. Supported type(s) and supported idPrefix(es) - used to determine whether to perform a `/stream/` or `/meta/`
 
 The new add-on spec should have a much friendlier way of requesting things: access resources in following REST-like format:
@@ -39,7 +39,7 @@ In the case of IPFS, an IPNS-based URL will be accessed, and in case the object 
 
 ## Publishing
 
-`publish` mode: e.g. `./myAddon --publish`; this would start an IPFS pubsub, upload the initial files (manifest and possibly catalogues) and then respond to all stream/details requests later on, and cache the response in IPFS
+`publish` mode: e.g. `./myAddon --publish`; this would start an IPFS pubsub, upload the initial files (manifest and possibly catalogs) and then respond to all stream/details requests later on, and cache the response in IPFS
 
 Additionally this mode will publish the result of stream/detail for the most popular pieces of content, without them being requested by peers first.
 

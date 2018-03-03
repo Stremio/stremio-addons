@@ -16,8 +16,24 @@ tape('detectFromURL: invalid protocol', function(t) {
 tape('detectFromURL: legacy protocol', function(t) {
 	// https://cinemeta.strem.io/stremioget/stremio/v1/q.json?b=eyJwYXJhbXMiOltdLCJtZXRob2QiOiJtZXRhIiwiaWQiOjEsImpzb25ycGMiOiIyLjAifQ==
 	AddonClient.detectFromURL('https://cinemeta.strem.io/stremioget/stremio/v1', function(err, res) {
-		console.log(err, res)
-		t.end()
+		t.error(err, 'no error from detectFromURL')
+		t.ok(res.addon, 'addon is ok')
+		t.ok(res.addon.manifest, 'manifest is ok')
+		t.deepEqual(res.addon.manifest.catalogs, ['series', 'movie'], 'catalogs is right')
+		t.deepEqual(res.addon.manifest.resources, ['meta'], 'resources is right')
+		res.addon.get('catalog', res.addon.manifest.catalogs[0], function(err, resp) {
+			t.error(err, 'no error from catalog')
+			t.ok(Array.isArray(resp), 'response is an array')
+			t.ok(resp.length === 70, 'response is full length')
+
+			res.addon.get('meta', resp[0].type, resp[0].imdb_id, function(err, resp) {
+				t.error(err, 'no error from meta')
+
+				t.ok(resp.fanart, 'has fanart')
+
+				t.end()
+			})
+		})
 	})
 })
 
