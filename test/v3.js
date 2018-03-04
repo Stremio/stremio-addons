@@ -85,7 +85,11 @@ tape('detectFromURL: detect and use manifest.json URL', function(t) {
 				t.error(err, 'no error from meta')
 				t.ok(meta.id, 'meta has id')
 
-				t.end()
+				// IPFS addons need to be destroyed in order to allow the proc to exit
+				res.addon.destroy(function()
+				{
+					t.end()
+				})
 			})
 		})
 	})
