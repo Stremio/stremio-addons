@@ -38,7 +38,7 @@ tape('detectFromURL: legacy protocol', function(t) {
 })
 
 tape('detectFromURL: detect and use manifest.json URL', function(t) {
-	AddonClient.detectFromURL('https://gateway.ipfs.io/ipfs/QmTQTixUrtf9E4fasjes5Jb1o956FF6xqSsXnwrc5GLKeB/manifest.json', function(err, res) {
+	AddonClient.detectFromURL('https://gateway.ipfs.io/ipns/QmYRaTC2DqsgXaRUJzGFagLy725v1QyYwt66kvpifPosgj/manifest.json', function(err, res) {
 		t.error(err, 'no error from detectFromURL')
 		t.ok(res.addon, 'addon is ok')
 		t.ok(res.addon.manifest, 'manifest is ok')
