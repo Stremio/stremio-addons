@@ -38,7 +38,9 @@ tape('detectFromURL: legacy protocol', function(t) {
 })
 
 tape('detectFromURL: detect and use manifest.json URL', function(t) {
-	AddonClient.detectFromURL('https://gateway.ipfs.io/ipns/QmYRaTC2DqsgXaRUJzGFagLy725v1QyYwt66kvpifPosgj/manifest.json', function(err, res) {
+	// https://gateway.ipfs.io/ipfs/QmTQTixUrtf9E4fasjes5Jb1o956FF6xqSsXnwrc5GLKeB/manifest.json
+	// https://gateway.ipfs.io/ipns/QmYRaTC2DqsgXaRUJzGFagLy725v1QyYwt66kvpifPosgj/manifest.json
+	AddonClient.detectFromURL('https://gateway.ipfs.io/ipfs/QmTQTixUrtf9E4fasjes5Jb1o956FF6xqSsXnwrc5GLKeB/manifest.json', function(err, res) {
 		t.error(err, 'no error from detectFromURL')
 		t.ok(res.addon, 'addon is ok')
 		t.ok(res.addon.manifest, 'manifest is ok')
@@ -59,6 +61,31 @@ tape('detectFromURL: detect and use manifest.json URL', function(t) {
 					t.equal(streams.length, 2, 'streams is right length')
 					t.end()
 				})
+			})
+		})
+	})
+})
+
+
+tape('detectFromURL: detect and use manifest.json URL', function(t) {
+	// ipfs://QmTQTixUrtf9E4fasjes5Jb1o956FF6xqSsXnwrc5GLKeB/manifest.json
+	// ipns://QmYRaTC2DqsgXaRUJzGFagLy725v1QyYwt66kvpifPosgj/manifest.json
+	AddonClient.detectFromURL('ipfs://QmTQTixUrtf9E4fasjes5Jb1o956FF6xqSsXnwrc5GLKeB/manifest.json', function(err, res) {
+		t.error(err, 'no error from detectFromURL')
+		t.ok(res.addon, 'addon is ok')
+		t.ok(res.addon.manifest, 'manifest is ok')
+		t.deepEqual(res.addon.manifest.catalogs, ['top'], 'catalogs is right')
+		t.deepEqual(res.addon.manifest.resources, ['meta', 'stream'], 'resources is right')
+
+		res.addon.get('catalog', 'top', function(err, resp) {
+			t.error(err, 'no error from catalog')
+			t.ok(Array.isArray(resp), 'response is an array')
+
+			res.addon.get('meta', resp[0].type, resp[0].id, function(err, meta) {
+				t.error(err, 'no error from meta')
+				t.ok(meta.id, 'meta has id')
+
+				t.end()
 			})
 		})
 	})
