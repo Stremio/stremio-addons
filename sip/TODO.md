@@ -5,6 +5,7 @@
 
 ## TODO
 
+* see if IPFS pubsub/room has signatures - it has peerId, so it hould be secure
 * IPFS impl to use pubusb to get missing
 * IPFS server impl
 * implement and use `subtitles.json`, `subtitlesHash.json`
@@ -14,6 +15,6 @@
 * Write docs
 * Write spec
 * Decide on the new set of modules - refreshed `stremio-models`
-* tutorials like 'Create and publish a peer-to-peer addon with NodeJS' or 'Create a hosted add-on with NodeJS', 'Create a hosted add-on with Python', 'Create a hosted add-on with PHP'
+* tutorials like 'Create and publish a peer-to-peer addon with NodeJS' or 'Create a hosted add-on with nodejs', 'Create a hosted add-on with Python', 'Create a hsoted add-on with Go', 'Create a hosted add-on with PHP'
 * considering IPFS-based add-ons will be experimental, decide what to advise developers
 * learn IPFS architecture and re-evaluate the design
