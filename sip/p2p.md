@@ -72,6 +72,15 @@ HTTP-based transport may support user identification and possibly authentication
 
 Simplest form of that is just to send a unique, anonymous UID as an HTTP header when fetching content.
 
-## Other considerations
+## Bridge from BitTorrent/HTTP
 
-Consider an easy way of allowing videos to be replicated over IPFS
+Consider an easy way of allowing files to be replicated over IPFS from sources like HTTP and BitTorrent *dynamically*. Dynamically means we wouldn't need the full file at once in order to upload it to IPFS.
+
+This can be done by gradually uploading chunks from the underlying source (HTTP or BitTorrent), when we have them, as IPFS blocks. Those blocks will also be IPFS objects, which means they follow markedag protobufs spec, and are of the `blob` type, meaning they only contain data (rather than references).
+
+The IPFS object hashes will be broadcasted on an IPFS pubsub channel, along with some metadata on what range they represent, as a signed message from the relayer.
+
+Once the whole underlying file has been retrieved, we can create an IPFS object that is a `list`, which means it will reference all the other IPFS objects of the `blob` to make one complete file.
+
+Once this is done, it will broadcast the final IPFS object.
+
