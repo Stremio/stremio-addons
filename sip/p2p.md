@@ -45,6 +45,13 @@ Additionally this mode will publish the result of stream/detail for the most pop
 
 Alternatively this would be able to publish to a directory, but of course in that mode you'd be limited to what is initially published rather than receiving messages to request what's missing
 
+## Bootstrapping / dev friendliness
+
+* after one npm command, you should be able to initialize sample add-on
+* after starting the add-on, it should open in stremio or the open-source client; it's really important that opening the addon in a linter and a client is very easy
+* basically distinct starting a local addon server in two modes: ``--publish`` and ``--dev`` (default); where the ``--dev`` mode would prompt an existing stremio to open WITH the addon or warn the dev when there is no open stremio and provide `app.strem.io` fallback
+* detailed logging that shows what's happening and what's being asked from stremio
+* stremio-addons renamed to stremio-addons-sdk
 
 ## Cache 
 
@@ -58,6 +65,12 @@ For HTTP, the cache policy may be return in the form of HTTP headers as well.
 ## Add-on discovery
 
 Peer to peer add-on discovery can be implemented via IPFS
+
+## User identification / authentication
+
+HTTP-based transport may support user identification and possibly authentication.
+
+Simplest form of that is just to send a unique, anonymous UID as an HTTP header when fetching content.
 
 ## Other considerations
 
