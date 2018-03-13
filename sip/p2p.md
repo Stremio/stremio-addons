@@ -84,3 +84,5 @@ Once the whole underlying file has been retrieved, we can create an IPFS object 
 
 Once this is done, it will broadcast the final IPFS object.
 
+This can be used to aid and magically p2p-ify video distribution from HTTP to IPFS.
+
