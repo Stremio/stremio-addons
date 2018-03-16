@@ -74,8 +74,7 @@ tape('detectFromURL: detect and use manifest.json URL', function(t) {
 	})
 })
 
-
-tape('detectFromURL: detect and use manifest.json URL', function(t) {
+tape('detectFromURL: IPFS: detect and use manifest.json URL', function(t) {
 	// ipfs://QmTQTixUrtf9E4fasjes5Jb1o956FF6xqSsXnwrc5GLKeB/manifest.json
 	// ipns://QmYRaTC2DqsgXaRUJzGFagLy725v1QyYwt66kvpifPosgj/manifest.json
 
@@ -112,6 +111,7 @@ tape('detectFromURL: detect and use manifest.json URL', function(t) {
 		addon.destroy(function() { t.end() })
 	})
 })
+
 
 
 // @TODO: detectFromURL: not recognized json response (ERR_RESP_UNRECOGNIZED)
