@@ -98,17 +98,13 @@ tape('detectFromURL: detect and use manifest.json URL', function(t) {
 	.then(function(meta) {
 		t.ok(meta.id, 'meta has id')
 
-		// @TODO: get a non-cached item
-		//return addon.get('stream', 'movie', parseInt(Math.random()*1000))
-
-		addon.destroy(function() { t.end() })
+		return addon.get('stream', 'movie', parseInt(Math.random()*1000))
 	})
-	/*
 	.then(function(stream) {
 		console.log(stream)
 		// IPFS addons need to be destroyed in order to allow the proc to exit
 		addon.destroy(function() { t.end() })
-	})*/
+	})
 	.catch(function(err) {
 		t.error(err, 'no error')
 
