@@ -9,6 +9,7 @@
 * solve the js-ipfs lock issue so we can test N instances at the same time - see ipfs tests and etc
 * consider localtunnel (lt) instead of pubsub, will be easier and more anonymous
 * or a very simple pubsub impl
+* implement built-in promisification
 * learn how WebRTC works and whether we can provide nodes directly in the manifest (by peer ID and possibly addr)
 * IPFS impl to use pubusb to get missing; also re-eval the pubsub model, perhaps sending a message to someone in the swarm is sufficient
 * IPFS-based SDK implementation
