@@ -38,11 +38,11 @@ tape('detectFromURL: legacy protocol', function(t) {
 })
 
 tape('detectFromURL: detect and use manifest.json URL', function(t) {
-	// https://gateway.ipfs.io/ipfs/QmTQTixUrtf9E4fasjes5Jb1o956FF6xqSsXnwrc5GLKeB/manifest.json
-	// https://gateway.ipfs.io/ipns/QmYRaTC2DqsgXaRUJzGFagLy725v1QyYwt66kvpifPosgj/manifest.json
+	const ipfsURL = 'https://gateway.ipfs.io/ipfs/QmTQTixUrtf9E4fasjes5Jb1o956FF6xqSsXnwrc5GLKeB/manifest.json'
+	const ipnsURL = 'https://gateway.ipfs.io/ipns/QmYRaTC2DqsgXaRUJzGFagLy725v1QyYwt66kvpifPosgj/manifest.json'
 
 	let addon
-	AddonClient.detectFromURL('https://gateway.ipfs.io/ipfs/QmTQTixUrtf9E4fasjes5Jb1o956FF6xqSsXnwrc5GLKeB/manifest.json')
+	AddonClient.detectFromURL(ipfsURL)
 	.then(function(res) {
 		t.ok(res.addon, 'addon is ok')
 		t.ok(res.addon.manifest, 'manifest is ok')
@@ -75,12 +75,12 @@ tape('detectFromURL: detect and use manifest.json URL', function(t) {
 })
 
 tape('detectFromURL: IPFS: detect and use manifest.json URL', function(t) {
-	// ipfs://QmTQTixUrtf9E4fasjes5Jb1o956FF6xqSsXnwrc5GLKeB/manifest.json
-	// ipns://QmYRaTC2DqsgXaRUJzGFagLy725v1QyYwt66kvpifPosgj/manifest.json
+	const ipfsURL = 'ipfs://QmTQTixUrtf9E4fasjes5Jb1o956FF6xqSsXnwrc5GLKeB/manifest.json'
+	const ipnsURL = 'ipns://QmYRaTC2DqsgXaRUJzGFagLy725v1QyYwt66kvpifPosgj/manifest.json'
 
 	let addon
 
-	AddonClient.detectFromURL('ipfs://QmTQTixUrtf9E4fasjes5Jb1o956FF6xqSsXnwrc5GLKeB/manifest.json')
+	AddonClient.detectFromURL(ipfsURL)
 	.then(function(res) {
 		t.ok(res.addon, 'addon is ok')
 		t.ok(res.addon.manifest, 'manifest is ok')

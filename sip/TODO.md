@@ -10,12 +10,12 @@
 ## TODO
 
 * consider localtunnel (lt) instead of pubsub, will be easier and more anonymous
+* figure out IPNS slowness and how to work around; also IPNS is not implemented in js-ipfs
 * learn how WebRTC works and whether we can provide nodes directly in the manifest (by peer ID and possibly addr)
 * IPFS impl to use pubusb to get missing; also re-eval the pubsub model, perhaps sending a message to someone in the swarm is sufficient
 * IPFS-based SDK implementation
 * example addon based on the SDK
 * implement and use `subtitles.json`, `subtitlesHash.json`
-* figure out IPNS slowness and how to work around
 * consider the response formats
 * consider cache - not-found items should refresh after a certain amount of time
 * consider how to handle JSON parse errors and 404
