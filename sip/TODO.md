@@ -5,20 +5,20 @@
 * see if IPFS pubsub/room has signatures - it has peerId, so it should be secure - there are NO SIGNATURES
 * implement built-in promisification
 * very simple pubsub impl
+* solve the js-ipfs lock issue so we can test N instances at the same time - see ipfs tests and etc
 
 ## TODO
 
-* solve the js-ipfs lock issue so we can test N instances at the same time - see ipfs tests and etc
 * consider localtunnel (lt) instead of pubsub, will be easier and more anonymous
 * learn how WebRTC works and whether we can provide nodes directly in the manifest (by peer ID and possibly addr)
 * IPFS impl to use pubusb to get missing; also re-eval the pubsub model, perhaps sending a message to someone in the swarm is sufficient
 * IPFS-based SDK implementation
-* example addon
+* example addon based on the SDK
 * implement and use `subtitles.json`, `subtitlesHash.json`
 * figure out IPNS slowness and how to work around
 * consider the response formats
 * consider cache - not-found items should refresh after a certain amount of time
-* consider how to handle JSON errors and 404
+* consider how to handle JSON parse errors and 404
 * Write docs
 * Write spec
 * Decide on the new set of modules - refreshed `stremio-models`

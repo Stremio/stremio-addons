@@ -78,7 +78,8 @@ tape('detectFromURL: IPFS: detect and use manifest.json URL', function(t) {
 	// ipfs://QmTQTixUrtf9E4fasjes5Jb1o956FF6xqSsXnwrc5GLKeB/manifest.json
 	// ipns://QmYRaTC2DqsgXaRUJzGFagLy725v1QyYwt66kvpifPosgj/manifest.json
 
-	let addon 
+	let addon
+
 	AddonClient.detectFromURL('ipfs://QmTQTixUrtf9E4fasjes5Jb1o956FF6xqSsXnwrc5GLKeB/manifest.json')
 	.then(function(res) {
 		t.ok(res.addon, 'addon is ok')
@@ -108,7 +109,8 @@ tape('detectFromURL: IPFS: detect and use manifest.json URL', function(t) {
 		t.error(err, 'no error')
 
 		// IPFS addons need to be destroyed in order to allow the proc to exit
-		addon.destroy(function() { t.end() })
+		if (addon) addon.destroy(function() { t.end() })
+		else t.end()
 	})
 })
 

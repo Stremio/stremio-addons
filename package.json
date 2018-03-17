@@ -10,6 +10,7 @@
     "extend": "^3.0.0",
     "ipfs": "^0.27.7",
     "ipfs-pubsub-room": "^1.1.5",
+    "ipfs-repo": "^0.18.7",
     "js-ipfs": "0.0.301",
     "once": "^1.4.0",
     "thunky": "^1.0.2"
