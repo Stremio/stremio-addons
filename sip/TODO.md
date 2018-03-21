@@ -11,23 +11,26 @@
 * how does routing work currently in js-ipfs?? why does IPNS depend on "dht being implemented"; DHT is implemented since 0.24.0
 * can we broadcast content requests via the DHT? can we improve pubsub? ; NOT A SMART IDEA
 * IPFS impl to use pubusb to get missing; also re-eval the pubsub model, perhaps sending a message to someone in the swarm is sufficient
+* figure out IPNS slowness and how to work around; also IPNS is not implemented in js-ipfs
 
 ## TODO
 
-* learn how WebRTC works and whether we can provide nodes directly in the manifest (by peer ID and possibly addr)
-* figure out IPNS slowness and how to work around; also IPNS is not implemented in js-ipfs
-
-* IPFS requestUpdate(): broadcast a message to the creator peer and "aggregator" peers to fetch / update an entry; use WebRTC 
-* IPFS-based SDK implementation
-
-* example addon based on the SDK
 * implement and use `subtitles.json`, `subtitlesHash.json`
 * consider the response formats
 * consider cache - not-found items should refresh after a certain amount of time
 * consider how to handle JSON parse errors and 404
-* Write docs
-* Write spec
+* Write Docs
+* Write Spec
 * Decide on the new set of modules - refreshed `stremio-models`
-* tutorials like 'Create and publish a peer-to-peer addon with NodeJS' or 'Create a hosted add-on with nodejs', 'Create a hosted add-on with Python', 'Create a hosted add-on with Go', 'Create a hosted add-on with PHP'
+* tutorials like 'Create a hosted add-on with nodejs', 'Create a hosted add-on with Python', 'Create a hosted add-on with Go', 'Create a hosted add-on with PHP'
 * example: publish an add-on via localtunnel; consider other possibilities that are easy
-* considering IPFS-based add-ons will be experimental, decide what to advise developers
+
+
+## TODO p2p
+
+* learn how WebRTC works and whether we can provide nodes directly in the manifest (by peer ID and possibly addr)
+* IPFS `requestUpdate` message: broadcast a message to the creator peer and "aggregator" peers to fetch / update an entry; use WebRTC 
+* IPFS delegated nodes helping with routing and broadcasting/keeping track of `requestUpdate`
+* IPFS-based SDK implementation
+* example addon based on the SDK
+* tutorial: 'Create and publish a peer-to-peer addon with NodeJS'
