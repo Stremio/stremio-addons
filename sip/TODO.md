@@ -31,6 +31,7 @@
 * learn how WebRTC works and whether we can provide nodes directly in the manifest (by peer ID and possibly addr)
 * IPFS `requestUpdate` message: broadcast a message to the creator peer and "aggregator" peers to fetch / update an entry; use WebRTC 
 * IPFS delegated nodes helping with routing and broadcasting/keeping track of `requestUpdate`
+* IPNS over js-ipfs using the delegated routing nodes
 * IPFS-based SDK implementation
 * example addon based on the SDK
 * tutorial: 'Create and publish a peer-to-peer addon with NodeJS'
