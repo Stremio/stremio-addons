@@ -20,7 +20,9 @@ For example: ```/stream/series/imdb:tt14.json```
 
 Transports allowed should be HTTP and IPFS
 
-In the case of IPFS, an IPNS-based URL will be accessed, and in case the object does not exist, it will be sent over an IPFS pubsub channel, and any responses signed by the add-on creator would be considered valid resolutions too
+In the case of IPFS, an IPNS-based URL will be accessed, and in case the object does not exist, a `requestUpdate` message will be sent to the add-on creator peer (referenced by ID via `peerRouting.findPeer`), and potentially "aggregator" peers - and we will wait a certain time to see if the content will be updated on the IPNS URL.
+
+This message would also be sent if we consider the object outdated.
 
 
 
@@ -39,7 +41,7 @@ In the case of IPFS, an IPNS-based URL will be accessed, and in case the object 
 
 ## Publishing
 
-`publish` mode: e.g. `./myAddon --publish`; this would start an IPFS pubsub, upload the initial files (manifest and possibly catalogs) and then respond to all stream/details requests later on, and cache the response in IPFS
+`publish` mode: e.g. `./myAddon --publish`; this would start an IPFS node, upload the initial files (manifest and possibly catalogs) and then respond to all stream/details requests later on (`requestUpdate`), and upload the response in IPFS
 
 Additionally this mode will publish the result of stream/detail for the most popular pieces of content, without them being requested by peers first.
 
