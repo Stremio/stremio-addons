@@ -66,7 +66,7 @@ For HTTP, the cache policy may be return in the form of HTTP headers as well.
 
 ## Add-on discovery
 
-Peer to peer add-on discovery can be implemented via IPFS
+Peer to peer add-on discovery can be implemented via IPFS / IPNS
 
 ## User identification / authentication
 
@@ -88,3 +88,9 @@ Once this is done, it will broadcast the final IPFS object.
 
 This can be used to aid and magically p2p-ify video distribution from HTTP to IPFS.
 
+
+## Supernodes
+
+To aid using the decentralized system in resource limited environments and the browser, we can introduce a concept of a "supernode". 
+
+Such a node could be doing delegated routing (see https://github.com/ipfs/notes/issues/162), relaying `requestUpdate` messages, and caching content so as to make it more available (and over more transports).

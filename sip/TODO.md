@@ -10,15 +10,16 @@
 * consider localtunnel (lt) instead of pubsub, will be easier and more anonymous: BETTER MAKE IT TUTORIALS
 * how does routing work currently in js-ipfs?? why does IPNS depend on "dht being implemented"; DHT is implemented since 0.24.0
 * can we broadcast content requests via the DHT? can we improve pubsub? ; NOT A SMART IDEA
+* IPFS impl to use pubusb to get missing; also re-eval the pubsub model, perhaps sending a message to someone in the swarm is sufficient
 
 ## TODO
 
-* figure out IPNS slowness and how to work around; also IPNS is not implemented in js-ipfs
 * learn how WebRTC works and whether we can provide nodes directly in the manifest (by peer ID and possibly addr)
-* IPFS impl to use pubusb to get missing; also re-eval the pubsub model, perhaps sending a message to someone in the swarm is sufficient
+* figure out IPNS slowness and how to work around; also IPNS is not implemented in js-ipfs
 
-* IPFS requestUpdate(): broadcast a message to the creator peer and "aggregator" peers to fetch / update an entry; use WebRTC transport
+* IPFS requestUpdate(): broadcast a message to the creator peer and "aggregator" peers to fetch / update an entry; use WebRTC 
 * IPFS-based SDK implementation
+
 * example addon based on the SDK
 * implement and use `subtitles.json`, `subtitlesHash.json`
 * consider the response formats
