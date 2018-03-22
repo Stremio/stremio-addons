@@ -96,3 +96,5 @@ To aid using the decentralized system in resource limited environments and the b
 Such a node could be doing delegated routing (see https://github.com/ipfs/notes/issues/162), relaying `requestUpdate` messages, and caching content so as to make it more available (and over more transports).
 
 Those nodes should expose WebSockets and WebRTC transports - both are compatible with the browser and have complementing strengths (e.g. WS is less resource intense and can go behind CloudFlare)
+
+The user would send `requestUpdate` message to all their delegated nodes, and use them for resolving names. This improves performance, and also ensures all add-ons receive the `requestUpdate` message.
