@@ -94,3 +94,5 @@ This can be used to aid and magically p2p-ify video distribution from HTTP to IP
 To aid using the decentralized system in resource limited environments and the browser, we can introduce a concept of a "supernode". 
 
 Such a node could be doing delegated routing (see https://github.com/ipfs/notes/issues/162), relaying `requestUpdate` messages, and caching content so as to make it more available (and over more transports).
+
+Those nodes should expose WebSockets and WebRTC transports - both are compatible with the browser and have complementing strengths (e.g. WS is less resource intense and can go behind CloudFlare)
