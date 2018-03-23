@@ -91,7 +91,7 @@ This can be used to aid and magically p2p-ify video distribution from HTTP to IP
 
 ## Supernodes
 
-To aid using the decentralized system in resource limited environments and the browser, we can introduce a concept of a "supernode". 
+To aid using the decentralized system in resource limited environments and the browser, we can introduce a concept of a "supernode". Delegated nodes (supernodes) would be all add-on creator nodes, and some pre-set nodes (similar to DHT bootstrap nodes).
 
 Such a node could be doing delegated routing (see https://github.com/ipfs/notes/issues/162), relaying `requestUpdate` messages, and caching content so as to make it more available (and over more transports).
 
