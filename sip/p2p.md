@@ -4,6 +4,8 @@ This document describes a new specification for Stremio add-ons, which allow muc
 
 ## Revised spec
 
+( @TODO: move this to a separate doc )
+
 Let us describe a v3 add-on as having:
 
 1. A manifest
@@ -26,7 +28,6 @@ This message would also be sent if we consider the object outdated.
 
 
 
-
 ## Design goals
 
 * The NodeJS-based SDK to make add-ons should have a simple API, and be able to publish an add-on *without needing a server/hosting infrastructure*
@@ -38,7 +39,6 @@ This message would also be sent if we consider the object outdated.
 * Simplify the entire client-side stack (stremio-addons, stremio-addons-user)
 
 
-
 ## Publishing
 
 `publish` mode: e.g. `./myAddon --publish`; this would start an IPFS node, upload the initial files (manifest and possibly catalogs) and then respond to all stream/details requests later on (`requestUpdate`), and upload the response in IPFS
@@ -46,6 +46,7 @@ This message would also be sent if we consider the object outdated.
 Additionally this mode will publish the result of stream/detail for the most popular pieces of content, without them being requested by peers first.
 
 Alternatively this would be able to publish to a directory, but of course in that mode you'd be limited to what is initially published rather than receiving messages to request what's missing
+
 
 ## Bootstrapping / dev friendliness
 
@@ -100,3 +101,30 @@ Such a node could be doing delegated routing (see https://github.com/ipfs/notes/
 Those nodes should expose WebSockets and WebRTC transports - both are compatible with the browser and have complementing strengths (e.g. WS is less resource intense and can go behind CloudFlare)
 
 The user would send `requestUpdate` message to all their delegated nodes, and use them for resolving names. This improves performance, and also ensures all add-ons receive the `requestUpdate` message.
+
+
+## JS library
+
+### Using an add-on
+
+```
+const AddonClient = require('stremio-addons').AddonClient
+
+// .detectFromURL() will construct an add-on (or repo) from url
+
+//const client = new AddonClient(manifest, transport)
+
+client.get('stream', 'movie', 'tt')
+```
+
+All functions can either take `cb` at the end or will return a promise
+
+### Internal APIs
+
+#### Transport
+
+```
+let transport = new Transport(url)
+transport.manifest(cb)
+transport.get(args, cb)
+```

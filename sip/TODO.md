@@ -19,6 +19,8 @@
 * consider the response formats
 * consider cache - not-found items should refresh after a certain amount of time
 * consider how to handle JSON parse errors and 404
+* Move out SDK/docs to a new repo
+* Move out client to a new repo
 * Write Docs
 * Write Spec
 * Decide on the new set of modules - refreshed `stremio-models`
@@ -31,6 +33,9 @@
 * learn how WebRTC works and whether we can provide nodes directly in the manifest (by peer ID and possibly addr)
 	mafintosh: https://github.com/mafintosh/hyperdht#dhtholepunchpeer-node-callback
 	read ipfs webrtc code and learn how they do signalling
+	read uTP code (libutp, node.js utp), see how this is supposed to punch 
+	try to use libp2p directly over different networks
+	read out webrtc low-level code
 - stremio addons Proto SDK, with http and ws (supernode) exposed connections ; test them in an automated test
 * IPFS `requestUpdate` message: broadcast a message to the creator peer and "aggregator" peers to fetch / update an entry; use WebRTC 
 * IPFS delegated nodes helping with routing and broadcasting/keeping track of `requestUpdate`
