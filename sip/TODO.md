@@ -29,9 +29,12 @@
 ## TODO p2p
 
 * learn how WebRTC works and whether we can provide nodes directly in the manifest (by peer ID and possibly addr)
+	mafintosh: https://github.com/mafintosh/hyperdht#dhtholepunchpeer-node-callback
+	read ipfs webrtc code and learn how they do signalling
+- stremio addons Proto SDK, with http and ws (supernode) exposed connections ; test them in an automated test
 * IPFS `requestUpdate` message: broadcast a message to the creator peer and "aggregator" peers to fetch / update an entry; use WebRTC 
 * IPFS delegated nodes helping with routing and broadcasting/keeping track of `requestUpdate`
 * IPNS over js-ipfs using the delegated routing nodes
-* IPFS-based SDK implementation
 * example addon based on the SDK
 * tutorial: 'Create and publish a peer-to-peer addon with NodeJS'
+* UI: figure out how to show add-ons that have not been online for a while - because they will just get increasingly outdated, but not offline

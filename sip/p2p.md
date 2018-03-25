@@ -20,7 +20,7 @@ For example: ```/stream/series/imdb:tt14.json```
 
 Transports allowed should be HTTP and IPFS
 
-In the case of IPFS, an IPNS-based URL will be accessed, and in case the object does not exist, a `requestUpdate` message will be sent to the add-on creator peer (referenced by ID via `peerRouting.findPeer`), and potentially "aggregator" peers - and we will wait a certain time to see if the content will be updated on the IPNS URL.
+In the case of IPFS, an IPNS-based URL will be accessed, and in case the object does not exist, a `requestUpdate` message will be sent to the add-on creator peer (referenced by ID via `peerRouting.findPeer`), and other delegated nodes (which might forward to the creator peer) - and we will wait a certain time to see if the content will be updated on the IPNS URL.
 
 This message would also be sent if we consider the object outdated.
 
@@ -89,9 +89,11 @@ Once this is done, it will broadcast the final IPFS object.
 This can be used to aid and magically p2p-ify video distribution from HTTP to IPFS.
 
 
-## Supernodes
+## Supernodes (delegated nodes)
 
-To aid using the decentralized system in resource limited environments and the browser, we can introduce a concept of a "supernode". Delegated nodes (supernodes) would be all add-on creator nodes, and some pre-set nodes (similar to DHT bootstrap nodes).
+To aid using the decentralized system in resource limited environments and the browser, we can introduce a concept of a "supernode". Delegated nodes (supernodes) would be *all add-on creator nodes*, and some pre-set nodes (similar to DHT bootstrap nodes).
+
+To discover delegated nodes, we can just use a peer ID and then do `peerRouting.findPeer` to discover the `multiaddr` endpoints. The peer IDs will be obtained from the add-on manifests, and some peer IDs (and multiaddrs) will be hardcoded for the pre-set nodes.
 
 Such a node could be doing delegated routing (see https://github.com/ipfs/notes/issues/162), relaying `requestUpdate` messages, and caching content so as to make it more available (and over more transports).
 
