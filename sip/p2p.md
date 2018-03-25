@@ -92,15 +92,16 @@ This can be used to aid and magically p2p-ify video distribution from HTTP to IP
 
 ## Supernodes (delegated nodes)
 
-To aid using the decentralized system in resource limited environments and the browser, we can introduce a concept of a "supernode". Delegated nodes (supernodes) would be *all add-on creator nodes*, and some pre-set nodes (similar to DHT bootstrap nodes).
+To aid using the decentralized system in resource limited environments and the browser, we can introduce a concept of a "supernode". Delegated nodes (supernodes) would be *all add-on creator nodes*, and some pre-set nodes (similar to DHT bootstrap nodes and [IPFS bootstrappers](https://github.com/libp2p/js-libp2p/blob/b871bb0a1ab400d76aa6808ed26fc905f64bc515/examples/libp2p-in-the-browser/1/src/browser-bundle.js#L13)).
 
-To discover delegated nodes, we can just use a peer ID and then do `peerRouting.findPeer` to discover the `multiaddr` endpoints. The peer IDs will be obtained from the add-on manifests, and some peer IDs (and multiaddrs) will be hardcoded for the pre-set nodes.
+We don't really need to 'discover' the delegated nodes: we will have a hardcoded list of multiaddrs (see [IPFS browser config](https://github.com/ipfs/js-ipfs/blob/master/src/core/runtime/config-browser.json)) and the stremio-addon-sdk would include node ID and WebSocket multiaddr address(es) in the manifest by default. Also, WebRTC peers do not need to be discovered, instead they can be found directly with a multiaddr derived from the ID via the webrtc-star signalling mechanism - see https://github.com/libp2p/js-libp2p/tree/master/examples/libp2p-in-the-browser
 
 Such a node could be doing delegated routing (see https://github.com/ipfs/notes/issues/162), relaying `requestUpdate` messages, and caching content so as to make it more available (and over more transports).
 
 Those nodes should expose WebSockets and WebRTC transports - both are compatible with the browser and have complementing strengths (e.g. WS is less resource intense and can go behind CloudFlare)
 
 The user would send `requestUpdate` message to all their delegated nodes, and use them for resolving names. This improves performance, and also ensures all add-ons receive the `requestUpdate` message.
+
 
 
 ## JS library
