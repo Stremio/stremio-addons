@@ -31,10 +31,10 @@
 ## TODO p2p
 
 * learn how WebRTC works and whether we can provide nodes directly in the manifest (by peer ID and possibly addr)
-	mafintosh: https://github.com/mafintosh/hyperdht#dhtholepunchpeer-node-callback
-	read ipfs webrtc code and learn how they do signalling
-	read uTP code (libutp, node.js utp), see how this is supposed to punch 
-	try to use libp2p directly over different networks
+#	mafintosh: https://github.com/mafintosh/hyperdht#dhtholepunchpeer-node-callback
+#	read ipfs webrtc code and learn how they do signalling
+#	read uTP code (libutp, node.js utp), see how this is supposed to punch 
+	try to use libp2p directly over different networks (see examples)
 	read out webrtc low-level code
 - stremio addons Proto SDK, with http and ws (supernode) exposed connections ; test them in an automated test
 * IPFS `requestUpdate` message: broadcast a message to the creator peer and "aggregator" peers to fetch / update an entry; use WebRTC 

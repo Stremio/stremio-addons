@@ -12,6 +12,7 @@
     "ipfs-pubsub-room": "^1.1.5",
     "ipfs-repo": "^0.18.7",
     "js-ipfs": "0.0.301",
+    "libp2p": "^0.19.0",
     "once": "^1.4.0",
     "thunky": "^1.0.2"
   },
