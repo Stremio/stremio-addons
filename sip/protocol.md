@@ -10,7 +10,7 @@ This allows Stremio or other similar applications to aggregate content seamlessl
 
 To define a minimal add-on, you only need an HTTP server/endpoint serving a `manifest.json` file and responding to resource requests at `/{resource}/{type}/{id}.json`.
 
-If you're creating an add-on, we recommend you build it using our [addon-sdk](), which will provide a convenient abstraction to the protocol, as well a an easy way of publishing your add-ons.
+**If you're creating an add-on, we recommend you build it using our [addon-sdk](), which will provide a convenient abstraction to the protocol, as well a an easy way of publishing your add-ons.**
 
 Currently used resources are: `catalog`, `meta`, `stream`.
 
@@ -18,7 +18,7 @@ Currently used resources are: `catalog`, `meta`, `stream`.
 
 `/meta/{type}/{id}.json` - detailed metadata about a particular item; `type` again denotes the type, and `id` is the ID of the particular item, as found in the catalog
 
-`/stream/{type}/{id}.json` - list of all streams for a particular items; `type` again denotes the type, and `id` is the ID of the particular item, as found in the catalog
+`/stream/{type}/{id}.json` - list of all streams for a particular items; `type` again denotes the type, and `id` is the ID of the particular item, as found in the catalog or a video ID (a single metadata object may contain mutiple videos, for example a YouTube channel or a TV series)
 
 The JSON format of the response to these resources is described [here]().
 
