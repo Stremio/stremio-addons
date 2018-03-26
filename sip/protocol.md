@@ -62,7 +62,9 @@ Create a directory called `example-addon`
 }]
 ```
 
-This add-on is so simple that it can actually be hosted statically on GitHub pages! [See example]()
+This add-on is so simple that it can actually be hosted statically on GitHub pages! 
+
+[See example here: TODO]()
 
 
 ## Next steps
