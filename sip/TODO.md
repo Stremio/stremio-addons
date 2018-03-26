@@ -15,6 +15,7 @@
 
 ## TODO
 
+* think about catalog pagination and Search; consider filters for Discover - maybe an internal thing for CInemeta
 * implement and use `subtitles.json`, `subtitlesHash.json`
 * consider the response formats
 * consider cache - not-found items should refresh after a certain amount of time
@@ -23,8 +24,9 @@
 * Move out client to a new repo
 * Write Docs
 * Write Spec
+* Docs: explain idPrefix better or change the standard to make more sense
 * Decide on the new set of modules - refreshed `stremio-models`
-* tutorials like 'Create a hosted add-on with nodejs', 'Create a hosted add-on with Python', 'Create a hosted add-on with Go', 'Create a hosted add-on with PHP'
+* tutorials like 'Create a hosted add-on with nodejs', 'Create a hosted add-on with Python', 'Create a hosted add-on with Go', 'Create a hosted add-on with PHP', 'Create a hosted add-on with C#'
 * example: publish an add-on via localtunnel; consider other possibilities that are easy
 
 

@@ -43,6 +43,8 @@ This message would also be sent if we consider the object outdated.
 
 `publish` mode: e.g. `./myAddon --publish`; this would start an IPFS node, upload the initial files (manifest and possibly catalogs) and then respond to all stream/details requests later on (`requestUpdate`), and upload the response in IPFS
 
+You have to keep this running in order for your add-on to update it's own content
+
 Additionally this mode will publish the result of stream/detail for the most popular pieces of content, without them being requested by peers first.
 
 Alternatively this would be able to publish to a directory, but of course in that mode you'd be limited to what is initially published rather than receiving messages to request what's missing
