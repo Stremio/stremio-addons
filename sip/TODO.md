@@ -30,7 +30,10 @@
 
 ## TODO p2p
 
-* stremio addons Proto SDK, with http and ws (supernode) exposed connections ; test them in an automated test
+* stremio addons Proto SDK, with http and ws (supernode) exposed connections
+	ipfs config with bootstrap nodes, webrtc/websocket local multiaddrs
+	test them in an automated test
+	in `--publish` mode, log a gateway-based ipfs url to the manifest (it references peer ID, therefore the addon can update itself with IPNS)
 * IPFS `requestUpdate` message: broadcast a message to the creator peer and "aggregator" peers to fetch / update an entry; use WebRTC 
 * IPFS delegated nodes helping with routing and broadcasting/keeping track of `requestUpdate`
 * IPNS over js-ipfs using the delegated routing nodes
