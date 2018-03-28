@@ -19,9 +19,9 @@ tape('detectFromURL: legacy protocol', function(t) {
 		t.error(err, 'no error from detectFromURL')
 		t.ok(res.addon, 'addon is ok')
 		t.ok(res.addon.manifest, 'manifest is ok')
-		t.deepEqual(res.addon.manifest.catalogs, ['series', 'movie'], 'catalogs is right')
+		t.deepEqual(res.addon.manifest.catalogs, [{ type: 'series', id: 'top' }, { type: 'movie', id: 'top' }], 'catalogs is right')
 		t.deepEqual(res.addon.manifest.resources, ['meta'], 'resources is right')
-		res.addon.get('catalog', res.addon.manifest.catalogs[0], function(err, resp) {
+		res.addon.get('catalog', res.addon.manifest.catalogs[0].type, function(err, resp) {
 			t.error(err, 'no error from catalog')
 			t.ok(Array.isArray(resp), 'response is an array')
 			t.ok(resp.length === 70, 'response is full length')
