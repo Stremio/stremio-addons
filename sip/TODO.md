@@ -12,16 +12,15 @@
 * can we broadcast content requests via the DHT? can we improve pubsub? ; NOT A SMART IDEA
 * IPFS impl to use pubusb to get missing; also re-eval the pubsub model, perhaps sending a message to someone in the swarm is sufficient
 * figure out IPNS slowness and how to work around; also IPNS is not implemented in js-ipfs
+* Move out client to a new repo
 
 ## TODO
 
-* think about catalog pagination and Search; consider filters for Discover - maybe an internal thing for CInemeta
-* implement and use `subtitles.json`, `subtitlesHash.json`
-* consider the response formats
+* think about catalog pagination and Search; consider filters for Discover - maybe an internal thing for Cinemeta
+* consider the response formats - consider stremio-addon-models that also enforces types/validation; OR implement a linter
 * consider cache - not-found items should refresh after a certain amount of time
 * consider how to handle JSON parse errors and 404
 * Move out SDK/docs to a new repo
-* Move out client to a new repo
 * Write Docs
 * Write Spec
 * Docs: explain idPrefix better or change the standard to make more sense
