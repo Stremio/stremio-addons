@@ -14,17 +14,19 @@
 * figure out IPNS slowness and how to work around; also IPNS is not implemented in js-ipfs
 * Move out client to a new repo
 * Decide on the new set of modules - `stremio-addon-sdk`, `stremio-addon-client`, `stremio-aggregators`
+* consider the response formats - everything will be wrapped
+* Move out SDK/docs to a new repo
 
 ## TODO
 
 * think about catalog pagination and Search; consider filters for Discover - maybe an internal thing for Cinemeta
-* consider the response formats - consider stremio-addon-models that also enforces types/validation; OR implement a linter
+* consider stremio-addon-models that also enforces types/validation; OR implement a linter
 * consider cache - not-found items should refresh after a certain amount of time
 * consider how to handle JSON parse errors and 404
-* Move out SDK/docs to a new repo
 * Write Docs
 * Write Spec
-* Docs: explain idPrefix better or change the standard to make more sense
+* Should we bring back auto landing pages and how?
+* Docs: explain idProperty better or change the standard to make more sense
 * `stremio-addons-client`: ability to set header for every request (for example `X-User-ID`)
 * tutorials like 'Create a hosted add-on with nodejs', 'Create a hosted add-on with Python', 'Create a hosted add-on with Go', 'Create a hosted add-on with PHP', 'Create a hosted add-on with C#'
 * example: publish an add-on via localtunnel; consider other possibilities that are easy
