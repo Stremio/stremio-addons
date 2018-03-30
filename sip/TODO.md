@@ -13,6 +13,7 @@
 * IPFS impl to use pubusb to get missing; also re-eval the pubsub model, perhaps sending a message to someone in the swarm is sufficient
 * figure out IPNS slowness and how to work around; also IPNS is not implemented in js-ipfs
 * Move out client to a new repo
+* Decide on the new set of modules - `stremio-addon-sdk`, `stremio-addon-client`, `stremio-aggregators`
 
 ## TODO
 
@@ -24,7 +25,6 @@
 * Write Docs
 * Write Spec
 * Docs: explain idPrefix better or change the standard to make more sense
-* Decide on the new set of modules - refreshed `stremio-models`
 * `stremio-addons-client`: ability to set header for every request (for example `X-User-ID`)
 * tutorials like 'Create a hosted add-on with nodejs', 'Create a hosted add-on with Python', 'Create a hosted add-on with Go', 'Create a hosted add-on with PHP', 'Create a hosted add-on with C#'
 * example: publish an add-on via localtunnel; consider other possibilities that are easy
