@@ -77,6 +77,8 @@ HTTP-based transport may support user identification and possibly authentication
 
 Simplest form of that is just to send a unique, anonymous UID as an HTTP header when fetching content.
 
+This can be achieved by an universal API in `stremio-addons-client` to set header for every request (for example `X-User-ID`)
+
 ## Bridge from BitTorrent/HTTP
 
 Consider an easy way of allowing files to be replicated over IPFS from sources like HTTP and BitTorrent *dynamically*. Dynamically means we wouldn't need the full file at once in order to upload it to IPFS.

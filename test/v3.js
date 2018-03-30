@@ -23,13 +23,15 @@ tape('detectFromURL: legacy protocol', function(t) {
 		t.deepEqual(res.addon.manifest.resources, ['meta'], 'resources is right')
 		res.addon.get('catalog', res.addon.manifest.catalogs[0].type, res.addon.manifest.catalogs[0].id, function(err, resp) {
 			t.error(err, 'no error from catalog')
-			t.ok(Array.isArray(resp), 'response is an array')
-			t.ok(resp.length === 70, 'response is full length')
+			t.ok(resp, 'has response')
+			t.ok(Array.isArray(resp.metas), 'response is an array')
+			t.ok(resp.metas.length === 70, 'response is full length')
 
-			res.addon.get('meta', resp[0].type, resp[0].imdb_id, function(err, resp) {
+			res.addon.get('meta', resp.metas[0].type, resp.metas[0].imdb_id, function(err, resp) {
 				t.error(err, 'no error from meta')
 
-				t.ok(resp.fanart, 'has fanart')
+				t.ok(resp.meta, 'has meta')
+				t.ok(resp.meta.fanart, 'has fanart')
 
 				t.end()
 			})
@@ -38,7 +40,7 @@ tape('detectFromURL: legacy protocol', function(t) {
 })
 
 tape('detectFromURL: detect and use manifest.json URL', function(t) {
-	const ipfsURL = 'https://gateway.ipfs.io/ipfs/QmTQTixUrtf9E4fasjes5Jb1o956FF6xqSsXnwrc5GLKeB/manifest.json'
+	const ipfsURL = 'https://gateway.ipfs.io/ipfs/QmeZ431sbdzuqJppkiGMTucuZxwBH7CffQMtftkLDypBrg/manifest.json'
 	const ipnsURL = 'https://gateway.ipfs.io/ipns/QmYRaTC2DqsgXaRUJzGFagLy725v1QyYwt66kvpifPosgj/manifest.json'
 
 	let addon
@@ -54,18 +56,18 @@ tape('detectFromURL: detect and use manifest.json URL', function(t) {
 		return addon.get('catalog', 'top')
 	})
 	.then(function(resp) {
-		t.ok(Array.isArray(resp), 'response is an array')
+		t.ok(resp && Array.isArray(resp.metas), 'response is an array')
 
-		return addon.get('meta', resp[0].type, resp[0].id)
+		return addon.get('meta', resp.metas[0].type, resp.metas[0].id)
 	})
-	.then(function(meta) {
-		t.ok(meta.id, 'meta has id')
+	.then(function(resp) {
+		t.ok(resp.meta.id, 'meta has id')
 
-		return addon.get('stream', meta.type, meta.id)
+		return addon.get('stream', resp.meta.type, resp.meta.id)
 	})
-	.then(function(streams) {
-		t.ok(Array.isArray(streams), 'streams is array')
-		t.equal(streams.length, 2, 'streams is right length')
+	.then(function(resp) {
+		t.ok(Array.isArray(resp.streams), 'streams is array')
+		t.equal(resp.streams.length, 2, 'streams is right length')
 		t.end()
 	})
 	.catch(function(err) {
@@ -75,7 +77,7 @@ tape('detectFromURL: detect and use manifest.json URL', function(t) {
 })
 
 tape('detectFromURL: IPFS: detect and use manifest.json URL', function(t) {
-	const ipfsURL = 'ipfs://QmTQTixUrtf9E4fasjes5Jb1o956FF6xqSsXnwrc5GLKeB/manifest.json'
+	const ipfsURL = 'ipfs://QmeZ431sbdzuqJppkiGMTucuZxwBH7CffQMtftkLDypBrg/manifest.json'
 	const ipnsURL = 'ipns://QmYRaTC2DqsgXaRUJzGFagLy725v1QyYwt66kvpifPosgj/manifest.json'
 
 	let addon
@@ -92,16 +94,16 @@ tape('detectFromURL: IPFS: detect and use manifest.json URL', function(t) {
 		return addon.get('catalog', 'top')
 	})
 	.then(function(resp) {
-		t.ok(Array.isArray(resp), 'response is an array')
-		return addon.get('meta', resp[0].type, resp[0].id)
+		t.ok(Array.isArray(resp.metas), 'response is an array')
+		return addon.get('meta', resp.metas[0].type, resp.metas[0].id)
 	})
-	.then(function(meta) {
-		t.ok(meta.id, 'meta has id')
+	.then(function(resp) {
+		t.ok(resp.meta.id, 'meta has id')
 
 		return addon.get('stream', 'movie', parseInt(Math.random()*1000))
 	})
-	.then(function(stream) {
-		console.log(stream)
+	.then(function(resp) {
+		console.log(resp)
 		// IPFS addons need to be destroyed in order to allow the proc to exit
 		addon.destroy(function() { t.end() })
 	})
