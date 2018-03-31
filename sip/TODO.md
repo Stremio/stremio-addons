@@ -16,16 +16,18 @@
 * Decide on the new set of modules - `stremio-addon-sdk`, `stremio-addon-client`, `stremio-aggregators`
 * consider the response formats - everything will be wrapped
 * Move out SDK/docs to a new repo
+* think about catalog pagination and Search; consider filters for Discover - maybe an internal thing for Cinemeta: search will be a new resource, pagination part of the ID
 
 ## TODO
 
-* think about catalog pagination and Search; consider filters for Discover - maybe an internal thing for Cinemeta
+* enforce ot at least lint the manifest (e.g. .catalogs)
+* think about publishing/discovery and claiming an ID; ipns solves that, but url-based addons do not
 * consider stremio-addon-models that also enforces types/validation; OR implement a linter
 * consider cache - not-found items should refresh after a certain amount of time
 * consider how to handle JSON parse errors and 404
 * Write Docs
 * Write Spec
-* Should we bring back auto landing pages and how?
+* think about whether we should bring back auto landing pages and how?
 * Docs: explain idProperty better or change the standard to make more sense
 * `stremio-addons-client`: ability to set header for every request (for example `X-User-ID`)
 * tutorials like 'Create a hosted add-on with nodejs', 'Create a hosted add-on with Python', 'Create a hosted add-on with Go', 'Create a hosted add-on with PHP', 'Create a hosted add-on with C#'
