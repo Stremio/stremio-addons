@@ -17,9 +17,12 @@
 * consider the response formats - everything will be wrapped
 * Move out SDK/docs to a new repo
 * think about catalog pagination and Search; consider filters for Discover - maybe an internal thing for Cinemeta: search will be a new resource, pagination part of the ID
+* stremio-aggregators
 
 ## TODO
 
+* stremio-addon-{sdk,client} and stremio-aggregators: think of code style, consider linter/flux/etc.
+* stremio-aggregators: consider reloading addons (addonstore), i.e. what happens when an addon is installed or removed
 * enforce ot at least lint the manifest (e.g. .catalogs)
 * think about publishing/discovery and claiming an ID; ipns solves that, but url-based addons do not
 * consider stremio-addon-models that also enforces types/validation; OR implement a linter
@@ -27,6 +30,7 @@
 * consider how to handle JSON parse errors and 404
 * Write Docs
 * Write Spec
+* SDK: Default function for publish (crawls all known resources), also validates and should be ran in testing too
 * think about whether we should bring back auto landing pages and how?
 * Docs: explain idProperty better or change the standard to make more sense
 * `stremio-addons-client`: ability to set header for every request (for example `X-User-ID`)
