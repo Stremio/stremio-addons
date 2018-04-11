@@ -18,22 +18,27 @@
 * Move out SDK/docs to a new repo
 * think about catalog pagination and Search; consider filters for Discover - maybe an internal thing for Cinemeta: search will be a new resource, pagination part of the ID
 * stremio-aggregators
+* stremio-addon-{sdk,client} and stremio-aggregators: think of code style, consider linter/flux/etc.
+* Docs: explain idProperty better or change the standard to make more sense
+* Figure out reloading/refresh - will just re-initialize an aggregator every time
+* stremio-aggregators: consider reloading behaviour (addoncollection), i.e. what happens when an addon is installed or removed; DECIDED: we just re-construct everything
 
 ## TODO
 
-* stremio-addon-{sdk,client} and stremio-aggregators: think of code style, consider linter/flux/etc.
-* stremio-aggregators: consider reloading addons (addonstore), i.e. what happens when an addon is installed or removed
+* FIGURE OUT: user-installed add-ons
+* FIGURE OUT: addon discovery
+
 * enforce ot at least lint the manifest (e.g. .catalogs)
 * think about publishing/discovery and claiming an ID; ipns solves that, but url-based addons do not
-* consider stremio-addon-models that also enforces types/validation; OR implement a linter
+* consider stremio-addon-models that also enforces types/validation; OR implement a linter; also lint/validate the manifest
 * consider cache - not-found items should refresh after a certain amount of time
 * consider how to handle JSON parse errors and 404
 * Write Docs
 * Write Spec
+* stremio-addon-sdk, stremio-aggregators tests
 * SDK: Default function for publish (crawls all known resources), also validates and should be ran in testing too
 * think about whether we should bring back auto landing pages and how?
-* Docs: explain idProperty better or change the standard to make more sense
-* `stremio-addons-client`: ability to set header for every request (for example `X-User-ID`)
+* `stremio-addon-client`: ability to set header for every request (for example `X-User-ID`)
 * tutorials like 'Create a hosted add-on with nodejs', 'Create a hosted add-on with Python', 'Create a hosted add-on with Go', 'Create a hosted add-on with PHP', 'Create a hosted add-on with C#'
 * example: publish an add-on via localtunnel; consider other possibilities that are easy
 
