@@ -22,12 +22,11 @@
 * Docs: explain idProperty better or change the standard to make more sense
 * Figure out reloading/refresh - will just re-initialize an aggregator every time
 * stremio-aggregators: consider reloading behaviour (addoncollection), i.e. what happens when an addon is installed or removed; DECIDED: we just re-construct everything
+* FIGURE OUT: addon discovery
 
 ## TODO
 
 * FIGURE OUT: user-installed add-ons
-* FIGURE OUT: addon discovery
-
 * enforce ot at least lint the manifest (e.g. .catalogs)
 * think about publishing/discovery and claiming an ID; ipns solves that, but url-based addons do not
 * consider stremio-addon-models that also enforces types/validation; OR implement a linter; also lint/validate the manifest
