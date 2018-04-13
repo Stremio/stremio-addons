@@ -40,7 +40,8 @@
 * think about whether we should bring back auto landing pages and how?
 * `stremio-addon-client`: ability to set header for every request (for example `X-User-ID`)
 * tutorials like 'Create a hosted add-on with nodejs', 'Create a hosted add-on with Python', 'Create a hosted add-on with Go', 'Create a hosted add-on with PHP', 'Create a hosted add-on with C#'
-* example: publish an add-on via localtunnel; consider other possibilities that are easy
+* Example: publish an add-on via now.sh 
+* Example: publish an add-on via localtunnel; consider other possibilities that are easy
 
 
 ## TODO p2p
