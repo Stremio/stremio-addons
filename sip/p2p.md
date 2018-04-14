@@ -18,7 +18,15 @@ The new add-on spec should have a much friendlier way of requesting things: acce
 /{resource}/{type}/{id}.json
 ```
 
-For example: ```/stream/series/imdb:tt14.json```
+Or alternatively
+
+```
+/{resource}/{type}/{id}/{extraArgs}.json
+```
+
+Where extraArgs is a querystring-encoded object
+
+For example: ```/stream/series/tt14.json```
 
 Transports allowed should be HTTP and IPFS
 

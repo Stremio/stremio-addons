@@ -23,22 +23,23 @@
 * Figure out reloading/refresh - will just re-initialize an aggregator every time
 * stremio-aggregators: consider reloading behaviour (addoncollection), i.e. what happens when an addon is installed or removed; DECIDED: we just re-construct everything
 * FIGURE OUT: addon discovery
+* Extra args
+* think about publishing/discovery and claiming an ID; ipns solves that, but url-based addons do not
+* FIGURE OUT: user-installed add-ons: will be a separate AddonCollection
 
 ## TODO
 
-* FIGURE OUT: user-installed add-ons
 * enforce ot at least lint the manifest (e.g. .catalogs)
-* think about publishing/discovery and claiming an ID; ipns solves that, but url-based addons do not
 * consider stremio-addon-models that also enforces types/validation; OR implement a linter; also lint/validate the manifest
-* consider cache - not-found items should refresh after a certain amount of time
-* consider how to handle JSON parse errors and 404
 * Write Docs
 * Write Spec
-* stremio-addon-sdk, stremio-aggregators tests
+* Tests for stremio-addon-sdk, stremio-aggregators
+* consider cache - not-found items should refresh after a certain amount of time
+* consider how to handle JSON parse errors and 404
 * SDK: Default function for publish (crawls all known resources), also validates and should be ran in testing too
 * think about whether we should bring back auto landing pages and how?
 * `stremio-addon-client`: ability to set header for every request (for example `X-User-ID`)
-* tutorials like 'Create a hosted add-on with nodejs', 'Create a hosted add-on with Python', 'Create a hosted add-on with Go', 'Create a hosted add-on with PHP', 'Create a hosted add-on with C#'
+* Tutorials like 'Create a hosted add-on with nodejs', 'Create a hosted add-on with Python', 'Create a hosted add-on with Go', 'Create a hosted add-on with PHP', 'Create a hosted add-on with C#'
 * Example: publish an add-on via now.sh 
 * Example: publish an add-on via localtunnel; consider other possibilities that are easy
 
