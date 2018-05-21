@@ -29,14 +29,14 @@
 * SDK: enforce to at least lint the manifest (e.g. .catalogs)
 * consider stremio-addon-models that also enforces types/validation; OR implement a linter; also lint/validate the manifest
 * basic tests for stremio-addon-sdk
+* basic tests for stremio-aggregators
 
 ## TODO
 
-* Announce: `addonPublish { transportUrl, transportName } -> { success: 1 }`
+* Publish to the API: `addonPublish { transportUrl, transportName } -> { success: 1 }`
 * Write Docs
 * Write Spec
-* basic tests for stremio-aggregators
-* consider cache - not-found items should refresh after a certain amount of time
+* consider cache - should be a concern of the transport
 * consider how to handle JSON parse errors and 404
 * SDK: Default function for publish (crawls all known resources), also validates and should be ran in testing too
 * think about whether we should bring back auto landing pages and how; also this can play along with SEO if there is a page for everything; also think of landing pages + authentication such as put.io
