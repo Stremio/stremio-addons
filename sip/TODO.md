@@ -32,6 +32,7 @@
 
 ## TODO
 
+* Announce: `addonPublish { transportUrl, transportName } -> { success: 1 }`
 * Write Docs
 * Write Spec
 * basic tests for stremio-aggregators
