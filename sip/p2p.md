@@ -106,7 +106,7 @@ This can be used to aid and magically p2p-ify video distribution from HTTP to IP
 
 To aid using the decentralized system in resource limited environments and the browser, we can introduce a concept of a "supernode". Delegated nodes (supernodes) would be *all add-on creator nodes*, and some pre-set nodes (similar to DHT bootstrap nodes and [IPFS bootstrappers](https://github.com/libp2p/js-libp2p/blob/b871bb0a1ab400d76aa6808ed26fc905f64bc515/examples/libp2p-in-the-browser/1/src/browser-bundle.js#L13)).
 
-We don't really need to 'discover' the delegated nodes: we will have a hardcoded list of multiaddrs (see [IPFS browser config](https://github.com/ipfs/js-ipfs/blob/master/src/core/runtime/config-browser.json)) and the stremio-addon-sdk would include node ID and WebSocket multiaddr address(es) in the manifest by default. Also, WebRTC peers do not need to be discovered, instead they can be found directly with a multiaddr derived from the ID via the webrtc-star signalling mechanism - see https://github.com/libp2p/js-libp2p/tree/master/examples/libp2p-in-the-browser
+We don't really need to 'discover' the delegated nodes: we will have a hardcoded list of multiaddrs (see [IPFS browser config](https://github.com/ipfs/js-ipfs/blob/master/src/core/runtime/config-browser.json)) and the stremio-addon-sdk would include node ID and WebSocket multiaddr address(es) in the manifest by default. Also, WebRTC peers do not need to be discovered, instead they can be found directly with a multiaddr derived from the ID via the webrtc-star signalling mechanism - see https://github.com/libp2p/js-libp2p/tree/master/examples/libp2p-in-the-browser. Furthermore, those can be derived by taking all add-ons the central `addoncollection.json` knows about and seeing if they have IPFS nodes.
 
 Such a node could be doing delegated routing (see https://github.com/ipfs/notes/issues/162), relaying `requestUpdate` messages, and caching content so as to make it more available (and over more transports).
 
@@ -114,4 +114,4 @@ Those nodes should expose WebSockets and WebRTC transports - both are compatible
 
 The user would send `requestUpdate` message to all their delegated nodes, and use them for resolving names. This improves performance, and also ensures all add-ons receive the `requestUpdate` message.
 
-
+The add-on SDK can ensure add-on creators run supernodes by either shipping the go binaries for ipfs or by using `js-ipfs`. The go version might be needed because we need full DHT support.

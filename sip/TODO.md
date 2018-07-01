@@ -30,19 +30,19 @@
 * consider stremio-addon-models that also enforces types/validation; OR implement a linter; also lint/validate the manifest
 * basic tests for stremio-addon-sdk
 * basic tests for stremio-aggregators
+* Publish to the API: `addonPublish { transportUrl, transportName } -> { success: 1 }`
+* think about whether we should bring back auto landing pages and how; also this can play along with SEO if there is a page for everything; also think of landing pages + authentication such as put.io; nah, this works via in-stremio page (app.strem.io/addon?url=...)
 
 ## TODO
 
-* Publish to the API: `addonPublish { transportUrl, transportName } -> { success: 1 }`
 * Write Docs
 * Write Spec
-* consider cache - should be a concern of the transport
+* consider cache - should be a concern of the transport, mostly the p2p one
 * consider how to handle JSON parse errors and 404
 * SDK: Default function for publish (crawls all known resources), also validates and should be ran in testing too
-* think about whether we should bring back auto landing pages and how; also this can play along with SEO if there is a page for everything; also think of landing pages + authentication such as put.io
 * `stremio-addon-client`: ability to set header for every request (for example `X-User-ID`)
 * Tutorials like 'Create a hosted add-on with nodejs', 'Create a hosted add-on with Python', 'Create a hosted add-on with Go', 'Create a hosted add-on with PHP', 'Create a hosted add-on with C#'
-* Example: publish an add-on via now.sh 
+* Example: publish an add-on via now.sh; also publishToCentral
 * Example: publish an add-on via localtunnel; consider other possibilities that are easy
 * Tutorial: how to make a metadata add-on with search
 
