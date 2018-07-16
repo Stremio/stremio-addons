@@ -30,7 +30,7 @@ For example: ```/stream/series/tt14.json```
 
 Transports allowed should be HTTP and IPFS
 
-In the case of IPFS, an IPNS-based URL will be accessed, and in case the object does not exist, a `requestUpdate` message will be sent to the add-on creator peer (referenced by ID via `peerRouting.findPeer`), and other delegated nodes (which might forward to the creator peer) - and we will wait a certain time to see if the content will be updated on the IPNS URL.
+In the case of IPFS in case the object does not exist, a `requestUpdate` message will be sent to the add-on creator peer (referenced by ID/pubkey via `peerRouting.findPeer`), and other delegated nodes (which might forward to the creator peer) - and we will wait a certain time to see if the content will be updated by the add-on publishing an updated version of itself. It's possible that the message of a new `addonDescriptorSigned` (see Addon Discovery) will be broadcasted back through the delegated nodes.
 
 This message would also be sent if we consider the object outdated.
 
@@ -77,7 +77,7 @@ For HTTP, the cache policy may be return in the form of HTTP headers as well.
 
 ## Add-on discovery
 
-Peer to peer add-on discovery can be implemented via IPFS / IPNS
+Peer to peer add-on discovery can be implemented via IPFS, using the routing (DHT). You would publish an add-on to the DHT, by publishing it's addonDescriptorSigned, which is a signed message of hash({ transportUrl, transportName, manifest })
 
 ## User identification / authentication
 
@@ -106,7 +106,7 @@ This can be used to aid and magically p2p-ify video distribution from HTTP to IP
 
 To aid using the decentralized system in resource limited environments and the browser, we can introduce a concept of a "supernode". Delegated nodes (supernodes) would be *all add-on creator nodes*, and some pre-set nodes (similar to DHT bootstrap nodes and [IPFS bootstrappers](https://github.com/libp2p/js-libp2p/blob/b871bb0a1ab400d76aa6808ed26fc905f64bc515/examples/libp2p-in-the-browser/1/src/browser-bundle.js#L13)).
 
-We don't really need to 'discover' the delegated nodes: we will have a hardcoded list of multiaddrs (see [IPFS browser config](https://github.com/ipfs/js-ipfs/blob/master/src/core/runtime/config-browser.json)) and the stremio-addon-sdk would include node ID and WebSocket multiaddr address(es) in the manifest by default. Also, WebRTC peers do not need to be discovered, instead they can be found directly with a multiaddr derived from the ID via the webrtc-star signalling mechanism - see https://github.com/libp2p/js-libp2p/tree/master/examples/libp2p-in-the-browser. Furthermore, those can be derived by taking all add-ons the central `addoncollection.json` knows about and seeing if they have IPFS nodes.
+We don't really need to 'discover' the delegated nodes: we will have a hardcoded list of multiaddrs (see [IPFS browser config](https://github.com/ipfs/js-ipfs/blob/master/src/core/runtime/config-browser.json)) and the stremio-addon-sdk would include node ID and WebSocket multiaddr address(es) in the manifest by default. Also, WebRTC peers do not need to be discovered, instead they can be found directly with a multiaddr derived from the ID via the webrtc-star signalling mechanism - see https://github.com/libp2p/js-libp2p/tree/master/examples/libp2p-in-the-browser. Furthermore, those can be derived by taking all add-ons the central `addoncollection.json` knows about and seeing if they have IPFS nodes (all `transportUrl`'s that are to IPFS).
 
 Such a node could be doing delegated routing (see https://github.com/ipfs/notes/issues/162), relaying `requestUpdate` messages, and caching content so as to make it more available (and over more transports).
 
