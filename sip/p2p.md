@@ -30,7 +30,7 @@ For example: ```/stream/series/tt14.json```
 
 Transports allowed should be HTTP and IPFS
 
-In the case of IPFS in case the object does not exist, a `requestUpdate` message will be sent to the add-on creator peer (referenced by ID/pubkey via `peerRouting.findPeer`), and other delegated nodes (which might forward to the creator peer) - and we will wait a certain time to see if the content will be updated by the add-on publishing an updated version of itself. It's possible that the message of a new `addonDescriptorSigned` (see Addon Discovery) will be broadcasted back through the delegated nodes.
+In the case of IPFS in case the object does not exist, a `requestUpdate` message will be sent to the add-on creator peer (referenced by ID/pubkey via `peerRouting.findPeer`), and other delegated nodes (which might forward to the creator peer) - and we will wait a certain time to see if the content will be updated by the add-on publishing an updated version of itself. It's possible that a message of a new `addonDescriptorSigned` (see Addon Discovery) will be broadcasted back through the delegated nodes, telling the client to grab the content from this newer version.
 
 This message would also be sent if we consider the object outdated.
 
