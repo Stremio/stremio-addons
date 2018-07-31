@@ -77,7 +77,7 @@ For HTTP, the cache policy may be return in the form of HTTP headers as well.
 
 ## Add-on discovery
 
-Peer to peer add-on discovery can be implemented via IPFS, using the routing (DHT). You would publish an add-on to the DHT, by publishing it's addonDescriptorSigned, which is a signed message of hash({ transportUrl, transportName, manifest })
+Peer to peer add-on discovery can be implemented via IPFS, using the routing (DHT). You would publish an add-on to the DHT, by publishing it's addonDescriptorSigned, which is a signed message of hash({ transportUrl, transportName, manifest }) (AddonDescriptorHash)
 
 ## User identification / authentication
 

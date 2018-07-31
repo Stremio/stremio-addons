@@ -48,6 +48,7 @@
 
 ## TODO p2p
 
+* stremio p2p add-ons: consider a tendermint-like architecture where the replication service runs; replicationService<->add-on; this can connect directly via the stremio add-on protocol itself (over HTTP), and be a separate module "stremio-addon-p2p-replicator" or smth; that way even legacy add-ons can be replicated
 * stremio addons Proto SDK, with http and ws (supernode) exposed connections
 	ipfs config with bootstrap nodes, webrtc/websocket local multiaddrs
 	test them in an automated test
