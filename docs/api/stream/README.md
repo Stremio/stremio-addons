@@ -2,6 +2,8 @@
 
 Stream links are being handled by the `stream.find` method.
 
+[List of Supported Stream Response Parameters](stream.response.md)
+
 First thing to keep in mind here is that Stremio supports video streaming through HTTP, BitTorrent and IPFS. 
 
 If you are interested in other protocols, contact us at [office@strem.io](mailto:office@strem.io).
