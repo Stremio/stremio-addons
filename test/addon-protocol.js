@@ -130,7 +130,7 @@ async.eachSeries(addons, function(url, ready) {
 
 				t.ok(stream.hasOwnProperty("availability"), "has availability");
 				t.ok(stream.availability > 0, "availability > 0");
-				t.ok(stream.url || stream.yt_id || (stream.infoHash && stream.hasOwnProperty("mapIdx")), "has an HTTP / YouTube / BitTorrent stream");
+				t.ok(stream.url || stream.yt_id || (stream.infoHash && stream.hasOwnProperty("fileIdx")), "has an HTTP / YouTube / BitTorrent stream");
 				next();
 			});
 
