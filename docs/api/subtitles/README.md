@@ -44,14 +44,13 @@ See [Subtitle Object](subtitle.object.md) for response.
   id: "8e245d9679d31e12",  // mandatory, any unique string to identify this response
                            // can be the OpenSubtitles Hash of the file
   itemHash: "tt23155 4 5", // optional, same as the one from the request
-  all: {
-    [
-	  {
-        id: "string identifier",
-        url: "url to srt file",
-        lang: "language code in ISO 639-1"
-      },
-	  ...
-    ]
+  all: [
+    {
+      id: "string identifier",
+      url: "url to srt file",
+      lang: "language code in ISO 639-1"
+    },
+    ...
+  ]
 }
 ```

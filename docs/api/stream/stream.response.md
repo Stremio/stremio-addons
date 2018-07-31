@@ -4,8 +4,8 @@
 
 * ``url`` - direct URL to a video stream - http, https, rtmp protocols supported
 * ``yt_id`` - youtube video ID, plays using the built-in YouTube player
-* ``infoHash`` and/or ``fileIdx`` - info hash of a torrent file, and mapIdx is the index of the video file within the torrent; **if fileIdx is not specified, the largest file in the torrent will be selected**
-* ``mapIdx`` - alias to ``fileIdx``, specifies index of file in case of BitTorrent
+* ``infoHash`` and/or ``fileIdx`` - info hash of a torrent file, and `fileIdx` is the index of the video file within the torrent; **if fileIdx is not specified, the largest file in the torrent will be selected**
+* ``mapIdx`` - obsolete/legacy alias to ``fileIdx``, specifies index of file in case of BitTorrent
 * ``externalUrl`` - URL to the video, which should be opened in a browser (webpage), e.g. link to Netflix
 * ``externalUris`` - an array of objects that represent URI to the video; supports linking to iOS or Android apps (see ``externalUri`` docs below)
 
